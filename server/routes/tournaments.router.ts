@@ -22,19 +22,19 @@ export class TournamentsRouter {
 
     public getAll(req: Request, res: Response, next: NextFunction) {
 		Tournament.find().sort({ name: 'asc' })
-            .then(members => res.json(members))
+            .then(tournaments => res.json(tournaments))
             .catch(err => res.json([]));
     }
 
     public findById(req: Request, res: Response, next: NextFunction) {
         Tournament.find({ _id: req.params.id })
-            .then(member => res.json(member))
+            .then(tournament => res.json(tournament))
             .catch(err => res.json([]));
     }
 	
 	public findByName(req: Request, res: Response, next: NextFunction) {
         Tournament.find({ name: req.params.name })
-            .then(member => res.json(member))
+            .then(tournament => res.json(tournament))
             .catch(err => res.json([]));
     }
 
@@ -42,7 +42,7 @@ export class TournamentsRouter {
         let d = new Date(req.params.start);
         if (!isNaN(d.valueOf())) {
             Tournament.find({ start: d }).sort({ name: 'asc' })
-                .then(members => res.json(members))
+                .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }
         else
@@ -53,7 +53,7 @@ export class TournamentsRouter {
         let d = new Date(req.params.finish);
         if (!isNaN(d.valueOf())) {
             Tournament.find({ finish: d }).sort({ name: 'asc' })
-                .then(members => res.json(members))
+                .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }
         else
@@ -62,7 +62,7 @@ export class TournamentsRouter {
 
     public findByMaxPlayers(req: Request, res: Response, next: NextFunction) {
         Tournament.find({ maxPlayers: req.params.max }).sort({ name: 'asc' })
-            .then(members => res.json(members))
+            .then(tournaments => res.json(tournaments))
             .catch(err => res.json([]));
     }
 
@@ -73,18 +73,18 @@ export class TournamentsRouter {
             res.json({errmsg: 'bad date range'});
         else {
             Tournament.find({ start: { $gte: d1, $lte: d2 } })
-                .then(members => res.json(members))
+                .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }
     }
 
-    public createPromise(req: Request, res: Response, next: NextFunction) {
-        let tournament = new Tournament(req.body);
-        tournament
-            .save()
-            .then(saved => console.log("saved", saved))
-            .catch(err => console.log("error", err));
-    }
+    // public createPromise(req: Request, res: Response, next: NextFunction) {
+    //     let tournament = new Tournament(req.body);
+    //     tournament
+    //         .save()
+    //         .then(saved => console.log("saved", saved))
+    //         .catch(err => console.log("error", err));
+    // }
 
     public create(req: Request, res: Response, next: NextFunction) {
         let tournament = new Tournament(req.body);

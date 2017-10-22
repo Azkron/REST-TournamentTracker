@@ -30,6 +30,7 @@ import { UnknownComponent } from "app/unknown.component";
             { path: 'home', component: HomeComponent },
             { path: 'members', component: MemberListComponent },
             { path: 'tournaments', component: TournamentListComponent },
+            // { path: 'tournamentdetails', component: TournamentListComponent },
             { path: '**', component: UnknownComponent }
         ])
     ],
