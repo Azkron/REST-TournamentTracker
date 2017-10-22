@@ -30,6 +30,7 @@ export class TournamentsRouter {
         Tournament.find({ _id: req.params.id })
             .then(member => res.json(member))
             .catch(err => res.json([]));
+    }
 	
 	public findByName(req: Request, res: Response, next: NextFunction) {
         Tournament.find({ name: req.params.name })
@@ -75,6 +76,7 @@ export class TournamentsRouter {
                 .then(members => res.json(members))
                 .catch(err => res.json([]));
         }
+    }
 
     public createPromise(req: Request, res: Response, next: NextFunction) {
         let tournament = new Tournament(req.body);
