@@ -2,10 +2,13 @@
 <!-- memberDetails from memberdetails.component.ts  -->
 <div *ngIf="memberDetails | async as m;  else unknown">
     <div>
+        <label>Id : </label>{{m._id}}
+    </div>
+    <div>
         <label>Pseudo : </label>{{m.pseudo}}
     </div>
     <div>
-        <label>Password : </label>{{m.password}}
+        <input readonly type="password" value="{{m.password}}">
     </div>
     <div>
         <label>Profile : </label>{{m.profile || "&lt;undefined&gt;"}}
