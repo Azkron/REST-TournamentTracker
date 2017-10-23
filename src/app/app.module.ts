@@ -8,7 +8,7 @@ import { MemberService } from "app/member/member.service";
 import { MemberListComponent } from "app/member/memberlist.component";
 import { TournamentService } from "app/tournament/tournament.service";
 import { TournamentListComponent } from "app/tournament/tournamentlist.component";
-// import { TournamentDetails } from "app/tournament/tournamentdetails.component";
+import { TournamentDetailsComponent } from "app/tournament/tournamentdetails.component";
 import { LoginComponent } from "app/login/login.component";
 import { HomeComponent } from "app/home/home.component";
 import { UnknownComponent } from "app/unknown.component";
@@ -18,7 +18,7 @@ import { UnknownComponent } from "app/unknown.component";
         AppComponent,
         MemberListComponent,
         TournamentListComponent,
-        // TounamentDetails,
+        TournamentDetailsComponent,
         LoginComponent,
         HomeComponent,
         UnknownComponent
@@ -32,7 +32,7 @@ import { UnknownComponent } from "app/unknown.component";
             { path: 'home', component: HomeComponent },
             { path: 'members', component: MemberListComponent },
             { path: 'tournaments', component: TournamentListComponent },
-            // { path: 'tournamentdetails', component: TournamentDetails },
+            { path: 'tournamentdetails/:name', component: TournamentDetailsComponent },
             { path: '**', component: UnknownComponent }
         ])
     ],

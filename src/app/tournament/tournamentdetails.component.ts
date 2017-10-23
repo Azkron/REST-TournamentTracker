@@ -1,24 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { TournamentService, Tournament } from "app/tournament/tournament.service";
+import { Observable } from "rxjs/Observable";
 
 import 'rxjs/add/operator/switchMap';
 
   @Component({
     selector: 'tournamentdetails',
-    templateUrl: 'tournamentlist.component.html'
+    templateUrl: 'tournamentdetails.component.html'
 })
 
-export class TournamentListComponent implements OnInit {
-    public tournamentDetail: Tournament;
+export class TournamentDetailsComponent implements OnInit {
+    public tournamentDetails: Observable<Tournament>;
     
-    constructor(private route: ActivatedRoute,
+    constructor(
+		private route: ActivatedRoute,
         private router: Router,
         private TournamentService: TournamentService) { }
 
     ngOnInit() {
-        this.tournamentDetail = this.route.paramMap
+        this.tournamentDetails = this.route.paramMap
             .switchMap((params: ParamMap) =>
-            this.TournamentService.getOne(params.get('name')));
+            this.TournamentService.getOneDetails(params.get('name')));
         }
 }

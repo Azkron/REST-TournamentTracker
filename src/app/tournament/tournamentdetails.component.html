@@ -1,0 +1,17 @@
+<h1>Tournament Details</h1>
+    <!-- tournamentDetails from tournamlentdetails.component.ts  -->
+<div *ngIf="tournamentDetails | async as t;  else unknown">
+    <div>
+        <label>Name : </label>{{t.name}}
+    </div>
+    <div>
+        <label>Start Date : </label>{{t.start | date: 'dd/MM/y' }}
+    </div>
+    <div>
+        <label>Finish Date : </label>{{(t.finish | date: 'dd/MM/y') || "&lt;undefined&gt;"}}
+    </div>
+    <div>
+        <label>Max Players : </label>{{t.maxPlayers}}
+    </div>
+</div>
+<ng-template #unknown>Unknown tournament !</ng-template>

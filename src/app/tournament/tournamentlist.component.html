@@ -1,6 +1,7 @@
 <h1>Tournaments</h1>
 <ul>
     <li *ngFor="let t of tournaments">
-        {{t.name}} +details+
+        <!-- path for app.module.ts -->
+        <a [routerLink]="['/tournamentdetails', t.name]">{{t.name}}</a>
     </li>
 </ul>
