@@ -35,6 +35,18 @@ export class MemberService {
             })
     }
 
+    public getOneDetails(pseudo: string): Observable<Member> {
+        // return this.http.get(URL +name)
+        //     .map(result => {
+        //         let data = result.json();
+        //         return data.length > 0 ? new Tournament(data[0]) : null;
+    // });
+        return this.getAll().map(members => 
+            members.find(m => m.pseudo === pseudo))
+            
+    }
+
+
     public getOne(pseudo: string): Observable<Member> {
         return this.http.get(URL + pseudo)
             .map(result => {
