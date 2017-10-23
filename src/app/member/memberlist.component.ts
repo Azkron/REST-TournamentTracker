@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MemberService, Member } from "app/member.service";
+import { MemberService, Member } from "app/member/member.service";
 
 @Component({
     selector: 'memberlist',

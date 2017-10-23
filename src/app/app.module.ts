@@ -4,12 +4,13 @@ import { HttpModule } from "@angular/http";
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { MemberService } from "app/member.service";
-import { MemberListComponent } from "app/memberlist.component";
-import { TournamentService } from "app/tournament.service";
-import { TournamentListComponent } from "app/tournamentlist.component";
-import { LoginComponent } from "app/login.component";
-import { HomeComponent } from "app/home.component";
+import { MemberService } from "app/member/member.service";
+import { MemberListComponent } from "app/member/memberlist.component";
+import { TournamentService } from "app/tournament/tournament.service";
+import { TournamentListComponent } from "app/tournament/tournamentlist.component";
+// import { TournamentDetails } from "app/tournament/tournamentdetails.component";
+import { LoginComponent } from "app/login/login.component";
+import { HomeComponent } from "app/home/home.component";
 import { UnknownComponent } from "app/unknown.component";
 
 @NgModule({
@@ -17,6 +18,7 @@ import { UnknownComponent } from "app/unknown.component";
         AppComponent,
         MemberListComponent,
         TournamentListComponent,
+        // TounamentDetails,
         LoginComponent,
         HomeComponent,
         UnknownComponent
@@ -30,7 +32,7 @@ import { UnknownComponent } from "app/unknown.component";
             { path: 'home', component: HomeComponent },
             { path: 'members', component: MemberListComponent },
             { path: 'tournaments', component: TournamentListComponent },
-            // { path: 'tournamentdetails', component: TournamentListComponent },
+            // { path: 'tournamentdetails', component: TournamentDetails },
             { path: '**', component: UnknownComponent }
         ])
     ],

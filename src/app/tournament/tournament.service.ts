@@ -35,8 +35,16 @@ export class TournamentService {
             })
     }
 
+    public getOneDetails(name: string): Observable<Tournament> {
+        return this.http.get(URL +name)
+            .map(result => {
+                let data = result.json();
+                return data.length > 0 ? new Tournament(data[0]) : null;
+            });
+    }
+
     public getOne(name: string): Observable<Tournament> {
-        return this.http.get(URL + name)
+        return this.http.get(URL +name)
             .map(result => {
                 let data = result.json();
                 return data.length > 0 ? new Tournament(data[0]) : null;
