@@ -156,10 +156,10 @@ export class Server {
             if(count === 0){
                 console.log("Initializing data...");
                 col.insertMany([
-                    { name: "ChessMasterFlash", start: "21/8/2023", finish: "27/8/2023", maxPlayers: 32},
+                    { name: "ChessMasterFlash", start: "26/01/2023", finish: "27/01/2023", maxPlayers: 32},
                     { name: "Starcraft ESL", start: "5/6/2019"},
-                    { name: "Mincraft Creator", start: "19/7/2020", finish: "25/7/2020"},
-                    { name: "Rap Battle of the Century", start: "30/9/2025"},
+                    { name: "Minecraft Creator", start: "20/06/2023", finish: "10/07/2023"},
+                    { name: "Rap Battle of the Century", start: "26/10/2018"},
                     { name: "Decathlon Mortal", start: "5/4/2026", finish: "6/4/2026", maxPlayers: 120},
                 ]);
             }
