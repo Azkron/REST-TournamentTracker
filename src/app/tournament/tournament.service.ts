@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { Http, RequestOptions } from "@angular/http";
+import { SecuredHttp } from "../securedhttp.service";
 
 import 'rxjs/add/operator/map';
 
@@ -18,20 +19,17 @@ export class Tournament {
     }
 }
 
-const URL = '/api/tournaments';
+const URL = '/api/tournaments/';
 
 @Injectable()
 export class TournamentService {
-    constructor(private http: Http) {
+    constructor(private http: SecuredHttp) {
     }
 
     public getAll(): Observable<Tournament[]> {
         return this.http.get(URL)
             .map(result => {
-                let tmp: Tournament[] = [];
-                for (let o of result.json())
-                    tmp.push(new Tournament(o));
-                return tmp;
+                return result.json().map((json => new Tournament(json)));
             })
     }
 

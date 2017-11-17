@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as mongoose from 'mongoose';
+import * as jwt from 'jsonwebtoken';
+import { AuthentificationRouter } from "./authentication.router";
 import Member from '../models/member';
 
 export class MembersRouter {
