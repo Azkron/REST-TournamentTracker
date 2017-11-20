@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs/Rx";
 import { Http, RequestOptions } from "@angular/http";
-import { SecuredHttp } from "../securedhttp.service";
+import { SecuredHttp } from "app/securedhttp.service";
 
-import 'rxjs/add/operator/map';
+export class Address {
+    _id: string;
+    street_addr: string;
+    postal_code: string;
+    localization: string;
+
+    constructor(data) {
+        this._id = data._id;
+        this.street_addr = data.street_addr;
+        this.postal_code = data.postal_code;
+        this.localization = data.localization;
+    }
+}
 
 export class Member {
     _id: string;
@@ -11,6 +23,7 @@ export class Member {
     password: string;
     profile: string;
     birthdate: string;
+    address: Address[];
     admin: boolean;
 
     constructor(data) {
@@ -20,6 +33,7 @@ export class Member {
         this.profile = data.profile;
         this.birthdate = data.birthdate &&
             data.birthdate.length > 10 ? data.birthdate.substring(0, 10) : data.birthdate;
+        this.address = data.addresses;
         this.admin = data.admin;
     }
 }
@@ -41,20 +55,14 @@ export class MemberService {
     public getAll(): Observable<Member[]> {
         return this.http.get(URL)
             .map(result => {
-                return result.json().map(json => new Member(json))
-            })
+                return result.json().map(json => new Member(json));
+            });
     }
 
     public getOneDetails(pseudo: string): Observable<Member> {
-        // return this.http.get(URL +name)
-        //     .map(result => {
-        //         let data = result.json();
-        //         return data.length > 0 ? new Member(data[0]) : null;
-    // });
         return this.getAll().map(members => 
-            members.find(m => m.pseudo === pseudo))        
+            members.find(m => m.pseudo === pseudo))
     }
-
 
     public getOne(pseudo: string): Observable<Member> {
         return this.http.get(URL + pseudo)
@@ -75,5 +83,17 @@ export class MemberService {
 
     public add(m: Member): Observable<Member> {
         return this.http.post(URL, m).map(res => new Member(res.json()));
+    }
+
+    public addAddress(m: Member, a: Address) {
+        return this.http.post(URL + 'address/' + m.pseudo, a).map(res => new Address(res.json()));
+    }
+
+    public deleteAddress(m: Member, a: Address) {
+        return this.http.delete(URL + 'address/' + m.pseudo + '/' + a._id).map(res => true);
+    }
+
+    public updateAddress(m: Member, a: Address) {
+        return this.http.put(URL + 'address/' + a._id, a).map(res => true);
     }
 }

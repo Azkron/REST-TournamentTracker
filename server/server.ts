@@ -4,8 +4,9 @@ import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { AuthentificationRouter } from "./routes/authentication.router";
-import Member from './models/member';
+import { Member, Address } from './models/member';
 import { MembersRouter } from './routes/members.router';
+import { MembersCommonRouter } from './routes/members-common.router';
 import Tournament from './models/tournament';
 import { TournamentsRouter } from './routes/tournaments.router';
 
@@ -31,6 +32,7 @@ export class Server {
     // initialise les routes
     private routes() {
         this.express.use('/api/token', new AuthentificationRouter().router);
+        this.express.use('/api/members-common', new MembersCommonRouter().router);
         this.express.use(AuthentificationRouter.checkAuthorization);    // à partir d'ici il faut être authentifié
         this.express.use('/api/members', new MembersRouter().router);
         this.express.use('/api/tournaments', new TournamentsRouter().router);
@@ -65,35 +67,45 @@ export class Server {
     }
 
     private initData() {
-        let col = mongoose.connection.collections['members'];
-        col.count({}).then(count => {
+        Member.count({}).then(count => {
             if (count === 0) {
-                console.log("Initializing members...");
-                col.insertMany([
-                    { pseudo: "test", password: "test", profile: "Hi, I'm test!" },
-                    { pseudo: "ben", password: "ben", profile: "Hi, I'm ben!" },
-                    { pseudo: "bruno", password: "bruno", profile: "Hi, I'm bruno!" },
-                    { pseudo: "boris", password: "boris", profile: "Hi, I'm boris!" },
-                    { pseudo: "alain", password: "alain", profile: "Hi, I'm alain!" }
-                ]);
+                console.log("Initializing data...");
+                let addr1 = new Address({ "street_addr": "rue bazar 12", "postal_code": "1000", "localization": "Bxl" });
+                let addr2 = new Address({ "street_addr": "rue machin 5", "postal_code": "1200", "localization": "Bxl" });
+                let bruno = new Member({ pseudo: "bruno", password: "bruno", profile: "Hi, I'm bruno!", addresses: [addr1, addr2] });
+                addr1.member = bruno;
+                addr2.member = bruno;
+                Address.insertMany([addr1, addr2]).then(_ => {
+                    Member.insertMany([
+                        { pseudo: "test", password: "test", profile: "Hi, I'm test!" },
+                        { pseudo: "ben", password: "ben", profile: "Hi, I'm ben!" },
+                        bruno,
+                        { pseudo: "boris", password: "boris", profile: "Hi, I'm boris!" },
+                        { pseudo: "alain", password: "alain", profile: "Hi, I'm alain!" }
+                    ]);
+                })
             }
         });
-        col.count({ pseudo: 'admin' }).then(count => {
+        Member.count({ pseudo: 'admin' }).then(count => {
             if (count === 0) {
                 console.log("Creating admin account...");
-                col.insertMany([
-                    { pseudo: "admin", password: "admin", profile: "I'm the administrator of the site!", admin: true }
-                ]);
+                let m = new Member({
+                    pseudo: "admin", password: "admin",
+                    profile: "I'm the administrator of the site!", admin: true
+                });
+                m.save();
             }
         });
     }
 
+                // Member.insertMany([
+                //     { pseudo: "admin", password: "admin", profile: "I'm the administrator of the site!", admin: true }
+                // ]);
     private initDataTournament(){
-        let col = mongoose.connection.collections['tournaments'];
-        col.count({}).then(count => {
+        Tournament.count({}).then(count => {
             if(count === 0){
                 console.log("Initializing tournaments...");
-                col.insertMany([
+                Tournament.insertMany([
                     { name: "ChessMasterFlash", start: "01/26/2023", finish: "01/27/2023", maxPlayers: 32},
                     { name: "Starcraft ESL", start: "5/6/2019"},
                     { name: "Minecraft Creator", start: "06/20/2023", finish: "07/10/2023"},

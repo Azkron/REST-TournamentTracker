@@ -1,12 +1,14 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { MemberService, Member } from "./member.service";
+import { MemberService, Member, Address } from "./member.service";
 import { IDialog, DialogResult } from "../dialog";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { MyInputComponent } from "../myinput.component";
 import { MyModalComponent } from "../mymodal.component";
 import { validateConfig } from '@angular/router/src/config';
+import { ColumnDef, MyTableComponent } from "app/mytable.component";
+import * as _ from 'lodash';
 
 declare var $: any;
 
@@ -22,9 +24,16 @@ export class EditMemberComponent implements OnInit, IDialog {
     public ctlBirthDate: FormControl;
     public ctlAdmin: FormControl;
     public closed: Subject<DialogResult>;
+    private m: Member;
+    columnDefs: ColumnDef[] = [
+        { name: 'street_addr', type: 'String', header: 'Street Address', width: 1, key: true, filter: true, sort: 'asc' },
+        { name: 'postal_code', type: 'String', header: 'Postal Code', width: 2, filter: true },
+        { name: 'localization', type: 'Date', header: 'Localization', width: 1, filter: true, align: 'center' }
+    ];
 
     @ViewChild(MyModalComponent) modal: MyModalComponent;
     @ViewChild('pseudo') pseudo: MyInputComponent;
+    @ViewChild('address') address: MyTableComponent;
 
     constructor(private memberService: MemberService, private fb: FormBuilder) {
         this.ctlPseudo = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')], [this.pseudoUsed()]);
@@ -99,6 +108,8 @@ export class EditMemberComponent implements OnInit, IDialog {
     }
 
     show(m: Member): Subject<DialogResult> {
+        this.m = m;
+        this.address.refresh();
         this.closed = new Subject<DialogResult>();
         this.frm.reset();
         this.frm.markAsPristine();
@@ -115,6 +126,26 @@ export class EditMemberComponent implements OnInit, IDialog {
     cancel() {
         this.modal.close();
         this.closed.next({ action: 'cancel', data: this.frm.value });
+    }
+
+    get getDataService() {
+        return _ => Observable.of(this.m ? this.m.address : []);
+    }
+
+    get addService() {
+        return a => Observable.of(a);
+    }
+
+    get deleteService() {
+        return a => {
+            this.frm.markAsDirty();
+            this.m.address = _.reject(this.m.address, a);
+            return Observable.of(a);
+        };
+    }
+
+    get updateService() {
+        return a => Observable.of(a);
     }
 
     ouvrir() {
