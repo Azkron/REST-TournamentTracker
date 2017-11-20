@@ -68,7 +68,7 @@ export class Server {
         let col = mongoose.connection.collections['members'];
         col.count({}).then(count => {
             if (count === 0) {
-                console.log("Initializing data...");
+                console.log("Initializing members...");
                 col.insertMany([
                     { pseudo: "test", password: "test", profile: "Hi, I'm test!" },
                     { pseudo: "ben", password: "ben", profile: "Hi, I'm ben!" },
@@ -78,13 +78,21 @@ export class Server {
                 ]);
             }
         });
+        col.count({ pseudo: 'admin' }).then(count => {
+            if (count === 0) {
+                console.log("Creating admin account...");
+                col.insertMany([
+                    { pseudo: "admin", password: "admin", profile: "I'm the administrator of the site!", admin: true }
+                ]);
+            }
+        });
     }
 
     private initDataTournament(){
         let col = mongoose.connection.collections['tournaments'];
         col.count({}).then(count => {
             if(count === 0){
-                console.log("Initializing data...");
+                console.log("Initializing tournaments...");
                 col.insertMany([
                     { name: "ChessMasterFlash", start: "01/26/2023", finish: "01/27/2023", maxPlayers: 32},
                     { name: "Starcraft ESL", start: "5/6/2019"},

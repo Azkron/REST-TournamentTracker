@@ -26,6 +26,14 @@ export class TournamentService {
     constructor(private http: SecuredHttp) {
     }
 
+    public getCountTournament(): Observable<number> {
+        return this.http.get(URL + 'countTournament')
+            .map(result => {
+                return result.json();
+            })
+    }
+
+
     public getAll(): Observable<Tournament[]> {
         return this.http.get(URL)
             .map(result => {

@@ -1,12 +1,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as mongoose from 'mongoose';
 import Tournament from '../models/tournament';
+import { AuthentificationRouter } from "./authentication.router";
 
 export class TournamentsRouter {
     public router: Router;
 
     constructor() {
         this.router = Router();
+        this.router.get('/countTournament', this.getCountTournament);
+        this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
         this.router.post('/', this.create);
         this.router.get('/:name', this.findByName);
@@ -18,6 +21,13 @@ export class TournamentsRouter {
         this.router.put('/:name', this.update);
         this.router.delete('/:name', this.deleteOne);
         this.router.delete('/:start/:finish', this.deleteRange);
+    }
+
+    public getCountTournament(req: Request, res: Response, next: NextFunction) {
+        Tournament.count({}).exec((err, count) => {
+            if (err) res.send(err);
+            res.json(count);
+        });
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {

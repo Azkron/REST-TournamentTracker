@@ -1,8 +1,29 @@
 <h1>Tournaments</h1>
 <ul>
     <li *ngFor="let t of tournaments">
-        <!-- path for app.module.ts -->
+        <!-- <! path for app.module.ts > -->
         <a [routerLink]="['/tournamentdetails', t.name]">{{t.name}}</a>
     </li>
-</ul>
+</ul> 
+
+<!-- <div class="row">
+    <div class="col-sm-12">
+        <h1>Tournaments</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <h3>I found the following tournaments :</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <mytable [columnDefs]="columnDefs" [getDataService]="getDataService" [addService]="addService" [deleteService]="deleteService"
+            [updateService]="updateService" filterPlaceHolder="Filter Tournaments" [editComponent]="editTournament"
+            addCaption="Add New Tournament" [pageSize]="5"></mytable>
+    </div>
+
+</div>
+<edit-tournament #editTournament></edit-tournament> -->
 

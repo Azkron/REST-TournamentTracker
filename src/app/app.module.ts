@@ -15,11 +15,18 @@ import { LoginComponent } from "app/login/login.component";
 import { HomeComponent } from "app/home/home.component";
 import { UnknownComponent } from "app/unknown.component";
 import { SecuredHttp } from "app/securedhttp.service";
-import { AuthGuard } from "app/auth-guard.service";
+import { AuthGuard, AdminGuard } from "app/auth-guard.service";
 import { AuthService } from "app/auth.service";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RestrictedComponent } from "app/restricted.component";
 import { LogoutComponent } from 'app/logout.component';
+import { EditMemberComponent } from "app/member/edit-member.component";
+import { EditTournamentComponent } from "app/tournament/edit-tournament.component";
+import { SnackBarComponent } from "app/snackbar.component";
+import { MyTableComponent } from "app/mytable.component";
+import { MyInputComponent } from "app/myinput.component";
+import { ValidationService } from "app/validation.service";
+import { MyModalComponent } from "app/mymodal.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     return new AuthHttp(
@@ -42,7 +49,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         LogoutComponent,
         HomeComponent,
         UnknownComponent,
-        RestrictedComponent
+        RestrictedComponent,
+        EditMemberComponent,
+        EditTournamentComponent,
+        SnackBarComponent,
+        MyTableComponent,
+        MyInputComponent,
+        MyModalComponent,
     ],
     imports: [
         HttpModule,
@@ -58,10 +71,16 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
                 children: [
                     { path: 'logout', component: LogoutComponent },
                     { path: 'home', component: HomeComponent },
-                    { path: 'members', component: MemberListComponent },
-                    { path: 'memberdetails/:pseudo', component: MemberDetailsComponent },
-                    { path: 'tournaments', component: TournamentListComponent },
-                    { path: 'tournamentdetails/:name', component: TournamentDetailsComponent }
+                    {
+                        path: '',
+                        canActivate: [AdminGuard],
+                        children: [
+                            { path: 'members', component: MemberListComponent },
+                            // { path: 'memberdetails/:pseudo', component: MemberDetailsComponent },
+                            { path: 'tournaments', component: TournamentListComponent },
+                            { path: 'tournamentdetails/:name', component: TournamentDetailsComponent },
+                        ]
+                    },                                   
                 ]
             },
             { path: 'restricted', component: RestrictedComponent},           
@@ -76,9 +95,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         },
         SecuredHttp,
         AuthGuard,
+        AdminGuard,
         AuthService,
         MemberService,
-        TournamentService
+        TournamentService,
+        ValidationService,
     ],
     bootstrap: [AppComponent]
 })

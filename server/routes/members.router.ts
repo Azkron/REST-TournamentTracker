@@ -9,12 +9,21 @@ export class MembersRouter {
 
     constructor() {
         this.router = Router();
+        this.router.get('/count', this.getCount);
+        this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
         this.router.post('/', this.create);
         this.router.delete('/', this.deleteAll);
         this.router.get('/:id', this.getOne);
         this.router.put('/:id', this.update);
         this.router.delete('/:id', this.deleteOne);
+    }
+
+    public getCount(req: Request, res: Response, next: NextFunction) {
+        Member.count({}).exec((err, count) => {
+            if (err) res.send(err);
+            res.json(count);
+        });
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
@@ -32,6 +41,8 @@ export class MembersRouter {
     }
 
     public create(req: Request, res: Response, next: NextFunction) {
+        delete req.body._id;    // _id vient avec la valeur nulle d'angular (via reactive forms) 
+                                // => on doit l'enlever pour qu'il reçoive une valeur 
         let member = new Member(req.body);
         member.save(function (err, task) {
             if (err) res.send(err);
