@@ -9,6 +9,7 @@ export interface IMember extends mongoose.Document {
     birthdate: string;
     admin: boolean;
     addresses: mongoose.Types.Array<IAddress>;
+    tournaments: mongoose.Types.Array<ITournament>;
 }
 
 export interface IAddress extends mongoose.Document {
@@ -16,6 +17,14 @@ export interface IAddress extends mongoose.Document {
     postal_code: string;
     localization: string;
     member: IMember;
+}
+
+export interface ITournament extends mongoose.Document {
+    name: string;
+    start: string;
+    finish: string;
+    maxPlayers: Number;
+    members: mongoose.Types.Array<IMember>;
 }
 
 let addressSchema = new mongoose.Schema({
@@ -31,7 +40,8 @@ let memberSchema = new mongoose.Schema({
     profile: { type: String, default: '' },
     birthdate: { type: Date },
     admin: { type: Boolean, default: false },
-    addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }]
+    addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
+    tournaments: [{ type: Schema.Types.ObjectId, ref: 'Tournament' }]
 });
 
 export let Member = mongoose.model<IMember>('Member', memberSchema);

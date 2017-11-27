@@ -1,6 +1,7 @@
 <h1>Member Details</h1>
 <!-- memberDetails from memberdetails.component.ts  -->
-<div *ngIf="memberDetails | async as m;  else unknown">
+<!-- <div *ngIf="memberDetails | async as m;  else unknown"> -->
+<div *ngIf="memberDetails as m;  else unknown">
     <div>
         <label>Id : </label>{{m._id}}
     </div>

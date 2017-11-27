@@ -30,7 +30,8 @@ export class MembersRouter {
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
-        Member.find().populate('addresses').sort({ pseudo: 'asc' }).exec((err, members) => {            
+        Member.find().populate('addresses').populate('tournaments').sort({ pseudo: 'asc' })
+        .exec((err, members) => {            
             if (err) res.send(err);
             res.json(members);
         });

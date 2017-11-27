@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Rx";
 import { Http, RequestOptions } from "@angular/http";
 import { SecuredHttp } from "app/securedhttp.service";
+import { Tournament }  from "../tournament/tournament.service"
 
 export class Address {
     _id: string;
@@ -24,6 +25,7 @@ export class Member {
     profile: string;
     birthdate: string;
     address: Address[];
+    tournament: Tournament[];
     admin: boolean;
 
     constructor(data) {
@@ -34,6 +36,7 @@ export class Member {
         this.birthdate = data.birthdate &&
             data.birthdate.length > 10 ? data.birthdate.substring(0, 10) : data.birthdate;
         this.address = data.addresses;
+        this.tournament = data.tournaments;
         this.admin = data.admin;
     }
 }

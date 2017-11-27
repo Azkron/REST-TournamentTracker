@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { AuthentificationRouter } from "./routes/authentication.router";
-import { Member, Address } from './models/member';
+import { Member, Address, IMember } from './models/member';
 import { MembersRouter } from './routes/members.router';
 import { MembersCommonRouter } from './routes/members-common.router';
 import Tournament from './models/tournament';
@@ -58,7 +58,6 @@ export class Server {
                 else {
                     console.log('Connected to MONGODB');
                     this.initData();
-                    this.initDataTournament();
                     console.log('Db initialised');
                 }
             });
@@ -69,20 +68,40 @@ export class Server {
     private initData() {
         Member.count({}).then(count => {
             if (count === 0) {
-                console.log("Initializing data...");
+                console.log("Initializing members and adresses...");
+                this.initDataTournament();
+
+                //test adresses
                 let addr1 = new Address({ "street_addr": "rue bazar 12", "postal_code": "1000", "localization": "Bxl" });
                 let addr2 = new Address({ "street_addr": "rue machin 5", "postal_code": "1200", "localization": "Bxl" });
-                let bruno = new Member({ pseudo: "bruno", password: "bruno", profile: "Hi, I'm bruno!", addresses: [addr1, addr2] });
+                let bruno = new Member({ pseudo: "bruno", password: "bruno", profile: "Hi, I'm bruno!", birthdate: "10/26/1990", addresses: [addr1, addr2] });
                 addr1.member = bruno;
                 addr2.member = bruno;
                 Address.insertMany([addr1, addr2]).then(_ => {
                     Member.insertMany([
-                        { pseudo: "test", password: "test", profile: "Hi, I'm test!" },
+                        { pseudo: "testeur", password: "testeur", profile: "Hi, I'm testeur!", birthdate: "10/26/1989" },
                         { pseudo: "ben", password: "ben", profile: "Hi, I'm ben!" },
                         bruno,
-                        { pseudo: "boris", password: "boris", profile: "Hi, I'm boris!" },
-                        { pseudo: "alain", password: "alain", profile: "Hi, I'm alain!" }
+                        { pseudo: "boris", password: "boris", profile: "Hi, I'm boris!", birthdate: "09/26/1988" },
+                        { pseudo: "alain", password: "alain", profile: "Hi, I'm alain!", birthdate: "10/26/1999" }
                     ]);
+                })
+                 //test tournaments in members
+                 let tourn1 = new Tournament({ name: "Tournoi test 1", start: "10/26/2023", finish: "10/27/2023", maxPlayers: 32 })
+                 let tourn2 = new Tournament({ name: "Tournoi test 2", start: "10/26/2023", finish: "10/27/2023", maxPlayers: 32 })
+
+                //new members test
+                let test1 = new Member({ pseudo: "test1", password: "test1", profile: "Hi, I'm test1!", birthdate: "10/26/1988", tournaments: [tourn1, tourn2] });
+                let test2 = new Member({ pseudo: "test2", password: "test2", profile: "Hi, I'm test2!", birthdate: "10/26/1989", tournaments: [tourn1, tourn2] });
+                
+
+                tourn1.members = [test1, test2] as mongoose.Types.Array<IMember>;
+                tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;       //ERROR, can't give a tournament an array of members
+                
+                Tournament.insertMany([tourn1, tourn2]).then(_ => {
+                    Member.insertMany([
+                        test1, test2
+                    ])
                 })
             }
         });
@@ -98,9 +117,6 @@ export class Server {
         });
     }
 
-                // Member.insertMany([
-                //     { pseudo: "admin", password: "admin", profile: "I'm the administrator of the site!", admin: true }
-                // ]);
     private initDataTournament(){
         Tournament.count({}).then(count => {
             if(count === 0){

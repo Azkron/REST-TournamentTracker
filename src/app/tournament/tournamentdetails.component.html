@@ -1,17 +1,51 @@
 <h1>Tournament Details</h1>
+<div body>
     <!-- tournamentDetails from tournamentdetails.component.ts  -->
-<div *ngIf="tournamentDetails | async as t;  else unknown">
-    <div>
-        <label>Name : </label>{{t.name}}
+    <!-- <div *ngIf="tournamentDetails | async as t;  else unknown">  for Observable tournaments-->
+    <div *ngIf="tournamentDetails as t; else unknown ">
+        <div class="row">
+            <div class="col-sm-12">
+                <div>
+                    <label>Name : </label>{{t.name}}
+                </div>
+                <div>
+                    <label>Start Date : </label>{{t.start | date: 'dd/MM/y' }}
+                </div>
+                <div>
+                    <label>Finish Date : </label>{{(t.finish | date: 'dd/MM/y') || "&lt;undefined&gt;"}}
+                </div>
+                <div>
+                    <label>Max Players : </label>{{t.maxPlayers}}
+                </div>
+            </div>
+        </div>
+        <div class="rowTitles">
+            <div class="col-sm-5">
+                <h2>Members not assigned ({{memberUnassignedCount}})</h2>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-5">
+                <h2>Members assigned ({{memberAssignedCount}})</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <customtable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
+                [deleteService]="deleteService" [updateService]="updateService" 
+                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChanged($event)"></customtable>
+            </div>
+            <div class="col-sm-2">
+                <label>Buttons</label>
+            </div>
+            <div class="col-sm-5">
+                <customtable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 
+                [addService]="addService" [deleteService]="deleteService" [updateService]="updateService" 
+                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedAssigned($event)"></customtable>
+            </div>
+
+        </div>
     </div>
-    <div>
-        <label>Start Date : </label>{{t.start | date: 'dd/MM/y' }}
-    </div>
-    <div>
-        <label>Finish Date : </label>{{(t.finish | date: 'dd/MM/y') || "&lt;undefined&gt;"}}
-    </div>
-    <div>
-        <label>Max Players : </label>{{t.maxPlayers}}
-    </div>
+    <ng-template #unknown>Unknown tournament !</ng-template>
 </div>
-<ng-template #unknown>Unknown tournament !</ng-template>
+    

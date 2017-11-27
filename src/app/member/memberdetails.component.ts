@@ -11,7 +11,7 @@ import 'rxjs/add/operator/switchMap';
 })
 
 export class MemberDetailsComponent implements OnInit {
-    public memberDetails: Observable<Member>;
+    public memberDetails: Member;
     
     constructor(
 		private route: ActivatedRoute,
@@ -19,8 +19,8 @@ export class MemberDetailsComponent implements OnInit {
         private MemberService: MemberService) { }
 
     ngOnInit() {
-        this.memberDetails = this.route.paramMap
-            .switchMap((params: ParamMap) =>
-            this.MemberService.getOneDetails(params.get('pseudo')));
+        this.route.paramMap
+            .switchMap((params: ParamMap) => this.MemberService.getOneDetails(params['pseudo']))
+            .subscribe((m : Member) => this.memberDetails = m);
         }
 }

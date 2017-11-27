@@ -11,6 +11,8 @@ export class TournamentsRouter {
         this.router.get('/countTournament', this.getCountTournament);
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
+        this.router.get('/countMemberUnassigned', this.getCountTournamentUnassigned);
+        this.router.get('/countMemberAssigned', this.getCountTournamentAssigned);
         this.router.post('/', this.create);
         this.router.get('/:name', this.findByName);
         this.router.get('/byId/:id', this.findById);
@@ -23,6 +25,21 @@ export class TournamentsRouter {
         this.router.delete('/:start/:finish', this.deleteRange);
     }
 
+    public getCountTournamentAssigned(req: Request, res: Response, next: NextFunction) {
+        
+        Tournament.count({ members: req.params.members }).exec((err, count) => {
+            if (err) res.send(err);
+            res.json(count);
+        });
+    }
+
+    public getCountTournamentUnassigned(req: Request, res: Response, next: NextFunction) {
+        Tournament.count({ members: req.params.members }).exec((err, count) => {
+            if (err) res.send(err);
+            res.json(count);
+        });
+    }
+
     public getCountTournament(req: Request, res: Response, next: NextFunction) {
         Tournament.count({}).exec((err, count) => {
             if (err) res.send(err);
@@ -31,9 +48,10 @@ export class TournamentsRouter {
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
-		Tournament.find().sort({ name: 'asc' })
-            .then(tournaments => res.json(tournaments))
-            .catch(err => res.json([]));
+		Tournament.find().populate('members').sort({ name: 'asc' }).exec((err, tournaments) => {
+            if(err) res.send(err);
+            res.json(tournaments);
+        });
     }
 
     public findById(req: Request, res: Response, next: NextFunction) {

@@ -1,14 +1,16 @@
 import * as mongoose from 'mongoose';
+import { ITournament, Member } from './member'
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var tournamentSchema = new mongoose.Schema({
+let tournamentSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},
     start: {type: Date, required: true},
     finish: {type: Date},
-    maxPlayers: {type: Number, default: 16}
+    maxPlayers: {type: Number, default: 16},
+    members: [{ type: Schema.Types.ObjectId, ref: 'Member' }]
 });
 
-var Tournament = mongoose.model('Tournament', tournamentSchema);
+export let Tournament = mongoose.model<ITournament>('Tournament', tournamentSchema);
 
 export default Tournament;
