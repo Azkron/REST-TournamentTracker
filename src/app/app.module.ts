@@ -22,12 +22,11 @@ import { RestrictedComponent } from "app/restricted.component";
 import { LogoutComponent } from 'app/logout.component';
 import { EditMemberComponent } from "app/member/edit-member.component";
 import { EditTournamentComponent } from "app/tournament/edit-tournament.component";
-import { SnackBarComponent } from "app/snackbar.component";
-import { MyTableComponent } from "app/mytable.component";
-import { CustomTableComponent } from "./configtable/customtable.component";
-import { MyInputComponent } from "app/myinput.component";
+import { SnackBarComponent } from "./configdata/snackbar.component";
+import { MyTableComponent } from "./configdata/mytable.component";
+import { MyInputComponent } from "./configdata/myinput.component";
 import { ValidationService } from "app/validation.service";
-import { MyModalComponent } from "app/mymodal.component";
+import { MyModalComponent } from "./configdata/mymodal.component";
 import { SignUpComponent } from 'app/signup/signup.component';
 import { EditAddressComponent } from 'app/member/edit-address.component';
 import { ConfirmDelete } from "app/confirm-delete.component";
@@ -60,7 +59,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         EditTournamentComponent,
         SnackBarComponent,
         MyTableComponent,
-        CustomTableComponent,
         MyInputComponent,
         MyModalComponent,
         EditAddressComponent,

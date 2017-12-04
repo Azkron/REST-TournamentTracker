@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ElementRef, ViewChild, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MemberService, Member, Address } from "./member.service";
-import { IDialog, DialogResult } from "../dialog";
+import { IDialog, DialogResult } from "../configdata//dialog";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
-import { MyInputComponent } from "../myinput.component";
-import { MyModalComponent } from "../mymodal.component";
+import { MyInputComponent } from "../configdata/myinput.component";
+import { MyModalComponent } from "../configdata/mymodal.component";
 import { validateConfig } from '@angular/router/src/config';
-import { ColumnDef, MyTableComponent } from "app/mytable.component";
+import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import * as _ from 'lodash';
 
 declare var $: any;

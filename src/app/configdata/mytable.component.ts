@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, TemplateRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer } from "@angular/platform-browser";
-import { SnackBarComponent } from "app/snackbar.component";
+import { SnackBarComponent } from "./snackbar.component";
 import { Observable } from "rxjs/Observable";
-import { MyDataSource, SortDirection } from "app/mydatasource";
-import { IDialog, DialogResult } from "app/dialog";
+import { MyDataSource, SortDirection } from "./mydatasource";
+import { IDialog, DialogResult } from "./dialog";
 import { ConfirmDelete } from "app/confirm-delete.component";
 import * as _ from 'lodash';
 import * as moment from 'moment';

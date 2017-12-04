@@ -1,8 +1,8 @@
 import { Component, ViewChild } from "@angular/core";
 import { MemberService, Member } from "./member.service";
 import { EditMemberComponent } from "./edit-member.component";
-import { ColumnDef, MyTableComponent } from "app/mytable.component";
-import { SnackBarComponent } from "app/snackbar.component";
+import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
+import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 
 @Component({

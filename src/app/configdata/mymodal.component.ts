@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, ElementRef, ViewChild, Output, EventEmitter,
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
-import { MyInputComponent } from "app/myinput.component";
+import { MyInputComponent } from "./myinput.component";
 
 declare var $: any;
 

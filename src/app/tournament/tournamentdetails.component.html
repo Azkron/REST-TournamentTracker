@@ -31,17 +31,17 @@
         </div>
         <div class="row">
             <div class="col-sm-5">
-                <customtable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
-                [deleteService]="deleteService" [updateService]="updateService" 
-                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChanged($event)"></customtable>
+                <mytable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
+                [deleteService]="deleteService" [updateService]="updateService" [readOnly]="true"
+                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChanged($event)" ></mytable>
             </div>
             <div class="col-sm-2">
                 <label>Buttons</label>
             </div>
             <div class="col-sm-5">
-                <customtable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 
-                [addService]="addService" [deleteService]="deleteService" [updateService]="updateService" 
-                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedAssigned($event)"></customtable>
+                <mytable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 
+                [addService]="addService" [deleteService]="deleteService" [updateService]="updateService" [readOnly]="true"
+                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedAssigned($event)"></mytable>
             </div>
 
         </div>

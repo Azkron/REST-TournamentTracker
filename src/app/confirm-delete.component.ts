@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { MyModalComponent } from "app/mymodal.component";
+import { MyModalComponent } from "./configdata/mymodal.component";
 import { Subject } from "rxjs/Subject";
-import { IDialog, DialogResult } from "app/dialog";
+import { IDialog, DialogResult } from "./configdata/dialog";
 
 @Component({
     selector: 'confirm-delete',

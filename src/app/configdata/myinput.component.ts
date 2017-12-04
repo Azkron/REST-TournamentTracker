@@ -1,6 +1,6 @@
 import { Component, forwardRef, ElementRef, ViewChild, Input } from "@angular/core";
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from "@angular/forms";
-import { MyControlComponent } from "app/mycontrol.component";
+import { MyControlComponent } from "./mycontrol.component";
 import { ValidationService } from "app/validation.service";
 
 @Component({

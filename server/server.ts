@@ -96,7 +96,7 @@ export class Server {
                 
 
                 tourn1.members = [test1, test2] as mongoose.Types.Array<IMember>;
-                tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;       //ERROR, can't give a tournament an array of members
+                tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;
                 
                 Tournament.insertMany([tourn1, tourn2]).then(_ => {
                     Member.insertMany([

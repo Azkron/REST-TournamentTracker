@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { TournamentService, Tournament } from "app/tournament/tournament.service";
 import { MemberService, Member } from "../member/member.service";
-import { ColumnDef, CustomTableComponent } from "../configtable/customtable.component";
-import { SnackBarComponent } from "app/snackbar.component";
+import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
+
+import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 
 import 'rxjs/add/operator/switchMap';
@@ -20,8 +21,8 @@ export class TournamentDetailsComponent implements OnInit {
 
     selectedMember: Member;
 
-    @ViewChild('membersUnassigned') membersUnassigned: CustomTableComponent;
-    @ViewChild('membersAssigned') membersAssigned: CustomTableComponent;
+    @ViewChild('membersUnassigned') membersUnassigned: MyTableComponent;
+    @ViewChild('membersAssigned') membersAssigned: MyTableComponent;
     
         columnDefs: ColumnDef[] = [
             { name: 'pseudo', type: 'String', header: 'Pseudo', width: 1, key: true, filter: true, sort: 'asc' },
@@ -39,8 +40,7 @@ export class TournamentDetailsComponent implements OnInit {
         private router: Router,
         private TournamentService: TournamentService,
         private MemberService: MemberService) { 
-            this.TournamentService.getCountMembersUnassigned().subscribe(c => this.memberUnassignedCount = c);
-            this.TournamentService.getCountMembersAssigned().subscribe(c => this.memberAssignedCount = c);
+            
         }
 
         // get getDataService() {
@@ -51,6 +51,8 @@ export class TournamentDetailsComponent implements OnInit {
         this.route.params
             .switchMap((params: ParamMap) => this.TournamentService.getOneDetails(params['name']))
             .subscribe((t : Tournament) => this.tournamentDetails = t);
+        this.TournamentService.getCountMembersUnassigned().subscribe(c => this.memberUnassignedCount = c);
+        this.TournamentService.getCountMembersAssigned().subscribe(c => this.memberAssignedCount = c);
     }
 
     // get getUnassignedDataService() {
