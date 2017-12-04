@@ -9,12 +9,14 @@ export class Address {
     street_addr: string;
     postal_code: string;
     localization: string;
+    member: Member;
 
     constructor(data) {
         this._id = data._id;
         this.street_addr = data.street_addr;
         this.postal_code = data.postal_code;
         this.localization = data.localization;
+        this.member = data.member;
     }
 }
 

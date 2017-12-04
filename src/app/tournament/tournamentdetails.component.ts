@@ -56,10 +56,11 @@ export class TournamentDetailsComponent implements OnInit {
     }
 
     // get getUnassignedDataService() {
-    //     return m => this.TournamentService.getAll();
+        
     // }
+    
 
-    // get getAssignedDataService() {
-    //     return m => this.TournamentService.getAll();
-    // }
+    get getAssignedDataService() {
+        return m => Observable.of(this.tournamentDetails ? this.tournamentDetails.member : null);
+    }
 }

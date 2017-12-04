@@ -33,7 +33,7 @@
             <div class="col-sm-5">
                 <mytable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
                 [deleteService]="deleteService" [updateService]="updateService" [readOnly]="true"
-                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChanged($event)" ></mytable>
+                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedUnassigned($event)" ></mytable>
             </div>
             <div class="col-sm-2">
                 <label>Buttons</label>
