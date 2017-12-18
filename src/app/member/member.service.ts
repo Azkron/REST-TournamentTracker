@@ -127,7 +127,7 @@ export class MemberService {
 
     public addMemberTournament(t: Tournament, m: Member) {
         console.log("entered service")
-        console.log("TOURNAMENT OBJ => " +t._id)
+        console.log("TOURNAMENT OBJ id => " +t._id)
         console.log("MEMBER OBJ => " +m)
         return this.http.post(URL + 'tournamentDetails/addMember/' + t._id, m)
             .map(res => new Member(res.json()));
