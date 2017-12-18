@@ -40,27 +40,78 @@ export class TournamentDetailsComponent implements OnInit {
         private router: Router,
         private TournamentService: TournamentService,
         private MemberService: MemberService) { 
-            
         }
 
-        // get getDataService() {
-        //     return m => this.MemberService.getAll();
-        // }
-
     ngOnInit() {
-        this.route.params
-            .switchMap((params: ParamMap) => this.TournamentService.getOneDetails(params['name']))
-            .subscribe((t : Tournament) => this.tournamentDetails = t);
-        this.TournamentService.getCountMembersUnassigned().subscribe(c => this.memberUnassignedCount = c);
-        this.TournamentService.getCountMembersAssigned().subscribe(c => this.memberAssignedCount = c);
+        this.getInfoTournament();  
     }
 
-    // get getUnassignedDataService() {
-        
-    // }
+    public getInfoTournament() {
+        this.route.params
+        .switchMap((params: ParamMap) => this.TournamentService.getOneDetails(params['name']))
+        .subscribe((t : Tournament) => { 
+            console.log(t._id)
+            // console.log("tournament details => " +this.MemberService.getCountMembersUnassigned(t._id).subscribe(c => this.memberUnassignedCount = c));
+            this.tournamentDetails = t;   
+            this.getCountMembers();
+         });        
+    }
+
+    public getCountMembers() {
+        this.MemberService.getCountMembersUnassigned(this.tournamentDetails._id).subscribe(c => this.memberUnassignedCount = c);
+        this.MemberService.getCountMembersAssigned(this.tournamentDetails._id).subscribe(c => this.memberAssignedCount = c);    
+    }
+
+    public selectedItemChangedUnassigned(item) {
+        this.selectedMember = this.membersUnassigned.selectedItem as Member;
+        console.log("selected Member Unassigned => " + this.selectedMember)
+        // if (this.membersUnassigned)
+        //     this.membersUnassigned.refresh();
+    }
+
+
+    public selectedItemChangedAssigned(item) {
+        this.selectedMember = this.membersAssigned.selectedItem as Member;
+        console.log("selected Member Assigned=> " +this.selectedMember)
+        // if (this.membersAssigned)
+        //     this.membersAssigned.refresh();
+    }
+
+
+    get getUnassignedDataService() {
+        return m => this.MemberService.getUnassignedDataService(this.tournamentDetails._id);
+    }
     
 
     get getAssignedDataService() {
         return m => Observable.of(this.tournamentDetails ? this.tournamentDetails.member : null);
+    }
+
+    sendUnassigned() {
+        this.selectedMember = this.membersUnassigned.selectedItem as Member;
+        if(this.selectedMember) {
+                console.log("selected Member Unassigned click => " + this.selectedMember.pseudo);
+                console.log("tounrament details name => " +this.tournamentDetails.name);
+                return this.MemberService.addMemberTournament(this.tournamentDetails, this.selectedMember);            
+        }
+    }
+
+    sendAssigned() {
+        this.selectedMember = this.membersAssigned.selectedItem as Member;
+        if(this.selectedMember) {
+            console.log("selected Member Unassigned click => " + this.selectedMember.pseudo);
+            console.log("tounrament details name => " +this.tournamentDetails.name)
+
+            // this.MemberService.addMemberTournament(this.tournamentDetails, this.selectedMember)
+        }
+
+    }
+
+    sendAllUnassigned() {
+
+    }
+
+    sendAllAssigned() {
+
     }
 }

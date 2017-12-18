@@ -22,13 +22,13 @@
     <div class="col-sm-12">
         <mytable #tournaments [columnDefs]="columnDefs" [getDataService]="getDataService" [addService]="addService" [deleteService]="deleteService"
             [updateService]="updateService" filterPlaceHolder="Filter Tournaments" [editComponent]="editTournament"
-            addCaption="Add New Tournament" (selectedItemChanged)="selectedItemChanged($event)" [pageSize]="5" [confirmDelete]="true"></mytable>
+            addCaption="Add New Tournament" (selectedItemChanged)="selectedItemChanged($event)" [pageSize]="10" [confirmDelete]="true"></mytable>
     </div>
 </div>
 
 <div class="row" *ngIf="selectedTournament">
     <div class="col-sm-12">
-        <button type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]" >Manage Inscriptions for : {{selectedTournament.name}}</button>
+        <button type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
     </div>
 </div>
 

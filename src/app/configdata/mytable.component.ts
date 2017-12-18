@@ -60,6 +60,7 @@ export class MyTableComponent implements OnInit, AfterViewInit {
     @Input() readOnly = false;
     @Output() selectedItemChanged: EventEmitter<any> = new EventEmitter<any>();
 
+
     @ViewChild('snackbar') snackbar: SnackBarComponent;
     @ViewChild('filter') filter: ElementRef;
     @ViewChild('confirmdelete') confirm: ConfirmDelete;

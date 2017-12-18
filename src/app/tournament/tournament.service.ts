@@ -31,29 +31,6 @@ export class TournamentService {
     constructor(private http: SecuredHttp) {
     }
 
-    public getCountMembersUnassigned(): Observable<number> {
-        return this.http.get(URL + 'countMemberUnassigned')
-            .map(result => {
-                return result.json();
-            })
-    }
-
-
-    public getCountMembersAssigned(): Observable<number> {
-        return this.http.get(URL + 'countMemberAssigned')
-            .map(result => {
-                return result.json();
-            })
-    }
-
-    // get getUnassignedDataService() {
-    //     return t => this.TournamentService.getAll();
-    // }
-
-    // get getAssignedDataService() {
-    //     return t => this.TournamentService.getAll();
-    // }
-
     public getCountTournament(): Observable<number> {
         return this.http.get(URL + 'countTournament')
             .map(result => {

@@ -32,16 +32,20 @@
         <div class="row">
             <div class="col-sm-5">
                 <mytable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
-                [deleteService]="deleteService" [updateService]="updateService" [readOnly]="true"
-                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedUnassigned($event)" ></mytable>
+                readOnly="true" filterPlaceHolder="Filter Unassigned Members" [pageSize]="10"
+                (selectedItemChanged)="selectedItemChangedUnassigned($event)" ></mytable>
             </div>
             <div class="col-sm-2">
-                <label>Buttons</label>
+                <p><label>Buttons</label></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" >>></button></p>
+                <p><button type="submit" (click)="sendUnassigned()" >></button></p>
+                <p><button type="button" (click)="sendAssigned()" ><</button></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" ><<</button></p>
             </div>
             <div class="col-sm-5">
                 <mytable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 
-                [addService]="addService" [deleteService]="deleteService" [updateService]="updateService" [readOnly]="true"
-                filterPlaceHolder="Filter Members" [pageSize]="3" (selectedItemChanged)="selectedItemChangedAssigned($event)"></mytable>
+                readOnly="true" filterPlaceHolder="Filter Assigned Members" [pageSize]="10" 
+                (selectedItemChanged)="selectedItemChangedAssigned($event)"></mytable>
             </div>
 
         </div>

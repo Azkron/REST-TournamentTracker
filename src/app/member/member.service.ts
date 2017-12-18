@@ -3,6 +3,7 @@ import { Observable } from "rxjs/Rx";
 import { Http, RequestOptions } from "@angular/http";
 import { SecuredHttp } from "app/securedhttp.service";
 import { Tournament }  from "../tournament/tournament.service"
+import { Tools } from "../configdata/tools";
 
 export class Address {
     _id: string;
@@ -50,6 +51,28 @@ export class MemberService {
     constructor(private http: SecuredHttp) {
     }
 
+    public getUnassignedDataService(id: String) {
+        return this.http.get(URL + "getUnassignedMembers/" +id) 
+            .map(result => {
+                return result.json().map(json => new Member(json));
+            });
+    }
+
+    public getCountMembersUnassigned(id: String): Observable<number> {
+        return this.http.get(URL + 'countMemberUnassigned/' +id)
+            .map(result => {
+                return result.json();
+            })
+    }
+
+
+    public getCountMembersAssigned(id: String): Observable<number> {
+        return this.http.get(URL + 'countMemberAssigned/' +id)
+            .map(result => {
+                return result.json();
+            })
+    }
+
     public getCount(): Observable<number> {
         return this.http.get(URL + 'count')
             .map(result => {
@@ -79,7 +102,7 @@ export class MemberService {
 
     public update(m: Member): Observable<boolean> {
         console.log(m);
-        return this.http.put(URL + m.pseudo, m).map(res => true);
+        return this.http.put(URL + m.pseudo, Tools.removeCircularReferences(m)).map(res => true);
     }
 
     public delete(m: Member): Observable<boolean> {
@@ -91,7 +114,7 @@ export class MemberService {
     }
 
     public addAddress(m: Member, a: Address) {
-        return this.http.post(URL + 'address/' + m.pseudo, a).map(res => new Address(res.json()));
+        return this.http.post(URL + 'address/' + m.pseudo, Tools.removeCircularReferences(a)).map(res => new Address(res.json()));
     }
 
     public deleteAddress(m: Member, a: Address) {
@@ -101,4 +124,17 @@ export class MemberService {
     public updateAddress(m: Member, a: Address) {
         return this.http.put(URL + 'address/' + a._id, a).map(res => true);
     }
+
+    public addMemberTournament(t: Tournament, m: Member) {
+        console.log("entered service")
+        console.log("TOURNAMENT OBJ => " +t._id)
+        console.log("MEMBER OBJ => " +m)
+        return this.http.post(URL + 'tournamentDetails/addMember/' + t._id, m)
+            .map(res => new Member(res.json()));
+    }
+
+    public removeMemberTournament(t: Tournament, m: Member) {
+        return this.http.delete(URL + 'tournamentDetails/removeMember/' + t._id + '/' + t._id).map(res => true);
+    }
+
 }

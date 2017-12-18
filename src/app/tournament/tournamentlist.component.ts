@@ -43,9 +43,9 @@ export class TournamentListComponent {
     ];
     memberColumnDefs: ColumnDef[] = [
         { name: 'pseudo', type: 'String', header: 'Pseudo', width: 1, key: true, filter: true, sort: 'asc' },
+        { name: 'profile', type: 'String', header: 'Profile', width: 2, filter: true },
         { name: 'birthdate', type: 'Date', header: 'Birth Date', width: 1, filter: true, align: 'center' },
-        { name: 'profile', type: 'String', header: 'Profile', width: 2, filter: true }
-        // { name: 'admin', type: 'Boolean', header: 'Is Admin', width: 1, filter: false, align: 'center' }
+        { name: 'admin', type: 'Boolean', header: 'Is Admin', width: 1, filter: false, align: 'center' }
     ];
 
     constructor(private tournamentService: TournamentService) {

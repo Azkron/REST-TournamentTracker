@@ -6,6 +6,7 @@ import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 import { Tools } from "../configdata/tools";
 
+
 @Component({
     selector: 'memberlist',
     templateUrl: './memberlist.component.html',
@@ -59,8 +60,8 @@ export class MemberListComponent {
 
     get addAddressService() {
         return a => {
-            // console.log("ADD", a, this.selectedMember);
-            a.member = this.selectedMember;
+            console.log("ADD", a, this.selectedMember);
+            // a.member = this.selectedMember;
             return this.memberService.addAddress(this.selectedMember, Tools.removeCircularReferences(a));
         };
     }
@@ -75,8 +76,9 @@ export class MemberListComponent {
     get updateAddressService() {
         return a => {
             // console.log("UPD", a);
-            a.member = this.selectedMember;
+            // a.member = this.selectedMember;
             return this.memberService.updateAddress(this.selectedMember, Tools.removeCircularReferences(a));
         };
     }
 }
+
