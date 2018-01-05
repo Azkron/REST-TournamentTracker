@@ -22,6 +22,9 @@
                         <li><a [routerLink]="['/members']">Members</a></li>
                         <li><a [routerLink]="['/tournaments']">Tournaments</a></li>
                     </ng-container>
+                    <ng-container *ngIf="!authService.isAdmin">
+                        <li><a [routerLink]="['/account']">Account</a></li>
+                    </ng-container>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a [routerLink]="['/logout']"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
