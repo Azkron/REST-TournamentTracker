@@ -7,8 +7,10 @@ import { AuthentificationRouter } from "./routes/authentication.router";
 import { Member, Address, IMember } from './models/member';
 import { MembersRouter } from './routes/members.router';
 import { MembersCommonRouter } from './routes/members-common.router';
-import Tournament from './models/tournament';
+import { Tournament } from './models/tournament';
 import { TournamentsRouter } from './routes/tournaments.router';
+import { Game } from './models/game';
+import { GamesRouter } from './routes/games.router';
 
 const MONGO_URL = 'mongodb://127.0.0.1/msn';
 
@@ -36,6 +38,7 @@ export class Server {
         this.express.use(AuthentificationRouter.checkAuthorization);    // à partir d'ici il faut être authentifié
         this.express.use('/api/members', new MembersRouter().router);
         this.express.use('/api/tournaments', new TournamentsRouter().router);
+        this.express.use('/api/games', new GamesRouter().router);
     }
 
     // initialise mongoose
@@ -70,6 +73,7 @@ export class Server {
             if (count === 0) {
                 console.log("Initializing members and adresses...");
                 this.initDataTournament();
+                
 
                 //test adresses
                 let addr1 = new Address({ "street_addr": "rue bazar 12", "postal_code": "1000", "localization": "Bxl" });
@@ -94,6 +98,7 @@ export class Server {
                 let test1 = new Member({ pseudo: "test1", password: "test1", profile: "Hi, I'm test1!", birthdate: "10/26/1988", tournaments: [tourn1, tourn2] });
                 let test2 = new Member({ pseudo: "test2", password: "test2", profile: "Hi, I'm test2!", birthdate: "10/26/1989", tournaments: [tourn1, tourn2] });
                 
+                this.initDataGame();
 
                 tourn1.members = [test1, test2] as mongoose.Types.Array<IMember>;
                 tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;
@@ -128,6 +133,17 @@ export class Server {
                     { name: "Rap Battle of the Century", start: "10/26/2018"},
                     { name: "Decathlon Mortal", start: "04/05/2026", finish: "04/06/2026", maxPlayers: 20},
                 ]);
+            }
+        });
+    }
+
+    private initDataGame(){
+        Game.count({}).then(count => {
+            if(count === 0){
+                console.log("Initializing games...");
+                // Game.insertMany([
+                //      { player_1: "abs", player_2: "abs", score_player_1: "1", score_player_2: "32"}
+                // ]);
             }
         });
     }

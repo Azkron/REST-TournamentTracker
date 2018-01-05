@@ -30,6 +30,7 @@ export class Member {
     address: Address[];
     tournaments: Tournament[];
     admin: boolean;
+    points: Number;
 
     constructor(data) {
         this._id = data._id;
@@ -41,6 +42,7 @@ export class Member {
         this.address = data.addresses;
         this.tournaments = data.tournaments;
         this.admin = data.admin;
+        this.points = data.points;
     }
 }
 

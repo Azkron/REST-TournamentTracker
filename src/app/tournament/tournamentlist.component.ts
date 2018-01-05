@@ -68,7 +68,6 @@ export class TournamentListComponent {
     }
 
     public selectedItemChanged(item) {
-        
         this.selectedTournament = this.tournaments.selectedItem as Tournament;
         // console.log("selectedTournament => " +this.selectedTournament.name)
         if (this.members)

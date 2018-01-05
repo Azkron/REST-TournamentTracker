@@ -8,9 +8,13 @@ import { AppComponent } from './app.component';
 import { MemberService } from "app/member/member.service";
 import { MemberListComponent } from "app/member/memberlist.component";
 import { MemberDetailsComponent } from "app/member/memberdetails.component";
+
 import { TournamentService } from "app/tournament/tournament.service";
 import { TournamentListComponent } from "app/tournament/tournamentlist.component";
 import { TournamentDetailsComponent } from "app/tournament/tournamentdetails.component";
+
+import { GameService } from "app/game/game.service";
+
 import { LoginComponent } from "app/login/login.component";
 import { HomeComponent } from "app/home/home.component";
 import { UnknownComponent } from "app/unknown.component";
@@ -107,6 +111,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         AuthService,
         MemberService,
         TournamentService,
+        GameService,
         ValidationService,
     ],
     bootstrap: [AppComponent]

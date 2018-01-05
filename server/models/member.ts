@@ -9,6 +9,7 @@ export interface IMember extends mongoose.Document {
     profile: string;
     birthdate: string;
     admin: boolean;
+    points: Number;
     addresses: mongoose.Types.Array<IAddress>;
     tournaments: mongoose.Types.Array<ITournament>;
 }
@@ -33,6 +34,7 @@ let memberSchema = new mongoose.Schema({
     profile: { type: String, default: '' },
     birthdate: { type: Date },
     admin: { type: Boolean, default: false },
+    points: { type: Number, default: 0},
     addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
     tournaments: [{ type: Schema.Types.ObjectId, ref: 'Tournament' }]
 });

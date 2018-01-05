@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { TournamentService, Tournament } from "app/tournament/tournament.service";
 import { MemberService, Member } from "../member/member.service";
+import { GameService, Game } from "../game/game.service";
+
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 
 import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 
 import 'rxjs/add/operator/switchMap';
-import tournament from '../../../server/models/tournament';
 
   @Component({
     selector: 'tournamentdetails', 
@@ -20,6 +21,7 @@ export class TournamentDetailsComponent implements OnInit {
     public memberUnassignedCount: number | '?' = '?';
     public memberAssignedCount: number | '?' = '?';
     public listMembersUnassigned : Member[];
+    public listGame : Game[];
 
     selectedMember: Member;
 
@@ -41,7 +43,8 @@ export class TournamentDetailsComponent implements OnInit {
 		private route: ActivatedRoute,
         private router: Router,
         private TournamentService: TournamentService,
-        private MemberService: MemberService) { 
+        private MemberService: MemberService,
+        private GameService: GameService) { 
         }
 
     ngOnInit() {
@@ -213,4 +216,36 @@ export class TournamentDetailsComponent implements OnInit {
 
         this.getCountMembers();
     }
+
+    CloseInscriptions() {        
+        for(let i in this.tournamentDetails.members) {
+            for(let j in this.tournamentDetails.members) {
+                // let last = this.tournamentDetails.members.length;
+                // console.log("last => " +this.tournamentDetails.members[last -1].pseudo)
+
+                // if(+(z +1) < this.tournamentDetails.members.length) {
+                    
+                if(this.tournamentDetails.members[i].pseudo !== this.tournamentDetails.members[j].pseudo) {
+                    let m = new Member(this.tournamentDetails.members[i]);
+                    let m1 = new Member(this.tournamentDetails.members[j]);
+                    
+                    console.log("m.pseudo => " +m.pseudo);
+                    console.log("m1.pseudo => " +m1.pseudo);      
+                }
+                    // let g = new Game({
+                    // player_1 : m.pseudo,
+                    // player_2 : m1.pseudo,
+                    // tournament: this.tournamentDetails.name
+                    // });
+
+                    // this.listGame.push(g)
+            }                
+            // let g = new Game({
+            //     player_1 : m.pseudo,
+            //     player_2 : m.pseudo,
+            //     tournament: this.tournamentDetails.name
+            // });
+            // this.GameService.add(g).subscribe(c =>  console.log("created game => " +c))
+        }
+    }    
 }
