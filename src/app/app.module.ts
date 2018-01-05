@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RestrictedComponent } from "app/restricted.component";
 import { LogoutComponent } from 'app/logout.component';
 import { EditMemberComponent } from "app/member/edit-member.component";
+import { EditAccountComponent } from "app/member/edit-account.component";
 import { EditTournamentComponent } from "app/tournament/edit-tournament.component";
 import { SnackBarComponent } from "./configdata/snackbar.component";
 import { MyTableComponent } from "./configdata/mytable.component";
@@ -56,6 +57,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         UnknownComponent,
         RestrictedComponent,
         EditMemberComponent,
+        EditAccountComponent,
         EditTournamentComponent,
         SnackBarComponent,
         MyTableComponent,
@@ -79,12 +81,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
                 children: [
                     { path: 'logout', component: LogoutComponent },
                     { path: 'home', component: HomeComponent },
+                    { path: 'account', component: EditAccountComponent },
                     {
                         path: '',
                         canActivate: [AdminGuard],
                         children: [
                             { path: 'members', component: MemberListComponent },
-                            // { path: 'memberdetails/:pseudo', component: MemberDetailsComponent },
+                            { path: 'memberdetails/:pseudo', component: MemberDetailsComponent },
                             { path: 'tournaments', component: TournamentListComponent },
                             { path: 'tournamentdetails/:name', component: TournamentDetailsComponent },
                         ]
