@@ -3,6 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { Http, RequestOptions } from "@angular/http";
 import { SecuredHttp } from "../securedhttp.service";
 import { Member} from "../member/member.service"
+import { Tools } from "../configdata/tools";
 
 import 'rxjs/add/operator/map';
 
@@ -12,7 +13,7 @@ export class Tournament {
     start: string;
     finish: string;
     maxPlayers: Number;
-    member: Member[];
+    members: Member[];
 
     constructor(data) {
         this._id = data._id;
@@ -20,7 +21,7 @@ export class Tournament {
         this.start = data.start && data.start.length > 10 ? data.start.substring(0, 10) : data.start;
         this.finish = data.finish && data.finish.length > 10 ? data.finish.substring(0, 10) : data.finish;
         this.maxPlayers = data.maxPlayers;
-        this.member = data.members;
+        this.members = data.members;
     }
 }
 
@@ -65,7 +66,7 @@ export class TournamentService {
 
     public update(t: Tournament): Observable<boolean> {
         console.log(t);
-        return this.http.put(URL + t.name, t).map(res => true);
+        return this.http.put(URL + t.name, Tools.removeCircularReferences(t)).map(res => true);
     }
 
     public delete(t: Tournament): Observable<boolean> {

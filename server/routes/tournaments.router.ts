@@ -109,7 +109,10 @@ export class TournamentsRouter {
 		Tournament.findOneAndUpdate({ name: req.params.name },
             req.body,
 			{ new: true })  // pour renvoyer le document modifié
-            .then(r => res.json(r))
+            .then(r => {
+                // console.log("r =>" +r)
+                res.json(r)
+            } )
             .catch(err => res.json(err));
     }
 

@@ -1,7 +1,15 @@
 import * as mongoose from 'mongoose';
-import { ITournament, Member } from './member'
+import { IMember } from './member'
 
 let Schema = mongoose.Schema;
+
+export interface ITournament extends mongoose.Document {
+    name: string;
+    start: string;
+    finish: string;
+    maxPlayers: Number;
+    members: mongoose.Types.Array<IMember>;
+}
 
 let tournamentSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},

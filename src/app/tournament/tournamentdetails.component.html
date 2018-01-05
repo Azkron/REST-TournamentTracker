@@ -37,10 +37,10 @@
             </div>
             <div class="col-sm-2">
                 <p><label>Buttons</label></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" >>></button></p>
-                <p><button type="submit" (click)="sendUnassigned()" >></button></p>
-                <p><button type="button" (click)="sendAssigned()" ><</button></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" ><<</button></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendAssigned()" > < </button></p>
+                <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" > << </button></p>
             </div>
             <div class="col-sm-5">
                 <mytable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 

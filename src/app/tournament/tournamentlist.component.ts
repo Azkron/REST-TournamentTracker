@@ -76,7 +76,7 @@ export class TournamentListComponent {
     }
 
     get getMemberDataService() {
-        return m => Observable.of(this.selectedTournament ? this.selectedTournament.member : null);
+        return m => Observable.of(this.selectedTournament ? this.selectedTournament.members : null);
     }
 
     // get addAddressService() {

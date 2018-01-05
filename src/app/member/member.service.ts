@@ -28,7 +28,7 @@ export class Member {
     profile: string;
     birthdate: string;
     address: Address[];
-    tournament: Tournament[];
+    tournaments: Tournament[];
     admin: boolean;
 
     constructor(data) {
@@ -39,7 +39,7 @@ export class Member {
         this.birthdate = data.birthdate &&
             data.birthdate.length > 10 ? data.birthdate.substring(0, 10) : data.birthdate;
         this.address = data.addresses;
-        this.tournament = data.tournaments;
+        this.tournaments = data.tournaments;
         this.admin = data.admin;
     }
 }
@@ -101,8 +101,7 @@ export class MemberService {
     }
 
     public update(m: Member): Observable<boolean> {
-        console.log(m);
-        return this.http.put(URL + m.pseudo, Tools.removeCircularReferences(m)).map(res => true);
+        return this.http.put(URL + m.pseudo, Tools.removeCircularReferences(m)).map(res => {console.log(res); return true;});
     }
 
     public delete(m: Member): Observable<boolean> {
@@ -124,17 +123,4 @@ export class MemberService {
     public updateAddress(m: Member, a: Address) {
         return this.http.put(URL + 'address/' + a._id, a).map(res => true);
     }
-
-    public addMemberTournament(t: Tournament, m: Member) {
-        console.log("entered service")
-        console.log("TOURNAMENT OBJ id => " +t._id)
-        console.log("MEMBER OBJ => " +m)
-        return this.http.post(URL + 'tournamentDetails/addMember/' + t._id, m)
-            .map(res => new Member(res.json()));
-    }
-
-    public removeMemberTournament(t: Tournament, m: Member) {
-        return this.http.delete(URL + 'tournamentDetails/removeMember/' + t._id + '/' + t._id).map(res => true);
-    }
-
 }

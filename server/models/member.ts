@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { ITournament } from './tournament'
 
 let Schema = mongoose.Schema;
 
@@ -17,14 +18,6 @@ export interface IAddress extends mongoose.Document {
     postal_code: string;
     localization: string;
     member: IMember;
-}
-
-export interface ITournament extends mongoose.Document {
-    name: string;
-    start: string;
-    finish: string;
-    maxPlayers: Number;
-    members: mongoose.Types.Array<IMember>;
 }
 
 let addressSchema = new mongoose.Schema({

@@ -126,7 +126,7 @@ export class Server {
                     { name: "Starcraft ESL", start: "5/6/2019"},
                     { name: "Minecraft Creator", start: "06/20/2023", finish: "07/10/2023"},
                     { name: "Rap Battle of the Century", start: "10/26/2018"},
-                    { name: "Decathlon Mortal", start: "04/05/2026", finish: "04/06/2026", maxPlayers: 120},
+                    { name: "Decathlon Mortal", start: "04/05/2026", finish: "04/06/2026", maxPlayers: 20},
                 ]);
             }
         });
