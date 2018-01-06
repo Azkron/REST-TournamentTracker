@@ -19,11 +19,19 @@ export class MembersCommonRouter {
     }
 
     public create(req: Request, res: Response, next: NextFunction) {
-        //TODO: check available
+
         delete req.body._id;   
         let member = new Member(req.body);
-        member.save()
-        .then(m => res.json(m))
-        .catch(err => res.send(err));
+
+        Member.find({ pseudo: member.pseudo }, (err, members) => {
+            if (err) res.send(err);
+
+            if (members.length > 0) res.send("Member with pseudo "+member.pseudo+" already exists.");
+            
+            member.save()
+            .then(m => res.json(m))
+            .catch(err => res.send(err));
+        });
+  
     }
 }
