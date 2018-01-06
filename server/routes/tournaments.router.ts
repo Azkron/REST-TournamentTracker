@@ -31,7 +31,7 @@ export class TournamentsRouter {
     }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
-		Tournament.find().populate('members').sort({ name: 'asc' }).exec((err, tournaments) => {
+		Tournament.find().populate('members').populate('games').sort({ name: 'asc' }).exec((err, tournaments) => {
             if(err) res.send(err);
             res.json(tournaments);
         });
@@ -106,6 +106,7 @@ export class TournamentsRouter {
 
 
     public update(req: Request, res: Response, next: NextFunction) {
+        console.log("insert game in tournament => " +req.body)
 		Tournament.findOneAndUpdate({ name: req.params.name },
             req.body,
 			{ new: true })  // pour renvoyer le document modifié

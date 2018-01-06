@@ -34,7 +34,7 @@ let memberSchema = new mongoose.Schema({
     profile: { type: String, default: '' },
     birthdate: { type: Date },
     admin: { type: Boolean, default: false },
-    points: { type: Number, default: 0},
+    points: { type: Number, default: 0 },
     addresses: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
     tournaments: [{ type: Schema.Types.ObjectId, ref: 'Tournament' }]
 });

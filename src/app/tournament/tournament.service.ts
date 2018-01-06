@@ -3,6 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { Http, RequestOptions } from "@angular/http";
 import { SecuredHttp } from "../securedhttp.service";
 import { Member} from "../member/member.service"
+import { Game } from "../game/game.service"
 import { Tools } from "../configdata/tools";
 
 import 'rxjs/add/operator/map';
@@ -14,6 +15,7 @@ export class Tournament {
     finish: string;
     maxPlayers: Number;
     members: Member[];
+    games: Game[];
 
     constructor(data) {
         this._id = data._id;
@@ -22,6 +24,7 @@ export class Tournament {
         this.finish = data.finish && data.finish.length > 10 ? data.finish.substring(0, 10) : data.finish;
         this.maxPlayers = data.maxPlayers;
         this.members = data.members;
+        this.games = data.games;
     }
 }
 

@@ -10,7 +10,7 @@ export class GamesRouter {
         this.router = Router();
         this.router.get('/countGame', this.getCountGame);
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
-        // this.router.get('/', this.getAll);
+        this.router.get('/', this.getAll);
         this.router.post('/', this.create);
         // this.router.get('/:name', this.findByName);
         // this.router.get('/byId/:id', this.findById);
@@ -47,28 +47,6 @@ export class GamesRouter {
     //     Tournament.find({ name: req.params.name })
     //         .then(tournament => res.json(tournament))
     //         .catch(err => res.json([]));
-    // }
-
-    // public findByStartDate(req: Request, res: Response, next: NextFunction) {
-    //     let d = new Date(req.params.start);
-    //     if (!isNaN(d.valueOf())) {
-    //         Tournament.find({ start: d }).sort({ name: 'asc' })
-    //             .then(tournaments => res.json(tournaments))
-    //             .catch(err => res.json([]));
-    //     }
-    //     else
-    //         res.json([]);
-    // }
-
-    // public findByFinishDate(req: Request, res: Response, next: NextFunction) {
-    //     let d = new Date(req.params.finish);
-    //     if (!isNaN(d.valueOf())) {
-    //         Tournament.find({ finish: d }).sort({ name: 'asc' })
-    //             .then(tournaments => res.json(tournaments))
-    //             .catch(err => res.json([]));
-    //     }
-    //     else
-    //         res.json([]);
     // }
 
     // public findByMaxPlayers(req: Request, res: Response, next: NextFunction) {

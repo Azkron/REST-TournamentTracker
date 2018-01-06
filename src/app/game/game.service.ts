@@ -12,20 +12,18 @@ import 'rxjs/add/operator/map';
 
 export class Game {
     _id: string;
-    player_1: string;
-    player_2: string;
-    score_player_1: Number;
-    score_player_2: Number;
-    message: string;
-    tournament: string;
+    player_1: Member;
+    player_2: Member;
+    score_player_1: string;
+    score_player_2: string;
+    tournament: Tournament;
 
     constructor(data) {
         this._id = data._id;
         this.player_1 = data.player_1;
-        this.player_2 = data.player_1;
+        this.player_2 = data.player_2;
         this.score_player_1 = data.score_player_1;
         this.score_player_2 = data.score_player_2;
-        this.message = data.message;
         this.tournament = data.tournament;
     }
 }
@@ -49,6 +47,10 @@ export class GameService {
             .map(result => {
                 return result.json().map((json => new Game(json)));
             })
+    }
+
+    public add(g: Game): Observable<Game> {
+        return this.http.post(URL, Tools.removeCircularReferences(g)).map(res => new Game(res.json()));
     }
 
     // public getOneDetails(name: string): Observable<Tournament> {
@@ -77,9 +79,4 @@ export class GameService {
     // public delete(t: Tournament): Observable<boolean> {
     //     return this.http.delete(URL + t.name).map(res => true);
     // }
-
-    public add(g: Game): Observable<Game> {
-        console.log("game object player_1 => " +g.player_1)
-        return this.http.post(URL, g).map(res => new Game(res.json()));
-    }
 }

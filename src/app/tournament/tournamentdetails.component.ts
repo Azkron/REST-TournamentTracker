@@ -22,6 +22,7 @@ export class TournamentDetailsComponent implements OnInit {
     public memberAssignedCount: number | '?' = '?';
     public listMembersUnassigned : Member[];
     public listGame : Game[];
+    // public listGame =  new Array<Game>();
 
     selectedMember: Member;
 
@@ -217,35 +218,54 @@ export class TournamentDetailsComponent implements OnInit {
         this.getCountMembers();
     }
 
-    CloseInscriptions() {        
+    CloseInscriptions() {  
+        this.listGame = [];
+        let loop : boolean; 
+        let first : boolean;
+        let addListGame : boolean;
+        first = true; loop = true; addListGame = true;
         for(let i in this.tournamentDetails.members) {
             for(let j in this.tournamentDetails.members) {
-                // let last = this.tournamentDetails.members.length;
-                // console.log("last => " +this.tournamentDetails.members[last -1].pseudo)
 
-                // if(+(z +1) < this.tournamentDetails.members.length) {
+                let m = new Member(this.tournamentDetails.members[i]);
+                let m1 = new Member(this.tournamentDetails.members[j]);
                     
-                if(this.tournamentDetails.members[i].pseudo !== this.tournamentDetails.members[j].pseudo) {
-                    let m = new Member(this.tournamentDetails.members[i]);
-                    let m1 = new Member(this.tournamentDetails.members[j]);
-                    
-                    console.log("m.pseudo => " +m.pseudo);
-                    console.log("m1.pseudo => " +m1.pseudo);      
+                if(m.pseudo !== m1.pseudo) {
+                    let g = new Game({
+                    player_1 : m,
+                    player_2 : m1,
+                    tournament: this.tournamentDetails
+                    });
+
+                    if(first) {
+                        this.listGame.push(g);
+                        first = false;
+                    }
+                    else {
+                        for(let i of this.listGame) {
+                            if(loop) {
+                                if (g.player_1.pseudo == i.player_2.pseudo && g.player_2.pseudo == i.player_1.pseudo) {
+                                    loop = false;
+                                    addListGame = false;
+                                }
+                            }
+                            else    
+                                break;
+                        }
+                        if(addListGame)
+                            this.listGame.push(g);
+                    } 
                 }
-                    // let g = new Game({
-                    // player_1 : m.pseudo,
-                    // player_2 : m1.pseudo,
-                    // tournament: this.tournamentDetails.name
-                    // });
-
-                    // this.listGame.push(g)
-            }                
-            // let g = new Game({
-            //     player_1 : m.pseudo,
-            //     player_2 : m.pseudo,
-            //     tournament: this.tournamentDetails.name
-            // });
-            // this.GameService.add(g).subscribe(c =>  console.log("created game => " +c))
+                loop = true;
+                addListGame = true;
+            }            
+        }
+        for(let i of this.listGame) {
+            console.log("listgame player_1 => " +i.player_1.pseudo  +" player_2 => " +i.player_2.pseudo);
+            let match = new Game(i);
+            this.GameService.add(match).subscribe(c =>  console.log("created game => " +c));
+            this.tournamentDetails.games.push(match);
+            this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
         }
     }    
 }
