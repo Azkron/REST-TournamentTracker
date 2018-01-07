@@ -221,13 +221,16 @@ export class MembersRouter {
     
 
     public updateCurrentAddress(req: Request, res: Response, next: NextFunction) {
+        
         let currPseudo = AuthentificationRouter.getPseudo(req);
         let id = req.params.id;
+        // delete req.body._id;
+        // let newAddress = new Address(req.body);
         Member.findOne({ pseudo: currPseudo })
             .then(m => {
-                let address = m.addresses.find(a => a._id == id);
-                address.update(req.body);
-                return address.save();
+                    Address.findOneAndUpdate({ _id: id, member: m}, req.body, { new: true })
+                        .then(a => res.json(a))
+                        .catch(err => console.log(err));
             })
             .then(a => res.json(a))
             .catch(err => console.log(err));

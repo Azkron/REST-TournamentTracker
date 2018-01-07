@@ -64,7 +64,11 @@ export class EditAccountComponent implements OnInit{
                 this.currentMember.profile = updatedMember.profile;
                 this.currentMember.password = updatedMember.password;
                 this.currentMember.birthdate = updatedMember.birthdate;
-                this.memberService.updateCurrent(Tools.removeCircularReferences(this.currentMember));
+                this.memberService.updateCurrent(Tools.removeCircularReferences(this.currentMember)).subscribe(result => {
+                    console.log("updateCurrent result : " + result);
+                }, err => {
+                    console.log(err)
+                });;
             }
 
         });
