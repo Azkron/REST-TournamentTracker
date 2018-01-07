@@ -13,7 +13,7 @@
                 </form>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-12">
                 <h3>Addresses:</h3>
             </div>
@@ -25,7 +25,7 @@
                     [pageSize]="3" readOnly="true">
                 </mytable>
             </div>
-        </div>
+        </div> -->
     </div>
     <div footer>
         <button type="submit" form="frm" class="btn btn-default" [disabled]="frm.pristine || frm.invalid || frm.pending" (click)="update()">{{frm.value._id ? 'Update' : 'Add'}}</button>

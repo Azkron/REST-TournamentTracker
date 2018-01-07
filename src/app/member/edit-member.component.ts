@@ -25,15 +25,15 @@ export class EditMemberComponent implements OnInit, IDialog {
     public ctlAdmin: FormControl;
     public closed: Subject<DialogResult>;
     private m: Member;
-    columnDefs: ColumnDef[] = [
-        { name: 'street_addr', type: 'String', header: 'Street Address', width: 1, key: true, filter: true, sort: 'asc' },
-        { name: 'postal_code', type: 'String', header: 'Postal Code', width: 2, filter: true },
-        { name: 'localization', type: 'Date', header: 'Localization', width: 1, filter: true, align: 'center' }
-    ];
+    // columnDefs: ColumnDef[] = [
+    //     { name: 'street_addr', type: 'String', header: 'Street Address', width: 1, key: true, filter: true, sort: 'asc' },
+    //     { name: 'postal_code', type: 'String', header: 'Postal Code', width: 2, filter: true },
+    //     { name: 'localization', type: 'Date', header: 'Localization', width: 1, filter: true, align: 'center' }
+    // ];
 
     @ViewChild(MyModalComponent) modal: MyModalComponent;
     @ViewChild('pseudo') pseudo: MyInputComponent;
-    @ViewChild('address') address: MyTableComponent;
+    // @ViewChild('address') address: MyTableComponent;
 
     constructor(private memberService: MemberService, private fb: FormBuilder) {
         this.ctlPseudo = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')], [this.pseudoUsed()]);
@@ -109,7 +109,7 @@ export class EditMemberComponent implements OnInit, IDialog {
 
     show(m: Member): Subject<DialogResult> {
         this.m = m;
-        this.address.refresh();
+        // this.address.refresh();
         this.closed = new Subject<DialogResult>();
         this.frm.reset();
         this.frm.markAsPristine();
