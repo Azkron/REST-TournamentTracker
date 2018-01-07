@@ -264,7 +264,11 @@ export class TournamentDetailsComponent implements OnInit {
             // console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
             this.GameService.add(match).subscribe(matchWithId =>  {
                 if(matchWithId) 
+                {
+                    console.log("matchWithId = ");
+                    console.log(matchWithId);
                     this.tournamentDetails.games.push(matchWithId);
+                }
             });
             // this.tournamentDetails.games.push(match);
             // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));

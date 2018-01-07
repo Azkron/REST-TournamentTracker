@@ -63,7 +63,11 @@ export class GameService {
         return this.http.post(URL, Tools.removeCircularReferences(g))
             .map(result => {
                 let data = result.json();
-                return data.length > 0 ? new Game(data[0]) : null;
+
+                let returnValue = data ? new Game(data) : null
+                console.log("gameService.addGame returnValue = ");
+                console.log(returnValue);
+                return returnValue;
             });
     }
     // res => new Game(res.json())

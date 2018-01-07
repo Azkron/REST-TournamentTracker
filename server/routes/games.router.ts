@@ -48,9 +48,12 @@ export class GamesRouter {
 
     public create(req: Request, res: Response, next: NextFunction) {
         let game = new Game(req.body);
-        // console.log("new game player_1=>" +game.player_1 + "  player_2 => " +game.player_2)
+        console.log("new game player_1=>" +game.player_1 + "  player_2 => " +game.player_2)
         game.save()
-            .then(r => res.json(r))
+            .then(gameWithId => {
+                console.log("gameWithIs = " + gameWithId);
+                res.json(gameWithId);
+            })
             .catch(err => res.json(err));
     }
 
