@@ -19,30 +19,27 @@
                 </div>
             </div>
         </div>
-        <div class="rowTitles">
-            <div class="col-sm-5">
-                <h2>Members not assigned ({{memberUnassignedCount}})</h2>
-            </div>
-            <div class="col-sm-2">
-            </div>
-            <div class="col-sm-5">
-                <h2>Members assigned ({{memberAssignedCount}})</h2>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-sm-5">
-                <mytable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
-                readOnly="true" filterPlaceHolder="Filter Unassigned Members" [pageSize]="10"
-                (selectedItemChanged)="selectedItemChangedUnassigned($event)" ></mytable>
+            <div class="col-xs-12 col-sm-7">
+                <h2>Members not assigned ({{memberUnassignedCount}})</h2>
+                <div class="col-xs-10">
+                    <mytable #membersUnassigned [columnDefs]="columnDefs" [getDataService]="getUnassignedDataService" 
+                    readOnly="true" filterPlaceHolder="Filter Unassigned Members" [pageSize]="10"
+                    (selectedItemChanged)="selectedItemChangedUnassigned($event)" ></mytable>
+                </div>
+                <div class="col-xs-2">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button></p>
+                    <p><button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button></p>
+                    <p><button class="btn dtn-default" type="button" (click)="sendAssigned()" > < </button></p>
+                    <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" > << </button></p>
+                </div>
             </div>
-            <div class="col-sm-2">
-                <p><label>Buttons</label></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendAssigned()" > < </button></p>
-                <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" > << </button></p>
-            </div>
-            <div class="col-sm-5">
+            <div class="col-xs-12 col-sm-5">
+                <h2>Members assigned ({{memberAssignedCount}})</h2>
                 <mytable #membersAssigned [columnDefs]="columnDefsAssigned" [getDataService]="getAssignedDataService" 
                 readOnly="true" filterPlaceHolder="Filter Assigned Members" [pageSize]="10" 
                 (selectedItemChanged)="selectedItemChangedAssigned($event)"></mytable>
