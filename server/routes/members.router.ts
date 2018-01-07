@@ -11,6 +11,11 @@ export class MembersRouter {
     constructor() {
         this.router = Router();
         this.router.get('/count', this.getCount);
+        this.router.get('/current', this.getCurrent);
+        this.router.put('/current', this.updateCurrent);
+        this.router.post('/address/current', this.addCurrentAddress);
+        this.router.delete('/address/current/:id', this.deleteCurrentAddress);
+        this.router.put('/address/current/:id', this.updateCurrentAddress);
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
 
@@ -67,11 +72,22 @@ export class MembersRouter {
     }
 
     public getOne(req: Request, res: Response, next: NextFunction) {
-        Member.find({ pseudo: req.params.id }, (err, members) => {
+        Member.find({ pseudo: req.params.id }).populate('addresses').populate('tournaments')
+        .exec((err, members) => {
             if (err) res.send(err);
             res.json(members);
         });
     }
+
+    public getCurrent(req: Request, res: Response, next: NextFunction){
+        let currPseudo = AuthentificationRouter.getPseudo(req);
+        Member.find({ pseudo: currPseudo }).populate('addresses').populate('tournaments')
+        .exec((err, members) => {
+            if (err) res.send(err);
+            res.json(members);
+        });
+    }
+
 
     public create(req: Request, res: Response, next: NextFunction) {
         delete req.body._id;    // _id vient avec la valeur nulle d'angular (via reactive forms) 
@@ -94,7 +110,21 @@ export class MembersRouter {
                     res.send(err);
                 res.json(task);
             });
+    } 
+    public updateCurrent(req: Request, res: Response, next: NextFunction) {
+        let member = new Member(req.body);
+        let currPseudo = AuthentificationRouter.getPseudo(req);
+        console.log(member);
+        Member.findOneAndUpdate({ pseudo: currPseudo },
+            req.body,
+            { new: true },  // pour renvoyer le document modifié
+            function (err, task) {
+                if (err)
+                    res.send(err);
+                res.json(task);
+            });
     }
+
 
     public deleteOne(req: Request, res: Response, next: NextFunction) {
         Member.findOneAndRemove({ pseudo: req.params.id })
@@ -130,6 +160,24 @@ export class MembersRouter {
                 a.member.save();
                 res.json(address);
             })
+            .catch(err => console.log(err));
+    }
+
+    public addCurrentAddress(req: Request, res: Response, next: NextFunction) {
+        let currPseudo = AuthentificationRouter.getPseudo(req);
+        delete req.body._id;
+        let address = new Address(req.body);
+        Member.findOne({ pseudo: currPseudo })
+            .then(m => {
+                m.addresses.push(address);
+                address.member = m;
+                return address.save();
+            })
+            .then(a => {
+                a.member.save();
+                res.json(address);
+            })
+            .catch(err => console.log(err));
     }
 
     public deleteAddress(req: Request, res: Response, next: NextFunction) {
@@ -145,13 +193,44 @@ export class MembersRouter {
                 return Address.remove({ _id: id })
             })
             .then(() => res.json(true))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
+    }
+
+    public deleteCurrentAddress(req: Request, res: Response, next: NextFunction) {
+        let currPseudo = AuthentificationRouter.getPseudo(req);
+        let id = req.params.id;
+        Member.findOne({ pseudo: currPseudo })
+            .then(m => {
+                let i = m.addresses.find(a => a._id == id);
+                m.addresses.splice(i, 1);
+                return m.save();
+            })
+            .then(m => {
+                return Address.remove({ _id: id })
+            })
+            .then(() => res.json(true))
+            .catch(err => console.log(err));
     }
 
     public updateAddress(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         Address.findOneAndUpdate({ _id: id }, req.body, { new: true })
             .then(a => res.json(a))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
+    }
+    
+
+    public updateCurrentAddress(req: Request, res: Response, next: NextFunction) {
+        let currPseudo = AuthentificationRouter.getPseudo(req);
+        let id = req.params.id;
+        Member.findOne({ pseudo: currPseudo })
+            .then(m => {
+                let address = m.addresses.find(a => a._id == id);
+                address.update(req.body);
+                return address.save();
+            })
+            .then(a => res.json(a))
+            .catch(err => console.log(err));
+
     }
 }
