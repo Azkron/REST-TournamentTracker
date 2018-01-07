@@ -1,10 +1,11 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, Input, OnInit } from "@angular/core";
 import { MemberService, Member } from "./member.service";
 import { EditMemberComponent } from "./edit-member.component";
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 import { Tools } from "../configdata/tools";
+import { IDialog, DialogResult } from "../configdata/dialog";
 
 
 @Component({
@@ -12,7 +13,9 @@ import { Tools } from "../configdata/tools";
     templateUrl: './edit-account.component.html',
 })
 export class EditAccountComponent implements OnInit{
-    currentMember: Member;
+    public currentMember: Member;
+    
+    @Input() editComponent: IDialog;
 
     // @ViewChild('members') members: MyTableComponent;
     @ViewChild('addresses') addresses: MyTableComponent;
@@ -48,6 +51,31 @@ export class EditAccountComponent implements OnInit{
 
     // get deleteService() {
     //     return m => this.memberService.delete(m);
+    // }
+
+    openEditModal(editModal : IDialog)
+    {
+        editModal.show(this.currentMember).subscribe( dialogResult=>{
+            console.log(dialogResult);
+            if(dialogResult.action = "update")
+            {
+                let updatedMember = dialogResult.data as Member;
+                console.log("Updated Member: " + updatedMember);
+                this.currentMember.profile = updatedMember.profile;
+                this.currentMember.password = updatedMember.password;
+                this.currentMember.birthdate = updatedMember.birthdate;
+                this.memberService.updateCurrent(Tools.removeCircularReferences(this.currentMember));
+            }
+
+        });
+    }
+
+    // public editMember() {
+    //     this.editComponent.show(this.currentMember).subscribe(res => {
+    //         if (res.action === 'cancel') return;
+    //         let updated = _.merge({}, this.currentMember, res.data);
+            
+    //     });
     // }
 
     get updateService() {
