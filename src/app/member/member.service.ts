@@ -102,6 +102,18 @@ export class MemberService {
             });
     }
 
+    public getCurrent(): Observable<Member> {
+        return this.http.get(URL + '/current')
+            .map(result => {
+                let data = result.json();
+                return data.length > 0 ? new Member(data[0]) : null;
+            });
+    }
+
+    public updateCurrent(m: Member): Observable<boolean> {
+        return this.http.put(URL + '/current', Tools.removeCircularReferences(m)).map(res => {console.log(res); return true;});
+    }
+
     public update(m: Member): Observable<boolean> {
         return this.http.put(URL + m.pseudo, Tools.removeCircularReferences(m)).map(res => {console.log(res); return true;});
     }
@@ -118,11 +130,23 @@ export class MemberService {
         return this.http.post(URL + 'address/' + m.pseudo, Tools.removeCircularReferences(a)).map(res => new Address(res.json()));
     }
 
+    public addCurrentAddress( a: Address) {
+        return this.http.post(URL + 'address/current', Tools.removeCircularReferences(a)).map(res => new Address(res.json()));
+    }
+
     public deleteAddress(m: Member, a: Address) {
         return this.http.delete(URL + 'address/' + m.pseudo + '/' + a._id).map(res => true);
     }
 
+    public deleteCurrentAddress( a: Address) {
+        return this.http.delete(URL + 'address/current/' + a._id).map(res => true);
+    }
+
     public updateAddress(m: Member, a: Address) {
         return this.http.put(URL + 'address/' + a._id, a).map(res => true);
+    }
+
+    public updateCurrentAddress( a: Address) {
+        return this.http.put(URL + 'address/current/' + a._id, a).map(res => true);
     }
 }

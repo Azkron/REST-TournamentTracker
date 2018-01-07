@@ -1,149 +1,90 @@
-import { Component, OnInit, Inject, ElementRef, ViewChild, Output, EventEmitter, TemplateRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { MemberService, Member, Address } from "./member.service";
-import { IDialog, DialogResult } from "../configdata//dialog";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { MyInputComponent } from "../configdata/myinput.component";
-// import { MyModalComponent } from "../configdata/mymodal.component";
-import { validateConfig } from '@angular/router/src/config';
+import { Component, ViewChild, OnInit } from "@angular/core";
+import { MemberService, Member } from "./member.service";
+import { EditMemberComponent } from "./edit-member.component";
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
-import * as _ from 'lodash';
+import { SnackBarComponent } from "../configdata/snackbar.component";
+import { Observable } from "rxjs/Observable";
+import { Tools } from "../configdata/tools";
 
-declare var $: any;
 
 @Component({
     selector: 'edit-account',
-    templateUrl: 'edit-account.component.html'
+    templateUrl: './edit-account.component.html',
 })
-export class EditAccountComponent implements OnInit {
-    public frm: FormGroup;
-    public ctlPseudo: FormControl;
-    public ctlProfile: FormControl;
-    public ctlPassword: FormControl;
-    public ctlBirthDate: FormControl;
-    public ctlAdmin: FormControl;
-    private m: Member;
-    columnDefs: ColumnDef[] = [
-        { name: 'street_addr', type: 'String', header: 'Street Address', width: 1, key: true, filter: true, sort: 'asc' },
+export class EditAccountComponent implements OnInit{
+    currentMember: Member;
+
+    // @ViewChild('members') members: MyTableComponent;
+    @ViewChild('addresses') addresses: MyTableComponent;
+
+    // columnDefs: ColumnDef[] = [
+    //     { name: 'pseudo', type: 'String', header: 'Pseudo', width: 1, key: true, filter: true, sort: 'asc' },
+    //     { name: 'profile', type: 'String', header: 'Profile', width: 2, filter: true },
+    //     { name: 'birthdate', type: 'Date', header: 'Birth Date', width: 1, filter: true, align: 'center' }
+    // ];
+    addressColumnDefs: ColumnDef[] = [
+        { name: 'street_addr', type: 'String', header: 'Street Address', width: 1, filter: true, sort: 'asc' },
         { name: 'postal_code', type: 'String', header: 'Postal Code', width: 2, filter: true },
         { name: 'localization', type: 'Date', header: 'Localization', width: 1, filter: true, align: 'center' }
     ];
 
-    @ViewChild('pseudo') pseudo: MyInputComponent;
-    @ViewChild('address') address: MyTableComponent;
-
-    constructor(private memberService: MemberService, private fb: FormBuilder) {
-        this.ctlPseudo = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')], [this.pseudoUsed()]);
-        this.ctlPassword = this.fb.control('', [Validators.required, Validators.minLength(3)]);
-        this.ctlProfile = this.fb.control('', []);
-        this.ctlBirthDate = this.fb.control('', []);
-        this.ctlAdmin = this.fb.control(false, []);
-        this.frm = this.fb.group({
-            _id: null,
-            pseudo: this.ctlPseudo,
-            password: this.ctlPassword,
-            profile: this.ctlProfile,
-            birthdate: this.ctlBirthDate,
-            admin: this.ctlAdmin
-        }, { validator: this.crossValidations });
+    constructor(private memberService: MemberService) {
     }
 
-    // Validateur bidon qui vérifie que la valeur est différente
-    forbiddenValue(val: string): any {
-        return (ctl: FormControl) => {
-            if (ctl.value === val)
-                return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } }
-            return null;
-        };
+    ngOnInit(){
+        
+        this.memberService.getCurrent().subscribe(member => {
+            this.currentMember = member;
+        })
     }
 
-    // Validateur asynchrone qui vérifie si le pseudo n'est pas déjà utilisé par un autre membre
-    pseudoUsed(): any {
-        let timeout;
-        return (ctl: FormControl) => {
-            clearTimeout(timeout);
-            let pseudo = ctl.value;
-            return new Promise(resolve => {
-                timeout = setTimeout(() => {
-                    if (ctl.pristine)
-                        resolve(null);
-                    else
-                        this.memberService.getOne(pseudo).subscribe(member => {
-                            resolve(member ? { pseudoUsed: true } : null);
-                        });
-                }, 300);
-            });
-        };
-    }
+    // get getDataService() {
+    //     return m => this.memberService.getCurrent();
+    // }
 
-    static assert(group: FormGroup, ctlName: string[], value: boolean, error: object) {
-        ctlName.forEach(n => {
-            if (group.contains(n)) {
-                if (!value) {
-                    group.get(n).setErrors(error);
-                    group.get(n).markAsDirty();
-                }
-                else {
-                    group.get(n).setErrors(null);
-                }
-            }
-        });
-    }
+    // get addService() {
+    //     return m => this.memberService.add(m);
+    // }
 
-    crossValidations(group: FormGroup) {
-        if (group.pristine || !group.value) return;
-        EditAccountComponent.assert(
-            group,
-            ['password', 'profile'],
-            group.value.password != group.value.profile,
-            { passwordEqualProfile: true }
-        );
-    }
-
-    ngOnInit() {
-        // this.modal.shown.subscribe(_ => this.pseudo.setFocus(true));
-    }
-
-    show(m: Member)/*: Subject<DialogResult>*/ {
-        this.m = m;
-        this.address.refresh();
-        // this.closed = new Subject<DialogResult>();
-        this.frm.reset();
-        this.frm.markAsPristine();
-        this.frm.patchValue(m);
-        // this.modal.show();
-        // return this.closed;
-    }
-
-    update() {
-        // this.modal.close();
-        // this.closed.next({ action: 'update', data: this.frm.value });
-    }
-
-    cancel() {
-        // this.modal.close();
-        // this.closed.next({ action: 'cancel', data: this.frm.value });
-    }
-
-    get getDataService() {
-        return _ => Observable.of(this.m ? this.m.address : []);
-    }
-
-    get addService() {
-        return a => Observable.of(a);
-    }
-
-    get deleteService() {
-        return a => {
-            this.frm.markAsDirty();
-            this.m.address = _.reject(this.m.address, a);
-            return Observable.of(a);
-        };
-    }
+    // get deleteService() {
+    //     return m => this.memberService.delete(m);
+    // }
 
     get updateService() {
-        return a => Observable.of(a);
+        return m => this.memberService.updateCurrent(m);
     }
 
+    // public selectedItemChanged(item) {
+    //     this.currentMember = this.members.selectedItem as Member;
+    //     if (this.addresses)
+    //         this.addresses.refresh();
+    // }
+
+    get getAddressDataService() {
+        return m => Observable.of(this.currentMember ? this.currentMember.address : null);
+    }
+
+    get addAddressService() {
+        return a => {
+            console.log("ADD", a, this.currentMember);
+            // a.member = this.selectedMember;
+            return this.memberService.addCurrentAddress(Tools.removeCircularReferences(a));
+        };
+    }
+
+    get deleteAddressService() {
+        return a => {
+            // console.log("DEL", a);
+            return this.memberService.deleteCurrentAddress(Tools.removeCircularReferences(a));
+        };
+    }
+
+    get updateAddressService() {
+        return a => {
+            // console.log("UPD", a);
+            // a.member = this.selectedMember;
+            return this.memberService.updateCurrentAddress(Tools.removeCircularReferences(a));
+        };
+    }
 }
+
