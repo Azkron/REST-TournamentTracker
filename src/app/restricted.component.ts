@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
     selector: 'restricted',
     template: `
     <h1>Restricted Access</h1>
-    <p>You will be redirected automatically to the login page...</p>
+    <p>You will be redirected automatically to the home page...</p>
     `
 })
 
@@ -14,7 +14,7 @@ export class RestrictedComponent implements OnInit {
 
     ngOnInit() {
         setTimeout(() => {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/home']);
         }, 2000);
     }
 }

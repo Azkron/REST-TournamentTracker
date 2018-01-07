@@ -75,14 +75,14 @@ export class TournamentDetailsComponent implements OnInit {
 
     public selectedItemChangedUnassigned(item) {
         this.selectedMember = this.membersUnassigned.selectedItem as Member;
-        console.log("selected Member Unassigned => " + this.selectedMember.pseudo)
+        // console.log("selected Member Unassigned => " + this.selectedMember.pseudo)
         // if (this.membersUnassigned)
         //     this.membersUnassigned.refresh();
     }
 
     public selectedItemChangedAssigned(item) {
         this.selectedMember = this.membersAssigned.selectedItem as Member;
-        console.log("selected Member Assigned=> " +this.selectedMember.pseudo)
+        // console.log("selected Member Assigned=> " +this.selectedMember.pseudo)
         // if (this.membersAssigned)
         //     this.membersAssigned.refresh();
     }
@@ -99,8 +99,8 @@ export class TournamentDetailsComponent implements OnInit {
     sendUnassigned() {
         this.selectedMember = this.membersUnassigned.selectedItem as Member;
         if(this.selectedMember) {
-                console.log("selected Member Unassigned click => " + this.selectedMember.pseudo);
-                console.log("tounrament details name => " +this.tournamentDetails.name);
+                // console.log("selected Member Unassigned click => " + this.selectedMember.pseudo);
+                // console.log("tounrament details name => " +this.tournamentDetails.name);
 
                 this.tournamentDetails.members.push(this.selectedMember);
                 this.selectedMember.tournaments.push(this.tournamentDetails);
@@ -122,7 +122,7 @@ export class TournamentDetailsComponent implements OnInit {
 
     sendAllUnassigned() {
         for(let i of this.listMembersUnassigned) {
-            console.log("i unassigned => " +i)
+            // console.log("i unassigned => " +i)
             let m = new Member(i);
 
             // if(this.tournamentDetails == null) {
@@ -156,8 +156,8 @@ export class TournamentDetailsComponent implements OnInit {
     sendAssigned() {
         this.selectedMember = this.membersAssigned.selectedItem as Member;
         if(this.selectedMember) {
-            console.log("selected Member Assigned click => " + this.selectedMember.pseudo);
-            console.log("tounrament details name => " +this.tournamentDetails.name)
+            // console.log("selected Member Assigned click => " + this.selectedMember.pseudo);
+            // console.log("tounrament details name => " +this.tournamentDetails.name)
 
             let indexMember = this.tournamentDetails.members.findIndex(m => m._id == this.selectedMember._id);
             let indexTournament = this.selectedMember.tournaments.findIndex(t => t._id == this.tournamentDetails._id)
@@ -183,7 +183,7 @@ export class TournamentDetailsComponent implements OnInit {
 
     sendAllAssigned() {
         for(let i of this.tournamentDetails.members) {
-            console.log("i.pseudo=> " + i.pseudo);
+            // console.log("i.pseudo=> " + i.pseudo);
             // console.log("i.tournaments=> " + i.tournaments);
 
             let m = new Member(i);
@@ -191,8 +191,8 @@ export class TournamentDetailsComponent implements OnInit {
             let indexMember = this.tournamentDetails.members.findIndex(x => x._id == m._id);
             let indexTournament = m.tournaments.findIndex(t => t.toString() == this.tournamentDetails._id)
             
-            console.log("index member => " +indexMember);
-            console.log("index tournament => " +indexTournament);
+            // console.log("index member => " +indexMember);
+            // console.log("index tournament => " +indexTournament);
 
             // if(this.listMembersUnassigned == null)
             //     this.listMembersUnassigned = new Array<Member>();
@@ -261,7 +261,7 @@ export class TournamentDetailsComponent implements OnInit {
         }
         let count = 0;
         for(let i of this.listGame) {
-            console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
+            // console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
             let match = new Game(i);
             this.GameService.add(match).subscribe(c =>  {
                 if(c) {

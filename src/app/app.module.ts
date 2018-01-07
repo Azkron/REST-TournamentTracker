@@ -86,13 +86,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
                     { path: 'logout', component: LogoutComponent },
                     { path: 'home', component: HomeComponent },
                     { path: 'account', component: EditAccountComponent },
+                    { path: 'tournaments', component: TournamentListComponent },
                     {
                         path: '',
                         canActivate: [AdminGuard],
                         children: [
                             { path: 'members', component: MemberListComponent },
                             { path: 'memberdetails/:pseudo', component: MemberDetailsComponent },
-                            { path: 'tournaments', component: TournamentListComponent },
                             { path: 'tournamentdetails/:name', component: TournamentDetailsComponent },
                         ]
                     },                                   

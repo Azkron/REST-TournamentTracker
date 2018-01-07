@@ -6,5 +6,7 @@ import { AuthService } from "./auth.service"
     templateUrl: './app.component.html',
 })
 export class AppComponent {
-    constructor(public authService : AuthService) {}    // necessaire car utilisé en binding dans le template
+
+    constructor(public authService : AuthService) {
+    }    // necessaire car utilisé en binding dans le template
 }

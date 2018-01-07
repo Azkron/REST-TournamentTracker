@@ -108,5 +108,4 @@ export class AuthentificationRouter {
     public static getPseudo(req){
         return req.decoded.pseudo;
     }
-
 }

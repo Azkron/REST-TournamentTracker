@@ -9,8 +9,9 @@ export class TournamentsRouter {
     constructor() {
         this.router = Router();
         this.router.get('/countTournament', this.getCountTournament);
-        this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
+        this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
+        
         this.router.post('/', this.create);
         this.router.get('/:name', this.findByName);
         this.router.get('/byId/:id', this.findById);

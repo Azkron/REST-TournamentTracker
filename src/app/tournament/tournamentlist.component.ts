@@ -45,14 +45,14 @@ export class TournamentListComponent {
     ];
     gameColumnDefs: ColumnDef[] = [
         { name: 'player_1', type: 'String', header: 'Player_1', width: 1, key: true, filter: true, sort: 'asc' }, 
-        { name: 'points_player_1', type: 'String', header: 'Points P_1', width: 1, filter: true, align: 'center'},
+        { name: 'points_player_1', type: 'String', header: 'Points Player 1', width: 1, filter: true, align: 'center'},
         { name: 'score_player_1', type: 'String', header: 'Score Player 1', width: 1, filter: true, align: 'center' },
         { name: 'score_player_2', type: 'String', header: 'Score Player 2', width: 1, filter: true, align: 'center' },
-        { name: 'points_player_2', type: 'String', header: 'Points P_2', width: 1, filter: true, align: 'center'},
+        { name: 'points_player_2', type: 'String', header: 'Points Player 2', width: 1, filter: true, align: 'center'},
         { name: 'player_2', type: 'String', header: 'Player_2', width: 1, filter: true, sort: 'asc' }
     ];
 
-    constructor(private tournamentService: TournamentService, private gameService: GameService) {
+    constructor(private tournamentService: TournamentService) {
     }
 
     public getGamesTournament() {
@@ -89,25 +89,4 @@ export class TournamentListComponent {
         return m => Observable.of(this.selectedTournament ? this.selectedTournament.games : null);
         // return m => this.gameService.getAll();
     }
-
-    // get addAddressService() {
-    //     return a => {
-    //         // console.log("ADD", a, this.selectedMember);
-    //         return this.memberService.addAddress(this.selectedMember, a);
-    //     };
-    // }
-
-    // get deleteAddressService() {
-    //     return a => {
-    //         // console.log("DEL", a);
-    //         return this.memberService.deleteAddress(this.selectedMember, a);
-    //     };
-    // }
-
-    // get updateAddressService() {
-    //     return a => {
-    //         // console.log("UPD", a);
-    //         return this.memberService.updateAddress(this.selectedMember, a);
-    //     };
-    // }
 }
