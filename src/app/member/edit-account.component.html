@@ -13,8 +13,8 @@
                 [updateService]="updateService" filterPlaceHolder="Filter Members" [editComponent]="editMember" addCaption="Add New Member"
                 [pageSize]="5" (selectedItemChanged)="selectedItemChanged($event)" [cancellable]="false" [confirmDelete]="true">
             </mytable> -->
+            <button class="btn dtn-default " (click)="openEditModal(editMember)">Edit</button>
         </div>
-        <button (click)="openEditModal(editMember)">Edit</button>
     </div>
     <div class="row">
         <div class="col-sm-12">

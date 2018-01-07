@@ -70,8 +70,9 @@ export class TournamentService {
     public update(t: Tournament):  Observable<Tournament> {
         // console.log(t);
         return this.http.put(URL + t.name, Tools.removeCircularReferences(t)).map(result => {
-            console.log(result);
-            return new Tournament(result.json);
+            
+            console.log("RESULT = " + result);
+            return new Tournament(result.json());
             // return result.json().map(json => new Tournament(json));
         });
     }

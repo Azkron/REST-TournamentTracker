@@ -55,12 +55,16 @@ export class GameService {
     public getGamesTournament(t:  Tournament): Observable<Game[]> {
         return this.http.get(URL + 'gamesTournament/' +t._id)
             .map(result => {
-                return result.json().map((json => new Game(json)));
+                return result.json().map(json => new Game(json));
             })
     }
 
-    public add(g: Game): Observable<boolean> {
-        return this.http.post(URL, Tools.removeCircularReferences(g)).map(res => true);
+    public add(g: Game): Observable<Game> {
+        return this.http.post(URL, Tools.removeCircularReferences(g))
+            .map(result => {
+                let data = result.json();
+                return data.length > 0 ? new Game(data[0]) : null;
+            });
     }
     // res => new Game(res.json())
     // public getOneDetails(name: string): Observable<Tournament> {
