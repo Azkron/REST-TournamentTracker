@@ -9,7 +9,9 @@
                     <my-input label="Password" type="password" formControlName="password"></my-input>
                     <my-input label="Profile" formControlName="profile"></my-input>
                     <my-input label="Birth Date" type="date" formControlName="birthdate"></my-input>
-                    <my-input label="Has Administrator Role" type="checkbox" formControlName="admin"></my-input>
+                    <ng-container *ngIf="authService.isAdmin">
+                        <my-input label="Has Administrator Role" type="checkbox" formControlName="admin"></my-input>
+                    </ng-container>
                 </form>
             </div>
         </div>

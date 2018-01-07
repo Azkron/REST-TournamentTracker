@@ -8,6 +8,7 @@ import { MyInputComponent } from "../configdata/myinput.component";
 import { MyModalComponent } from "../configdata/mymodal.component";
 import { validateConfig } from '@angular/router/src/config';
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
+import { AuthService } from "../auth.service"
 import * as _ from 'lodash';
 
 declare var $: any;
@@ -35,7 +36,7 @@ export class EditMemberComponent implements OnInit, IDialog {
     @ViewChild('pseudo') pseudo: MyInputComponent;
     // @ViewChild('address') address: MyTableComponent;
 
-    constructor(private memberService: MemberService, private fb: FormBuilder) {
+    constructor(private memberService: MemberService, private fb: FormBuilder, private authService : AuthService) {
         this.ctlPseudo = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')], [this.pseudoUsed()]);
         this.ctlPassword = this.fb.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlProfile = this.fb.control('', []);

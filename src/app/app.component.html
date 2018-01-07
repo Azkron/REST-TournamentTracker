@@ -22,12 +22,12 @@
                     <ng-container *ngIf="authService.isAdmin">
                         <li><a [routerLink]="['/members']">Members</a></li>
                     </ng-container>
-                    <ng-container *ngIf="!authService.isAdmin">
+                    <!-- <ng-container *ngIf="!authService.isAdmin">
                         <li><a [routerLink]="['/account']">Account</a></li>
-                    </ng-container>
+                    </ng-container> -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a><span class="glyphicon glyphicon-user"></span> User: {{authService.currentUser}} </a></li>
+                    <li><a [routerLink]="['/account']"><span class="glyphicon glyphicon-user"></span> {{authService.currentUser}} </a></li>
                     <li><a [routerLink]="['/logout']"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
                 </ul>
             </ng-container>
