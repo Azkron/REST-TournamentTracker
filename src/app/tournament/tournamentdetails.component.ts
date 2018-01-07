@@ -275,5 +275,8 @@ export class TournamentDetailsComponent implements OnInit {
             // this.tournamentDetails.games.push(match);
             // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
         }
+        setTimeout(() => {
+            this.router.navigate(['/tournaments']);
+        }, 2000);
     }    
 }

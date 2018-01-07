@@ -108,7 +108,7 @@ export class TournamentsRouter {
 
     public update(req: Request, res: Response, next: NextFunction) {
         let t = new Tournament(req.body);
-        console.log(t)
+        console.log(req.body)
         // console.log("insert game in tournament => " +t.games)
 		Tournament.findOneAndUpdate({ name: req.params.name },
             req.body,
