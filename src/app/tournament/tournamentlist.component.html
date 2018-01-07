@@ -30,12 +30,9 @@
     <div class="col-sm-12">
         <button class="btn dtn-default" type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
     </div>
-</div>
-
-<div class="row" *ngIf="selectedTournament">
     <div class="col-sm-12">
-        <mytable #members [columnDefs]="memberColumnDefs" [getDataService]="getMemberDataService" [addService]="addMemberService" [deleteService]="deleteMemberService"
-            [updateService]="updateMemberService" filterPlaceHolder="Filter Members" addCaption="Add New Address"
+        <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [addService]="addMemberService" [deleteService]="deleteMemberService"
+            [updateService]="updateMemberService" filterPlaceHolder="Filter Matches" addCaption="Add New Address"
             [pageSize]="3" [cancellable]="true" [confirmDelete]="false" [readOnly]="true"></mytable>
     </div>
 </div>

@@ -21,6 +21,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { TournamentService, Tournament } from "./tournament.service";
 import { EditTournamentComponent } from "./edit-tournament.component";
+import { GameService, Game } from "../game/game.service";
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
@@ -30,10 +31,11 @@ import { Observable } from "rxjs/Observable";
     templateUrl: './tournamentlist.component.html',
 })
 export class TournamentListComponent {
+    public listGame : Game[];
     selectedTournament: Tournament;
 
     @ViewChild('tournaments') tournaments: MyTableComponent;
-    @ViewChild('members') members: MyTableComponent;
+    @ViewChild('games') games: MyTableComponent;
 
     columnDefs: ColumnDef[] = [
         { name: 'name', type: 'String', header: 'Name', width: 1, key: true, filter: true, sort: 'asc' },
@@ -41,14 +43,20 @@ export class TournamentListComponent {
         { name: 'finish', type: 'Date', header: 'Finish Date', width: 1, filter: true, align: 'center' },
         { name: 'maxPlayers', type: 'Number', header: 'Max Players', width: 1, filter: true, align: 'center' }
     ];
-    memberColumnDefs: ColumnDef[] = [
-        { name: 'pseudo', type: 'String', header: 'Pseudo', width: 1, key: true, filter: true, sort: 'asc' },
-        { name: 'profile', type: 'String', header: 'Profile', width: 2, filter: true },
-        { name: 'birthdate', type: 'Date', header: 'Birth Date', width: 1, filter: true, align: 'center' },
-        { name: 'admin', type: 'Boolean', header: 'Is Admin', width: 1, filter: false, align: 'center' }
+    gameColumnDefs: ColumnDef[] = [
+        { name: 'player_1', type: 'String', header: 'Player_1', width: 1, key: true, filter: true, sort: 'asc' }, 
+        { name: 'points_player_1', type: 'String', header: 'Points P_1', width: 1, filter: true, align: 'center'},
+        { name: 'score_player_1', type: 'String', header: 'Score Player 1', width: 1, filter: true, align: 'center' },
+        { name: 'score_player_2', type: 'String', header: 'Score Player 2', width: 1, filter: true, align: 'center' },
+        { name: 'points_player_2', type: 'String', header: 'Points P_2', width: 1, filter: true, align: 'center'},
+        { name: 'player_2', type: 'String', header: 'Player_2', width: 1, filter: true, sort: 'asc' }
     ];
 
-    constructor(private tournamentService: TournamentService) {
+    constructor(private tournamentService: TournamentService, private gameService: GameService) {
+    }
+
+    public getGamesTournament() {
+
     }
 
     get getDataService() {
@@ -70,12 +78,16 @@ export class TournamentListComponent {
     public selectedItemChanged(item) {
         this.selectedTournament = this.tournaments.selectedItem as Tournament;
         // console.log("selectedTournament => " +this.selectedTournament.name)
-        if (this.members)
-            this.members.refresh();
+        if (this.games)
+            this.games.refresh();
     }
 
-    get getMemberDataService() {
-        return m => Observable.of(this.selectedTournament ? this.selectedTournament.members : null);
+    get getGameDataService() {
+        // console.log("games =>  " +this.gameService.getAll())
+        console.log("tournament => " +this.selectedTournament.name)
+        console.log("games => " +this.selectedTournament.games)
+        return m => Observable.of(this.selectedTournament ? this.selectedTournament.games : null);
+        // return m => this.gameService.getAll();
     }
 
     // get addAddressService() {

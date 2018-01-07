@@ -226,14 +226,13 @@ export class TournamentDetailsComponent implements OnInit {
         first = true; loop = true; addListGame = true;
         for(let i in this.tournamentDetails.members) {
             for(let j in this.tournamentDetails.members) {
-
                 let m = new Member(this.tournamentDetails.members[i]);
                 let m1 = new Member(this.tournamentDetails.members[j]);
                     
                 if(m.pseudo !== m1.pseudo) {
                     let g = new Game({
-                    player_1 : m,
-                    player_2 : m1,
+                    player_1 : m.pseudo,
+                    player_2 : m1.pseudo,
                     tournament: this.tournamentDetails
                     });
 
@@ -244,7 +243,7 @@ export class TournamentDetailsComponent implements OnInit {
                     else {
                         for(let i of this.listGame) {
                             if(loop) {
-                                if (g.player_1.pseudo == i.player_2.pseudo && g.player_2.pseudo == i.player_1.pseudo) {
+                                if (g.player_1 == i.player_2 && g.player_2 == i.player_1) {
                                     loop = false;
                                     addListGame = false;
                                 }
@@ -260,12 +259,21 @@ export class TournamentDetailsComponent implements OnInit {
                 addListGame = true;
             }            
         }
+        let count = 0;
         for(let i of this.listGame) {
-            console.log("listgame player_1 => " +i.player_1.pseudo  +" player_2 => " +i.player_2.pseudo);
+            console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
             let match = new Game(i);
-            this.GameService.add(match).subscribe(c =>  console.log("created game => " +c));
-            this.tournamentDetails.games.push(match);
-            this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
+            this.GameService.add(match).subscribe(c =>  {
+                if(c) {
+                    this.tournamentDetails.games.push(match);
+                    ++count;
+                    if(count === this.listGame.length) {
+                        this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log(t));
+                    }
+                }    
+            });
+            // this.tournamentDetails.games.push(match);
+            // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
         }
     }    
 }
