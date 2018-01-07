@@ -9,7 +9,6 @@ export interface IMember extends mongoose.Document {
     profile: string;
     birthdate: string;
     admin: boolean;
-    points: Number;
     addresses: mongoose.Types.Array<IAddress>;
     tournaments: mongoose.Types.Array<ITournament>;
 }

@@ -12,6 +12,7 @@ export class GamesRouter {
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
         this.router.post('/', this.create);
+        this.router.get('/gamesTournament/', this.getGamesTournament);
         // this.router.get('/:name', this.findByName);
         // this.router.get('/byId/:id', this.findById);
         // this.router.get('/byStartDate/:start', this.findByStartDate);
@@ -30,59 +31,28 @@ export class GamesRouter {
         });
     }
 
-    public getAll(req: Request, res: Response, next: NextFunction) {
-		Game.find().populate('player_1').populate('player_2').populate('tournament').sort({ name: 'asc' }).exec((err, games) => {
+    public getGamesTournament(req: Request, res: Response, next: NextFunction) {
+        let tournamentId = req.params.id;
+		Game.find().populate('tournament').sort({ name: 'asc' }).exec((err, games) => {
             if(err) res.send(err);
             res.json(games);
         });
     }
 
-    // public findById(req: Request, res: Response, next: NextFunction) {
-    //     Tournament.find({ _id: req.params.id })
-    //         .then(tournament => res.json(tournament))
-    //         .catch(err => res.json([]));
-    // }
-	
-	// public findByName(req: Request, res: Response, next: NextFunction) {
-    //     Tournament.find({ name: req.params.name })
-    //         .then(tournament => res.json(tournament))
-    //         .catch(err => res.json([]));
-    // }
-
-    // public findByMaxPlayers(req: Request, res: Response, next: NextFunction) {
-    //     Tournament.find({ maxPlayers: req.params.max }).sort({ name: 'asc' })
-    //         .then(tournaments => res.json(tournaments))
-    //         .catch(err => res.json([]));
-    // }
-
-    // public getRange(req: Request, res: Response, next: NextFunction) {
-    //     let d1 = new Date(req.params.start);
-    //     let d2 = new Date(req.params.finish);
-    //     if (isNaN(d1.valueOf()) || isNaN(d2.valueOf()))
-    //         res.json({errmsg: 'bad date range'});
-    //     else {
-    //         Tournament.find({ start: { $gte: d1, $lte: d2 } })
-    //             .then(tournaments => res.json(tournaments))
-    //             .catch(err => res.json([]));
-    //     }
-    // }
-
-    // public createPromise(req: Request, res: Response, next: NextFunction) {
-    //     let tournament = new Tournament(req.body);
-    //     tournament
-    //         .save()
-    //         .then(saved => console.log("saved", saved))
-    //         .catch(err => console.log("error", err));
-    // }
+    public getAll(req: Request, res: Response, next: NextFunction) {
+		Game.find().populate('tournament').sort({ name: 'asc' }).exec((err, games) => {
+            if(err) res.send(err);
+            res.json(games);
+        });
+    }
 
     public create(req: Request, res: Response, next: NextFunction) {
         let game = new Game(req.body);
-        console.log("new game player_1=>" +game.player_1 + "  player_2 => " +game.player_2)
+        // console.log("new game player_1=>" +game.player_1 + "  player_2 => " +game.player_2)
         game.save()
             .then(r => res.json(r))
             .catch(err => res.json(err));
     }
-
 
     // public update(req: Request, res: Response, next: NextFunction) {
 	// 	Tournament.findOneAndUpdate({ name: req.params.name },

@@ -9,7 +9,7 @@ import { MembersRouter } from './routes/members.router';
 import { MembersCommonRouter } from './routes/members-common.router';
 import { Tournament } from './models/tournament';
 import { TournamentsRouter } from './routes/tournaments.router';
-import { Game } from './models/game';
+import { Game, IGame } from './models/game';
 import { GamesRouter } from './routes/games.router';
 
 const MONGO_URL = 'mongodb://127.0.0.1/msn';
@@ -76,8 +76,8 @@ export class Server {
                 
 
                 //test adresses
-                let addr1 = new Address({ "street_addr": "rue bazar 12", "postal_code": "1000", "localization": "Bxl" });
-                let addr2 = new Address({ "street_addr": "rue machin 5", "postal_code": "1200", "localization": "Bxl" });
+                let addr1 = new Address({ street_addr: "rue bazar 12", postal_code: "1000", localization: "Bxl" });
+                let addr2 = new Address({ street_addr: "rue machin 5", postal_code: "1200", localization: "Bxl" });
                 let bruno = new Member({ pseudo: "bruno", password: "bruno", profile: "Hi, I'm bruno!", birthdate: "10/26/1990", addresses: [addr1, addr2] });
                 addr1.member = bruno;
                 addr2.member = bruno;
@@ -99,6 +99,13 @@ export class Server {
                 let test2 = new Member({ pseudo: "test2", password: "test2", profile: "Hi, I'm test2!", birthdate: "10/26/1989", tournaments: [tourn1, tourn2] });
                 
                 this.initDataGame();
+                let game1 = new Game({ player_1: "test1", player_2: "test2", tournament: tourn2 });
+                let game2 = new Game({ player_1: "test1", player_2: "testeur", tournament: tourn1 });
+
+                Game.insertMany([game1, game2]);
+
+                tourn1.games = [game2] as mongoose.Types.Array<IGame>;
+                tourn2.games = [game1] as mongoose.Types.Array<IGame>;
 
                 tourn1.members = [test1, test2] as mongoose.Types.Array<IMember>;
                 tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;

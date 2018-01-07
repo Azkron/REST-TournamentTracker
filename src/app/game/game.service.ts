@@ -3,7 +3,6 @@ import { Observable } from "rxjs/Observable";
 import { Http, RequestOptions } from "@angular/http";
 import { SecuredHttp } from "../securedhttp.service";
 
-import { Member} from "../member/member.service"
 import { Tournament} from "../tournament/tournament.service"
 
 import { Tools } from "../configdata/tools";
@@ -12,10 +11,12 @@ import 'rxjs/add/operator/map';
 
 export class Game {
     _id: string;
-    player_1: Member;
-    player_2: Member;
+    player_1: string;
+    player_2: string;
     score_player_1: string;
     score_player_2: string;
+    points_player_1: Number;
+    points_player_2: Number;
     tournament: Tournament;
 
     constructor(data) {
@@ -24,6 +25,8 @@ export class Game {
         this.player_2 = data.player_2;
         this.score_player_1 = data.score_player_1;
         this.score_player_2 = data.score_player_2;
+        this.points_player_1 =  data.points_player_1;
+        this.points_player_2 =  data.points_player_2;
         this.tournament = data.tournament;
     }
 }
@@ -49,10 +52,17 @@ export class GameService {
             })
     }
 
-    public add(g: Game): Observable<Game> {
-        return this.http.post(URL, Tools.removeCircularReferences(g)).map(res => new Game(res.json()));
+    public getGamesTournament(t:  Tournament): Observable<Game[]> {
+        return this.http.get(URL + 'gamesTournament/' +t._id)
+            .map(result => {
+                return result.json().map((json => new Game(json)));
+            })
     }
 
+    public add(g: Game): Observable<boolean> {
+        return this.http.post(URL, Tools.removeCircularReferences(g)).map(res => true);
+    }
+    // res => new Game(res.json())
     // public getOneDetails(name: string): Observable<Tournament> {
     //     // return this.http.get(URL +name)
     //     //     .map(result => {
