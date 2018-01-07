@@ -274,6 +274,7 @@ export class TournamentDetailsComponent implements OnInit {
             // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
         }
         
+        // TODO PRINT OF .games
         this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log(t));
 
 
