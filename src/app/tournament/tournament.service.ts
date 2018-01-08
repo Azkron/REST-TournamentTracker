@@ -35,6 +35,13 @@ export class TournamentService {
     constructor(private http: SecuredHttp) {
     }
 
+    public subscribeCurrent(tournament: Tournament): Observable<number>{
+        return this.http.put(URL + 'subscribeCurrent',{"tournament": Tools.removeCircularReferences(tournament)})
+            .map(result => {
+                return result.json();
+            })
+    }
+
     public getCountTournament(): Observable<number> {
         return this.http.get(URL + 'countTournament')
             .map(result => {

@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as mongoose from 'mongoose';
 import Tournament from '../models/tournament';
+import Game from "../models/game";
+import Member from "../models/member";
 import { AuthentificationRouter } from "./authentication.router";
 
 export class TournamentsRouter {
@@ -10,6 +12,7 @@ export class TournamentsRouter {
         this.router = Router();
         this.router.get('/countTournament', this.getCountTournament);
         this.router.get('/', this.getAll);
+        this.router.put('/subscribeCurrent', this.subscribeCurrent);
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         
         this.router.post('/', this.create);
@@ -22,6 +25,36 @@ export class TournamentsRouter {
         this.router.put('/:name', this.update);
         this.router.delete('/:name', this.deleteOne);
         this.router.delete('/:start/:finish', this.deleteRange);
+    }
+    
+    public subscribeCurrent(req: Request, res: Response, next: NextFunction) {
+        
+        // let memberPseudo = AuthentificationRouter.getPseudo(req);
+        // Member.find({ pseudo: memberPseudo }).then(m =>{
+        //     let tournament = new Tournament(req.body);
+        //     let currMember = new Member(m);
+        //     for(let member of tournament.members)
+        //     {
+        //         let game = new Game({
+        //             player_1 : currMember.pseudo,
+        //             player_2 : member.pseudo,
+        //             tournament: tournament
+        //             });
+
+        //         game.save().then(g => game = g);
+        //         tournament.games.push(game);
+        //     }
+    
+        //     Tournament.findOneAndUpdate({ name: tournament.name },
+        //         tournament,
+        //         { new: true })  // pour renvoyer le document modifié
+        //         .populate('members').populate('games').then(r => {
+        //             // console.log("r =>" +r)
+        //             res.json(r)
+        //         })
+        //         .catch(err => res.json(err));
+
+        // });
     }
 
     public getCountTournament(req: Request, res: Response, next: NextFunction) {
@@ -39,13 +72,13 @@ export class TournamentsRouter {
     }
 
     public findById(req: Request, res: Response, next: NextFunction) {
-        Tournament.find({ _id: req.params.id })
+        Tournament.find({ _id: req.params.id }).populate('members').populate('games')
             .then(tournament => res.json(tournament))
             .catch(err => res.json([]));
     }
 	
 	public findByName(req: Request, res: Response, next: NextFunction) {
-        Tournament.find({ name: req.params.name })
+        Tournament.find({ name: req.params.name }).populate('members').populate('games')
             .then(tournament => res.json(tournament))
             .catch(err => res.json([]));
     }
@@ -53,7 +86,7 @@ export class TournamentsRouter {
     public findByStartDate(req: Request, res: Response, next: NextFunction) {
         let d = new Date(req.params.start);
         if (!isNaN(d.valueOf())) {
-            Tournament.find({ start: d }).sort({ name: 'asc' })
+            Tournament.find({ start: d }).populate('members').populate('games').sort({ name: 'asc' })
                 .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }
@@ -64,7 +97,7 @@ export class TournamentsRouter {
     public findByFinishDate(req: Request, res: Response, next: NextFunction) {
         let d = new Date(req.params.finish);
         if (!isNaN(d.valueOf())) {
-            Tournament.find({ finish: d }).sort({ name: 'asc' })
+            Tournament.find({ finish: d }).populate('members').populate('games').sort({ name: 'asc' })
                 .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }
@@ -73,7 +106,7 @@ export class TournamentsRouter {
     }
 
     public findByMaxPlayers(req: Request, res: Response, next: NextFunction) {
-        Tournament.find({ maxPlayers: req.params.max }).sort({ name: 'asc' })
+        Tournament.find({ maxPlayers: req.params.max }).populate('members').populate('games').sort({ name: 'asc' })
             .then(tournaments => res.json(tournaments))
             .catch(err => res.json([]));
     }
@@ -84,7 +117,7 @@ export class TournamentsRouter {
         if (isNaN(d1.valueOf()) || isNaN(d2.valueOf()))
             res.json({errmsg: 'bad date range'});
         else {
-            Tournament.find({ start: { $gte: d1, $lte: d2 } })
+            Tournament.find({ start: { $gte: d1, $lte: d2 } }).populate('members').populate('games')
                 .then(tournaments => res.json(tournaments))
                 .catch(err => res.json([]));
         }

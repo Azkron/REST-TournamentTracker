@@ -25,6 +25,7 @@ import { GameService, Game } from "../game/game.service";
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
+import { AuthService } from "../auth.service";
 
 @Component({
     selector: 'tournamentlist',
@@ -52,7 +53,11 @@ export class TournamentListComponent {
         { name: 'player_2', type: 'String', header: 'Player_2', width: 1, filter: true, sort: 'asc' }
     ];
 
-    constructor(private tournamentService: TournamentService) {
+    constructor(private tournamentService: TournamentService, private authService: AuthService) {
+    }
+
+    public subscribe(tournament : Tournament){
+        this.tournamentService.subscribeCurrent(tournament);
     }
 
     public getGamesTournament() {

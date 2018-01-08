@@ -8,7 +8,7 @@ import { MyInputComponent } from "../configdata/myinput.component";
 import { MyModalComponent } from "../configdata/mymodal.component";
 import { validateConfig } from '@angular/router/src/config';
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
-import { AuthService } from "../auth.service"
+import { AuthService } from "../auth.service";
 import * as _ from 'lodash';
 
 declare var $: any;
