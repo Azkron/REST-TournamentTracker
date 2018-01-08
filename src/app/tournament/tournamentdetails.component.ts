@@ -260,6 +260,7 @@ export class TournamentDetailsComponent implements OnInit {
             }            
         }
 
+        let count = 0;
         for(let match of this.listGame) {
             // console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
             this.GameService.add(match).subscribe(matchWithId =>  {
@@ -269,13 +270,19 @@ export class TournamentDetailsComponent implements OnInit {
                     console.log(matchWithId);
                     this.tournamentDetails.games.push(matchWithId);
                 }
+
+                if(this.tournamentDetails.games.length == this.listGame.length)
+                {
+                    console.log("this.tournamentDetails.games = ");
+                    console.log(this.tournamentDetails.games);
+                    this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log(t));
+                }
             });
             // this.tournamentDetails.games.push(match);
             // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
         }
         
         // TODO PRINT OF .games
-        this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log(t));
 
 
         setTimeout(() => {
