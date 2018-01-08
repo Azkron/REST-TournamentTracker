@@ -51,7 +51,7 @@ export class MemberService {
     constructor(private http: SecuredHttp) {
     }
 
-    public getUnassignedDataService(id: String) {
+    public getUnassignedDataService(id: String): Observable<Member[]> {
         return this.http.get(URL + "getUnassignedMembers/" +id) 
             .map(result => {
                 return result.json().map(json => new Member(json));

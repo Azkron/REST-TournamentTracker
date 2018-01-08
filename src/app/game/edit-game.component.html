@@ -1,0 +1,20 @@
+<mymodal title="{{(frm.value._id ? 'Edit ' : 'Add a new') + ' game'}}"
+(shown)="ouvrir()"     
+(closed)="fermer()">
+    <div body>
+        <div class="row">
+            <div class="col-sm-12">
+                <form id="frm" class="form-horizontal" [formGroup]="frm" novalidate>
+                    <my-input #game label="Player 1" formControlName="player_1" [readonly]="frm.value._id"></my-input>
+                    <my-input label="Score Player 1" formControlName="score_player_1"></my-input>
+                    <my-input label="Player 2" formControlName="player_2"></my-input>
+                    <my-input label="Score Player 2" formControlName="score_player_2"></my-input>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div footer>
+        <button type="submit" form="frm" class="btn btn-default" [disabled]="frm.pristine || frm.invalid || frm.pending" (click)="update()">{{frm.value._id ? 'Update' : 'Add'}}</button>
+        <button type="reset" class="btn btn-default" (click)="cancel()">Cancel</button>
+    </div>
+</mymodal>

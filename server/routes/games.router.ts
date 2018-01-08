@@ -12,7 +12,7 @@ export class GamesRouter {
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         this.router.get('/', this.getAll);
         this.router.post('/', this.create);
-        this.router.get('/gamesTournament/', this.getGamesTournament);
+        this.router.get('/listResults/', this.getListResults);
         // this.router.get('/:name', this.findByName);
         // this.router.get('/byId/:id', this.findById);
         // this.router.get('/byStartDate/:start', this.findByStartDate);
@@ -31,11 +31,13 @@ export class GamesRouter {
         });
     }
 
-    public getGamesTournament(req: Request, res: Response, next: NextFunction) {
+    public getListResults(req: Request, res: Response, next: NextFunction) {
         let tournamentId = req.params.id;
-		Game.find().populate('tournament').sort({ name: 'asc' }).exec((err, games) => {
-            if(err) res.send(err);
-            res.json(games);
+
+        Game.find({ tournament : mongoose.Types.ObjectId(tournamentId) }).sort({ player_1: 'asc' })
+        .exec((err, game) => {            
+            if (err) res.send(err);
+            res.json(game);
         });
     }
 

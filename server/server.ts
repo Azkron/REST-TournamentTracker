@@ -99,13 +99,13 @@ export class Server {
                 let test2 = new Member({ pseudo: "test2", password: "test2", profile: "Hi, I'm test2!", birthdate: "10/26/1989", tournaments: [tourn1, tourn2] });
                 
                 this.initDataGame();
-                let game1 = new Game({ player_1: "test1", player_2: "test2", tournament: tourn2 });
-                let game2 = new Game({ player_1: "test1", player_2: "testeur", tournament: tourn1 });
+                // let game1 = new Game({ player_1: "test1", player_2: "test2", tournament: tourn2 });
+                // let game2 = new Game({ player_1: "test1", player_2: "testeur", tournament: tourn1 });
 
-                Game.insertMany([game1, game2]);
+                // Game.insertMany([game1, game2]);
 
-                tourn1.games = [game2] as mongoose.Types.Array<IGame>;
-                tourn2.games = [game1] as mongoose.Types.Array<IGame>;
+                // tourn1.games = [game2] as mongoose.Types.Array<IGame>;
+                // tourn2.games = [game1] as mongoose.Types.Array<IGame>;
 
                 tourn1.members = [test1, test2] as mongoose.Types.Array<IMember>;
                 tourn2.members = [test1, test2] as mongoose.Types.Array<IMember>;

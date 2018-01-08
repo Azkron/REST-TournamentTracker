@@ -27,6 +27,7 @@ import { LogoutComponent } from 'app/logout.component';
 import { EditMemberComponent } from "app/member/edit-member.component";
 import { EditAccountComponent } from "app/member/edit-account.component";
 import { EditTournamentComponent } from "app/tournament/edit-tournament.component";
+import { EditGameComponent } from "app/game/edit-game.component";
 import { SnackBarComponent } from "./configdata/snackbar.component";
 import { MyTableComponent } from "./configdata/mytable.component";
 import { MyInputComponent } from "./configdata/myinput.component";
@@ -63,6 +64,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         EditMemberComponent,
         EditAccountComponent,
         EditTournamentComponent,
+        EditGameComponent,
         SnackBarComponent,
         MyTableComponent,
         MyInputComponent,

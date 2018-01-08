@@ -43,10 +43,11 @@
         <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament, authService.currentUser)">Subscribe to: {{selectedTournament.name}}</button>
     </div>
     <div class="col-sm-12">
-        <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [addService]="addMemberService" [deleteService]="deleteMemberService"
-            [updateService]="updateMemberService" filterPlaceHolder="Filter Matches" addCaption="Add New Address"
-            [pageSize]="10" [cancellable]="true" [confirmDelete]="false" [readOnly]="true"></mytable>
+        <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [updateService]="updateMemberService" 
+            filterPlaceHolder="Filter Matches" [editComponent]="editGame"
+            [pageSize]="10" [cancellable]="true" [confirmDelete]="false" ></mytable>
     </div>
 </div>
 <edit-tournament #editTournament></edit-tournament>
+<edit-game #editGame></edit-game>
 

@@ -52,8 +52,8 @@ export class GameService {
             })
     }
 
-    public getGamesTournament(t:  Tournament): Observable<Game[]> {
-        return this.http.get(URL + 'gamesTournament/' +t._id)
+    public getListResults(t:  Tournament): Observable<Game[]> {
+        return this.http.get(URL + 'listResults/' +t._id)
             .map(result => {
                 return result.json().map(json => new Game(json));
             })

@@ -21,6 +21,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { TournamentService, Tournament } from "./tournament.service";
 import { EditTournamentComponent } from "./edit-tournament.component";
+import { EditGameComponent } from "../game/edit-game.component";
 import { GameService, Game } from "../game/game.service";
 import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import { SnackBarComponent } from "../configdata/snackbar.component";
