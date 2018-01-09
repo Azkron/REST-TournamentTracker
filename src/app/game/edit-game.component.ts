@@ -25,15 +25,16 @@ export class EditGameComponent implements OnInit, IDialog {
     public ctlScore_Player_2: FormControl;
     public closed: Subject<DialogResult>;
     private g: Game;
+    private acceptedValue : String[] = ['Waiting...', '0', '1', '2', '3', '4', '5']
 
     @ViewChild(MyModalComponent) modal: MyModalComponent;
     @ViewChild('game') game: MyInputComponent;
 
     constructor(private gameService: GameService, private fb: FormBuilder, private authService : AuthService) {
-        this.ctlPlayer_1 = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')]);
+        this.ctlPlayer_1 = this.fb.control('', []);
         this.ctlScore_Player_1 = this.fb.control('', [Validators.required]);
         this.ctlPlayer_2 = this.fb.control('', []);
-        this.ctlScore_Player_2 = this.fb.control('', []);
+        this.ctlScore_Player_2 = this.fb.control('', [Validators.required]);
         this.frm = this.fb.group({
             _id: null,
             player_1: this.ctlPlayer_1,
@@ -44,13 +45,26 @@ export class EditGameComponent implements OnInit, IDialog {
     }
 
     // Validateur bidon qui vérifie que la valeur est différente
-    forbiddenValue(val: string): any {
+    forbiddenValue(val: String): any {
         return (ctl: FormControl) => {
-            if (ctl.value === val)
+            console.log(ctl.value)
+            if (ctl.value !== val)
                 return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } }
             return null;
         };
     }
+
+    // Validateur bidon qui vérifie que la valeur est différente
+    forbiddenValueInt(val: Number): any {
+        return (ctl: FormControl) => {
+            // console.log(this.acceptedValue)
+            console.log(JSON.stringify(ctl.value))
+                if (ctl.value !== val)
+                    return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } }
+            return null;
+        };
+    }
+
 
     // Validateur asynchrone qui vérifie si le pseudo n'est pas déjà utilisé par un autre membre
     // pseudoUsed(): any {

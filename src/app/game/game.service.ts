@@ -13,8 +13,8 @@ export class Game {
     _id: string;
     player_1: string;
     player_2: string;
-    score_player_1: string;
-    score_player_2: string;
+    score_player_1: Number;
+    score_player_2: Number;
     points_player_1: Number;
     points_player_2: Number;
     tournament: Tournament;
@@ -52,8 +52,8 @@ export class GameService {
             })
     }
 
-    public getListResults(t:  Tournament): Observable<Game[]> {
-        return this.http.get(URL + 'listResults/' +t._id)
+    public getListResults(id:  String): Observable<Game[]> {
+        return this.http.get(URL + 'listResults/' +id)
             .map(result => {
                 return result.json().map(json => new Game(json));
             })
@@ -70,6 +70,19 @@ export class GameService {
                 return returnValue;
             });
     }
+
+    public updateAdmin(g: Game): Observable<boolean> {
+        // console.log("gameservice => ")
+        // console.log(g)
+        return this.http.put(URL + '/updateAdmin', Tools.removeCircularReferences(g)).map(res => {console.log(res); return true;});
+    }
+
+    public updateCurrent(g: Game): Observable<boolean> {
+        // console.log("gameservice => ")
+        // console.log(g)
+        return this.http.put(URL + '/updateCurrent', Tools.removeCircularReferences(g)).map(res => {console.log(res); return true;});
+    }
+    
     // res => new Game(res.json())
     // public getOneDetails(name: string): Observable<Tournament> {
     //     // return this.http.get(URL +name)

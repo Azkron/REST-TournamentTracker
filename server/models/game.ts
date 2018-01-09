@@ -7,8 +7,8 @@ let Schema = mongoose.Schema;
 export interface IGame extends mongoose.Document {
     player_1: string;
     player_2: string;
-    score_player_1: string;
-    score_player_2: string;
+    score_player_1: Number;
+    score_player_2: Number;
     points_player_1: Number;
     points_player_2: Number;
     tournament: ITournament;
@@ -17,8 +17,8 @@ export interface IGame extends mongoose.Document {
 let GameSchema = new mongoose.Schema({
     player_1: { type: String },
     player_2: { type: String },
-    score_player_1: { type: String, default: 'Waiting...', required: false },
-    score_player_2: { type: String, default: 'Waiting...', required: false },
+    score_player_1: { type: Number, default: -1, required: false },
+    score_player_2: { type: Number, default: -1, required: false },
     points_player_1: { type: Number, default: 0, required: false },
     points_player_2: { type: Number, default: 0, required: false },
     tournament: { type: Schema.Types.ObjectId, ref: 'Tournament' }

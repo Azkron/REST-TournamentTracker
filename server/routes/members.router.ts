@@ -111,6 +111,7 @@ export class MembersRouter {
                 res.json(task);
             });
     } 
+    
     public updateCurrent(req: Request, res: Response, next: NextFunction) {
         let member = new Member(req.body);
         let currPseudo = AuthentificationRouter.getPseudo(req);
