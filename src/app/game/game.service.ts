@@ -13,10 +13,11 @@ export class Game {
     _id: string;
     player_1: string;
     player_2: string;
-    score_player_1: Number;
-    score_player_2: Number;
-    points_player_1: Number;
-    points_player_2: Number;
+    score_player_1: number;
+    score_player_2: number;
+    points_player_1: number;
+    points_player_2: number;
+    openMatch: boolean;
     tournament: Tournament;
 
     constructor(data) {
@@ -27,6 +28,7 @@ export class Game {
         this.score_player_2 = data.score_player_2;
         this.points_player_1 =  data.points_player_1;
         this.points_player_2 =  data.points_player_2;
+        this.openMatch = data.openMatch;
         this.tournament = data.tournament;
     }
 }
@@ -38,7 +40,7 @@ export class GameService {
     constructor(private http: SecuredHttp) {
     }
 
-    public getCountTournament(): Observable<number> {
+    public getCountGame(): Observable<number> {
         return this.http.get(URL + 'countGame')
             .map(result => {
                 return result.json();
@@ -71,6 +73,10 @@ export class GameService {
             });
     }
 
+    public updatePoints(pseudo: String, g : Game): Observable<boolean> {
+        return this.http.put(URL + 'addPoint/' +pseudo, Tools.removeCircularReferences(g)).map(res => { console.log(res); return true;})
+    }
+
     public updateAdmin(g: Game): Observable<boolean> {
         // console.log("gameservice => ")
         // console.log(g)
@@ -81,6 +87,10 @@ export class GameService {
         // console.log("gameservice => ")
         // console.log(g)
         return this.http.put(URL + '/updateCurrent', Tools.removeCircularReferences(g)).map(res => {console.log(res); return true;});
+    }
+
+    public delete(g: Game): Observable<boolean> {
+        return this.http.delete(URL + g._id).map(res => true);
     }
     
     // res => new Game(res.json())

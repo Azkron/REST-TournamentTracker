@@ -27,6 +27,7 @@ import { ColumnDef, MyTableComponent } from "../configdata/mytable.component";
 import { SnackBarComponent } from "../configdata/snackbar.component";
 import { Observable } from "rxjs/Observable";
 import { AuthService } from "../auth.service";
+import { IDialog, DialogResult } from "../configdata/dialog";
 
 @Component({
     selector: 'tournamentlist',
@@ -34,7 +35,9 @@ import { AuthService } from "../auth.service";
 })
 export class TournamentListComponent {
     public listGame : Game[];
-    selectedTournament: Tournament;
+    public listResults: Game[];
+    public selectedTournament: Tournament;
+    public selectedGame: Game;
     public subscribeActive : boolean = true;
 
     @ViewChild('tournaments') tournaments: MyTableComponent;
@@ -48,14 +51,14 @@ export class TournamentListComponent {
     ];
     gameColumnDefs: ColumnDef[] = [
         { name: 'player_1', type: 'String', header: 'Player_1', width: 1, key: true, filter: true, sort: 'asc' }, 
-        { name: 'points_player_1', type: 'String', header: 'Points Player 1', width: 1, filter: true, align: 'center'},
-        { name: 'score_player_1', type: 'String', header: 'Score Player 1', width: 1, filter: true, align: 'center' },
-        { name: 'score_player_2', type: 'String', header: 'Score Player 2', width: 1, filter: true, align: 'center' },
-        { name: 'points_player_2', type: 'String', header: 'Points Player 2', width: 1, filter: true, align: 'center'},
+        { name: 'points_player_1', type: 'Number', header: 'Points Player 1', width: 1, filter: true, align: 'center'},
+        { name: 'score_player_1', type: 'Number', header: 'Score Player 1', width: 1, filter: true, align: 'center' },
+        { name: 'score_player_2', type: 'Number', header: 'Score Player 2', width: 1, filter: true, align: 'center' },
+        { name: 'points_player_2', type: 'Number', header: 'Points Player 2', width: 1, filter: true, align: 'center'},
         { name: 'player_2', type: 'String', header: 'Player_2', width: 1, filter: true, sort: 'asc' }
     ];
 
-    constructor(private tournamentService: TournamentService, private authService: AuthService) {
+    constructor(private tournamentService: TournamentService, private authService: AuthService, private gameService: GameService) {
         
     }
 
@@ -73,41 +76,132 @@ export class TournamentListComponent {
  
     }
 
-    public getGamesTournament() {
-
+    public getResultsTournament(id: String) {
+        this.gameService.getListResults(id).subscribe(res => {
+            this.listResults = res;
+        })
     }
 
     get getDataService() {
-        return m => this.tournamentService.getAll();
+        return t => this.tournamentService.getAll();
     }
 
     get addService() {
-        return m => this.tournamentService.add(m);
+        return t => this.tournamentService.add(t);
     }
 
     get deleteService() {
-        return m => this.tournamentService.delete(m);
+        return t => this.tournamentService.delete(t);
     }
 
     get updateService() {
-        return m => this.tournamentService.update(m);
+        return t => this.tournamentService.update(t);
     }
 
     public selectedItemChanged(item) {
         this.subscribeActive = true;
         this.selectedTournament = this.tournaments.selectedItem as Tournament;
-        for(let member of this.selectedTournament.members)
-            if(this.authService.currentUser == member.pseudo)
-                this.subscribeActive = false;
-        // console.log("selectedTournament => " +this.selectedTournament.name)
-        if (this.games)
-            this.games.refresh();
+        if(this.selectedTournament) {
+            for(let member of this.selectedTournament.members)
+                if(this.authService.currentUser == member.pseudo)
+                    this.subscribeActive = false;
+            // console.log("selectedTournament => " +this.selectedTournament.name)
+            this.getResultsTournament(this.selectedTournament._id)
+            if (this.games)
+                this.games.refresh();
+        }
+
+    }
+
+    public selectedItemChangedGame(editModal : IDialog) {
+        this.selectedGame = this.games.selectedItem as Game;
+        // console.log("selected Game => " + this.selectedGame.player_1)
+        // console.log("current user => " +this.authService.currentUser)
+        if (this.games && this.selectedGame.openMatch && (this.selectedGame.player_1 == this.authService.currentUser || this.selectedGame.player_2 == this.authService.currentUser )) {
+            editModal.show(this.selectedGame).subscribe(dialogResult => {
+                console.log(dialogResult);
+                if(dialogResult.action == "update") {
+                    let test : number = 2;
+                    test = test - 1/2;
+                    console.log("test => " +test)
+                    let updatedGame = dialogResult.data as Game;
+
+                    console.log("Updated Game => ");
+                    console.log(updatedGame);
+
+                    // console.log("before points operation =>")
+                    // console.log(updatedGame.points_player_1)
+                    // console.log(updatedGame.points_player_2)   
+
+                    if(updatedGame.points_player_1 == null)
+                        updatedGame.points_player_1 = 0;
+                    if(updatedGame.points_player_2 == null)
+                        updatedGame.points_player_2 = 0;
+
+                    
+                    // console.log("after points operation =>")
+                    // console.log(updatedGame.points_player_1)
+                    // console.log(updatedGame.points_player_2)
+
+
+
+                    if(updatedGame.score_player_1 !== -1 && updatedGame.score_player_2 !== -1) {
+
+                        if(updatedGame.score_player_1 > updatedGame.score_player_2) {
+                            // console.log("before points operation =>")
+
+                            // updatedGame.points_player_1 = 0;
+                            // console.log(updatedGame.points_player_1)
+                            // console.log("after points operation =>")
+                            // console.log(updatedGame.points_player_1 + 1)
+                            updatedGame.points_player_1 = updatedGame.points_player_1 + 1;
+                        }
+                        else if(updatedGame.score_player_1 == updatedGame.score_player_2) {
+                            updatedGame.points_player_1 = updatedGame.points_player_1 + 1/2;
+                            updatedGame.points_player_2 = updatedGame.points_player_2 + 1/2;
+                        }
+                        else if(updatedGame.score_player_1 < updatedGame.score_player_2) {
+                            updatedGame.points_player_2 = +updatedGame.points_player_2 + 1;
+                        }
+                        updatedGame.openMatch = false;
+                            
+
+                        console.log("after update of points")
+                        console.log(updatedGame)
+                            
+                    }
+                        
+
+                    // if(this.authService.currentUser == this.selectedGame.player_1) {
+                    //     updatedGame.points_player_2 = this.selectedGame.points_player_2;
+                    // }
+                    // else if (this.authService.currentUser == this.selectedGame.player_2) {
+                    //     updatedGame.points_player_1 = this.selectedGame.points_player_1
+                    // }
+                    console.log("selected game => ")
+                    console.log(this.selectedGame)
+                    if(this.authService.isAdmin) {
+                        this.gameService.updateAdmin(updatedGame).subscribe(result => {
+                            console.log("updateAdmin result => " +result)
+                        })
+                    }
+                    else {
+                        this.gameService.updateCurrent(updatedGame).subscribe(result => {
+                            console.log("updateCurrent result => " +result)
+                        })
+                    }
+                    this.selectedTournament = null;
+                    this.games.refresh();
+                    this.tournaments.refresh();
+                }
+            })
+        }
     }
 
     get getGameDataService() {
         // console.log("games =>  " +this.gameService.getAll())
-        console.log("tournament => " +this.selectedTournament.name)
-        console.log("games => " +this.selectedTournament.games)
+        // console.log("tournament => " +this.selectedTournament.name)
+        // console.log("games => " +this.selectedTournament.games)
         return m => Observable.of(this.selectedTournament ? this.selectedTournament.games : null);
         // return m => this.gameService.getAll();
     }
