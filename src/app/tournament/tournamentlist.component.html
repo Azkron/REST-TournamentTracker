@@ -27,10 +27,8 @@
     </div>
     
     <div *ngIf="!authService.isAdmin" class="col-sm-12">
-        <mytable #tournaments [columnDefs]="columnDefs" [getDataService]="getDataService" [addService]="addService" [deleteService]="deleteService"
-            [updateService]="updateService" filterPlaceHolder="Filter Tournaments" [editComponent]="editTournament"
-            addCaption="Add New Tournament" (selectedItemChanged)="selectedItemChanged($event)" [pageSize]="10" [confirmDelete]="true"
-            [readOnly]="true">
+        <mytable #tournaments [columnDefs]="columnDefs" [getDataService]="getDataService"filterPlaceHolder="Filter Tournaments" 
+             (selectedItemChanged)="selectedItemChanged($event)" [pageSize]="10" [readOnly]="true">
         </mytable>
     </div>
 </div>
@@ -39,33 +37,13 @@
     <div *ngIf="authService.isAdmin" class="col-sm-12">
         <button class="btn dtn-default" type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
     </div>
-    <div *ngIf="!authService.isAdmin" class="col-sm-12">    
-        <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament, authService.currentUser)">Subscribe to: {{selectedTournament.name}}</button>
+    <div *ngIf="!authService.isAdmin && subscribeActive" class="col-sm-12">    
+        <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament)">Subscribe to: {{selectedTournament.name}}</button>
     </div>
     <div class="col-sm-12">
         <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [updateService]="updateMemberService" 
-            filterPlaceHolder="Filter Matches" [editComponent]="editGame" (selectedItemChanged)="selectedItemChangedGame(editGame)"
-            [pageSize]="10" [cancellable]="true" [confirmDelete]="false" [readOnly]="true"></mytable>
-    </div>
-    <br>
-    <br>
-    <div footer>
-        <h1>Results Tournament</h1>
-            <ul>
-                <li *ngFor="let l of listResults">
-                    <div class="row">
-                            <div class="col-sm-12">
-                                <div>
-                                    <label>Pseudo : </label>{{l.player_1}}
-                                </div>
-                                <div>
-                                    <label>Points : </label>{{l.points_player_1 }}
-                                </div>
-                            </div>
-                        </div>
-                    <!-- <a [routerLink]="['/tournamentdetails', t.name]">{{t.name}}</a> -->
-                </li>
-            </ul>   
+            filterPlaceHolder="Filter Matches" [editComponent]="editGame"
+            [pageSize]="10" [cancellable]="true" [confirmDelete]="false" ></mytable>
     </div>
 </div>
 <edit-tournament #editTournament></edit-tournament>

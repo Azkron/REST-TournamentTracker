@@ -36,44 +36,49 @@ export class TournamentsRouter {
                 if(err) res.send(err);
                 let currMember = m[0];
                 let currTournament = t[0];
+                
+                currTournament.members.push(currMember);
 
                 let count = 0;
                 let maxCount = currTournament.members.length;
-                for(let member of currTournament.members)
-                {
-                    console.log("subscribeCurrent member.pseudo = " + member.pseudo);
-                    let game = new Game();
 
-                    game.player_1 = currMember.pseudo;
-                    game.player_2 = member.pseudo;
-                    game.tournament = currTournament;
-                    console.log("subscribeCurrent game = " + game);
-                    
-                    
-                    count++;
-                    game.save().then(g => {
-                        if(err) res.send(err);
-                        //currTournament.games.push(g);
-                        currTournament.games.push(g);
-                        if(count == maxCount)
-                        {
-                            console.log("subscribeCurrent g.player_1 = ");
-                            console.log(g.player_1);
-                            currTournament.members.push(currMember);
-                            currTournament.save()
-                                .then(t => res.json(t))
-                                .catch(err => res.json(err));
-                        }
-                    });
-                }
-
-                if(currTournament.members.length <= 0)
+                if(currTournament.members.length <=1)
                 {
-                    currTournament.members.push(currMember);
                     currTournament.save()
                         .then(t => res.json(t))
                         .catch(err => res.json(err));
                 }
+                else for(let member of currTournament.members)
+                {
+                    count++;
+                    if(member.pseudo != currMember.pseudo)
+                    {
+                        console.log("subscribeCurrent member.pseudo = " + member.pseudo);
+                        let game = new Game();
+    
+                        game.player_1 = currMember.pseudo;
+                        game.player_2 = member.pseudo;
+                        game.tournament = currTournament;
+                        console.log("subscribeCurrent game = " + game);
+                        
+                        game.save().then(g => {
+                            if(err) res.send(err);
+                            //currTournament.games.push(g);
+                            currTournament.games.push(g);
+                            if(count == maxCount)
+                            {
+                                console.log("subscribeCurrent g.player_1 = ");
+                                console.log(g.player_1);
+                                currTournament.save()
+                                    .then(t => {
+                                        res.json(t.populate('members').populate('games'));
+                                    })
+                                    .catch(err => res.json(err));
+                            }
+                        });
+                    }
+                }
+
 
                 
             });
