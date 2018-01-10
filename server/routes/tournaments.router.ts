@@ -29,32 +29,65 @@ export class TournamentsRouter {
     
     public subscribeCurrent(req: Request, res: Response, next: NextFunction) {
         
-        // let memberPseudo = AuthentificationRouter.getPseudo(req);
-        // Member.find({ pseudo: memberPseudo }).then(m =>{
-        //     let tournament = new Tournament(req.body);
-        //     let currMember = new Member(m);
-        //     for(let member of tournament.members)
-        //     {
-        //         let game = new Game({
-        //             player_1 : currMember.pseudo,
-        //             player_2 : member.pseudo,
-        //             tournament: tournament
-        //             });
+        let memberPseudo = AuthentificationRouter.getPseudo(req);
+        Member.find({ pseudo: memberPseudo }).exec((err, m) =>{
+            if(err) res.send(err);
+            Tournament.find({ _id: req.body._id }).populate('members').populate('games').exec((err, t) =>{
+                if(err) res.send(err);
+                let currMember = m[0];
+                let currTournament = t[0];
 
-        //         game.save().then(g => game = g);
-        //         tournament.games.push(game);
-        //     }
+                let count = 0;
+                let maxCount = currTournament.members.length;
+                for(let member of currTournament.members)
+                {
+                    console.log("subscribeCurrent member.pseudo = " + member.pseudo);
+                    let game = new Game();
+
+                    game.player_1 = currMember.pseudo;
+                    game.player_2 = member.pseudo;
+                    game.tournament = currTournament;
+                    console.log("subscribeCurrent game = " + game);
+                    
+                    
+                    count++;
+                    game.save().then(g => {
+                        if(err) res.send(err);
+                        //currTournament.games.push(g);
+                        currTournament.games.push(g);
+                        if(count == maxCount)
+                        {
+                            console.log("subscribeCurrent g.player_1 = ");
+                            console.log(g.player_1);
+                            currTournament.members.push(currMember);
+                            currTournament.save()
+                                .then(t => res.json(t))
+                                .catch(err => res.json(err));
+                        }
+                    });
+                }
+
+                if(currTournament.members.length <= 0)
+                {
+                    currTournament.members.push(currMember);
+                    currTournament.save()
+                        .then(t => res.json(t))
+                        .catch(err => res.json(err));
+                }
+
+                
+            });
     
-        //     Tournament.findOneAndUpdate({ name: tournament.name },
-        //         tournament,
-        //         { new: true })  // pour renvoyer le document modifié
-        //         .populate('members').populate('games').then(r => {
-        //             // console.log("r =>" +r)
-        //             res.json(r)
-        //         })
-        //         .catch(err => res.json(err));
+            // Tournament.findOneAndUpdate({ name: tournament.name },
+            //     tournament,
+            //     { new: true })  // pour renvoyer le document modifié
+            //     .populate('members').populate('games').then(r => {
+            //         // console.log("r =>" +r)
+            //         res.json(r)
+            //     })
+            //     .catch(err => res.json(err));
 
-        // });
+        });
     }
 
     public getCountTournament(req: Request, res: Response, next: NextFunction) {

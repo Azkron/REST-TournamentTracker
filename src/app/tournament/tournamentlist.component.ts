@@ -58,7 +58,15 @@ export class TournamentListComponent {
     }
 
     public subscribe(tournament : Tournament){
-        this.tournamentService.subscribeCurrent(tournament);
+
+        // let updatedTournament: Tournament = null;
+
+        this.tournamentService.subscribeCurrent(tournament).subscribe(t => {
+            console.log("subscribe result = ");
+            console.log(t);
+            tournament = t;
+        });
+ 
     }
 
     public getGamesTournament() {
