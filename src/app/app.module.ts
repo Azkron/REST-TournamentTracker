@@ -117,7 +117,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         MemberService,
         TournamentService,
         GameService,
-        ValidationService,
+        ValidationService
     ],
     bootstrap: [AppComponent]
 })
