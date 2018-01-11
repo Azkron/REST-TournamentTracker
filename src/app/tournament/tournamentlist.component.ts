@@ -69,6 +69,8 @@ export class TournamentListComponent {
         this.tournamentService.subscribeCurrent(tournament).subscribe(t => {
             console.log("subscribe result = ");
             console.log(t);
+            
+            this.selectedTournament = null;
             this.tournaments.refresh();
             this.games.refresh();
         });
