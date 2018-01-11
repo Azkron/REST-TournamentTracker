@@ -25,7 +25,6 @@ export class EditGameComponent implements OnInit, IDialog {
     public ctlScore_Player_2: FormControl;
     public closed: Subject<DialogResult>;
     private g: Game;
-    private acceptedValue : String[] = ['Waiting...', '0', '1', '2', '3', '4', '5']
 
     @ViewChild(MyModalComponent) modal: MyModalComponent;
     @ViewChild('game') game: MyInputComponent;
@@ -44,11 +43,11 @@ export class EditGameComponent implements OnInit, IDialog {
         }, { validator: this.crossValidations });
     }
 
-    testPlayer1() : boolean {
+    controlPlayer1() : boolean {
         return !(this.authService.currentUser == this.frm.value.player_1)
     }
 
-    testPlayer2() : boolean {
+    controlPlayer2() : boolean {
         return !(this.authService.currentUser == this.frm.value.player_2)
     }
 
