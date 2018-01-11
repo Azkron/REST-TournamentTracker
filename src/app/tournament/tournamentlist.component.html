@@ -35,10 +35,19 @@
 
 <div class="row" *ngIf="selectedTournament">
     <div *ngIf="authService.isAdmin && !selectedTournament.closed" class="col-sm-12">
-        <button class="btn dtn-default" type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
+        <button class="btn btn-default" type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
     </div>
-    <div *ngIf="!authService.isAdmin && subscribeActive && !selectedTournament.closed" class="col-sm-12">    
-        <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament)">Subscribe to: {{selectedTournament.name}}</button>
+    <div *ngIf="!authService.isAdmin && subscribeActive && !selectedTournament.closed && selectedTournament.freePlaces > 0" class="col-sm-12">    
+        <button class="btn btn-default" type="button" (click)="subscribe(selectedTournament)">Subscribe to: {{selectedTournament.name}}</button>
+    </div>
+    <div *ngIf="!authService.isAdmin && !subscribeActive" class="col-sm-12">    
+            <h2>-- You are subscribed to this tournament --</h2>
+    </div>
+    <div *ngIf="selectedTournament.closed" class="col-sm-12">    
+        <h2>-- Subscriptions closed for this tournament --</h2>
+    </div>
+    <div *ngIf="!authService.isAdmin && !selectedTournament.closed &&  selectedTournament.freePlaces <= 0" class="col-sm-12">    
+        <h2>-- There are no places avaliable in this tournament  --</h2>
     </div>
     <div class="col-sm-12">
         <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [updateService]="updateMemberService" 

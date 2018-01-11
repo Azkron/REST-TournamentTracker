@@ -47,7 +47,8 @@ export class TournamentListComponent {
         { name: 'name', type: 'String', header: 'Name', width: 1, key: true, filter: true, sort: 'asc' },
         { name: 'start', type: 'Date', header: 'Start Date', width: 1, filter: true, align: 'center' },
         { name: 'finish', type: 'Date', header: 'Finish Date', width: 1, filter: true, align: 'center' },
-        { name: 'maxPlayers', type: 'Number', header: 'Max Players', width: 1, filter: true, align: 'center' }
+        // { name: 'maxPlayers', type: 'Number', header: 'Max Players', width: 1, filter: true, align: 'center' }
+        { name: 'freePlacesString', type: 'number', header: 'Free Places', width: 1, filter: true, align: 'center' }
     ];
     gameColumnDefs: ColumnDef[] = [
         { name: 'player_1', type: 'String', header: 'Player_1', width: 1, key: true, filter: true, sort: 'asc' }, 
