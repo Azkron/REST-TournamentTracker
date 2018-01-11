@@ -47,7 +47,7 @@
     </div>
     <br>
     <br>
-    <div footer>
+    <div footer *ngIf="selectedTournament.closed">
         <h1>Results Tournament</h1>
             <ul>
                 <li *ngFor="let l of listResults">
@@ -68,4 +68,5 @@
 </div>
 <edit-tournament #editTournament></edit-tournament>
 <edit-game #editGame></edit-game>
+<snackbar #snackbar></snackbar>
 
