@@ -12,7 +12,8 @@ export class ValidationService {
             passwordEqualProfile: 'Your password cannot be equal to your profile string',
             passwordNotConfirmed: 'The two passwords must be the same',
             playerNotConfirmed: 'The two players cannot have the same pseudo',
-            finishDateInferior:  'Finish Date < Start Date'
+            finishDateInferior:  'Finish Date must not be inferior to Start Date',
+            scoreInvalid: 'The score must be > 0'
         };
         return config.hasOwnProperty(validatorName) ? config[validatorName] : '[' + validatorName + ']';
     }
