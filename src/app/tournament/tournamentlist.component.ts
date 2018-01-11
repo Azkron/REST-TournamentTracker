@@ -117,6 +117,8 @@ export class TournamentListComponent {
         this.selectedGame = this.games.selectedItem as Game;
         // console.log("selected Game => " + this.selectedGame.player_1)
         // console.log("current user => " +this.authService.currentUser)
+        if(this.selectedGame.openMatch == null)
+            this.selectedGame.openMatch = true;
         if (this.games && this.selectedGame.openMatch && (this.selectedGame.player_1 == this.authService.currentUser || this.selectedGame.player_2 == this.authService.currentUser )) {
             editModal.show(this.selectedGame).subscribe(dialogResult => {
                 console.log(dialogResult);

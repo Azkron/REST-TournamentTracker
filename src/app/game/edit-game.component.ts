@@ -44,6 +44,14 @@ export class EditGameComponent implements OnInit, IDialog {
         }, { validator: this.crossValidations });
     }
 
+    testPlayer1() : boolean {
+        return !(this.authService.currentUser == this.frm.value.player_1)
+    }
+
+    testPlayer2() : boolean {
+        return !(this.authService.currentUser == this.frm.value.player_2)
+    }
+
     // Validateur bidon qui vérifie que la valeur est différente
     forbiddenValue(val: String): any {
         return (ctl: FormControl) => {
@@ -53,18 +61,6 @@ export class EditGameComponent implements OnInit, IDialog {
             return null;
         };
     }
-
-    // Validateur bidon qui vérifie que la valeur est différente
-    forbiddenValueInt(val: Number): any {
-        return (ctl: FormControl) => {
-            // console.log(this.acceptedValue)
-            console.log(JSON.stringify(ctl.value))
-                if (ctl.value !== val)
-                    return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } }
-            return null;
-        };
-    }
-
 
     // Validateur asynchrone qui vérifie si le pseudo n'est pas déjà utilisé par un autre membre
     // pseudoUsed(): any {
