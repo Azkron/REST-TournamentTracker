@@ -32,10 +32,10 @@
                     <br>
                     <br>
                     <br>
-                    <p *ngIf="memberUnassignedCount > 0">
+                    <p *ngIf="memberUnassignedCount > 0 && tournamentDetails.freePlaces >= memberUnassignedCount">
                         <button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button>
                     </p>
-                    <p *ngIf="sendUnassignedActive">
+                    <p *ngIf="sendUnassignedActive && tournamentDetails.freePlaces > 0">
                         <button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button>
                     </p>
                     <p *ngIf="sendAssignedActive">

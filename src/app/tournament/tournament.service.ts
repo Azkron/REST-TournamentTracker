@@ -13,7 +13,7 @@ export class Tournament {
     name: string;
     start: string;
     finish: string;
-    maxPlayers: Number;
+    maxPlayers: number;
     members: Member[];
     games: Game[];
     closed: boolean;
@@ -27,6 +27,16 @@ export class Tournament {
         this.members = data.members;
         this.games = data.games;
         this.closed = data.closed;
+    }
+
+    public get freePlaces(): number
+    {
+        return this.maxPlayers - this.members.length;
+    }
+
+    public get freePlacesString() : string
+    {
+        return ""+this.freePlaces+"/"+this.maxPlayers;
     }
 }
 
