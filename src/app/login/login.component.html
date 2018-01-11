@@ -10,7 +10,7 @@
             <my-input label="Password" type="password" formControlName="password"></my-input>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn dtn-default" type="submit" (click)="login()" [disabled]="frm.invalid">Login</button>
+                    <button class="btn btn-default" type="submit" (click)="login()" [disabled]="frm.invalid">Login</button>
                 </div>
             </div>
             <div [ngClass]="'alert alert-' + (message.includes('failed') ? 'danger' : 'info')">{{message}}</div>
