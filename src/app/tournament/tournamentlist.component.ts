@@ -136,7 +136,7 @@ export class TournamentListComponent {
     public selectedItemChangedGame(editModal : IDialog) {
         if(!this.selectedTournament.closed)
         {
-            this.snackbar.alert("The tournament subscriptions must be closed by an admin before you can edit scores :)");
+            this.snackbar.alert("The tournament subscriptions must be closed by an admin before you can edit scores");
         }
         else
         {
@@ -145,85 +145,91 @@ export class TournamentListComponent {
             // console.log("current user => " +this.authService.currentUser)
             if(this.selectedGame.openMatch == null)
                 this.selectedGame.openMatch = true;
-            if (this.games && this.selectedGame.openMatch && (this.selectedGame.player_1 == this.authService.currentUser || this.selectedGame.player_2 == this.authService.currentUser )) {
-                editModal.show(this.selectedGame).subscribe(dialogResult => {
-                    console.log(dialogResult);
-                    if(dialogResult.action == "update") {
-                        let test : number = 2;
-                        test = test - 1/2;
-                        console.log("test => " +test)
-                        let updatedGame = dialogResult.data as Game;
-    
-                        console.log("Updated Game => ");
-                        console.log(updatedGame);
-    
-                        // console.log("before points operation =>")
-                        // console.log(updatedGame.points_player_1)
-                        // console.log(updatedGame.points_player_2)   
-    
-                        if(updatedGame.points_player_1 == null)
-                            updatedGame.points_player_1 = 0;
-                        if(updatedGame.points_player_2 == null)
-                            updatedGame.points_player_2 = 0;
-    
-                        
-                        // console.log("after points operation =>")
-                        // console.log(updatedGame.points_player_1)
-                        // console.log(updatedGame.points_player_2)
-    
-    
-    
-                        if(updatedGame.score_player_1 !== -1 && updatedGame.score_player_2 !== -1) {
-    
-                            if(updatedGame.score_player_1 > updatedGame.score_player_2) {
-                                // console.log("before points operation =>")
-    
-                                // updatedGame.points_player_1 = 0;
-                                // console.log(updatedGame.points_player_1)
-                                // console.log("after points operation =>")
-                                // console.log(updatedGame.points_player_1 + 1)
-                                updatedGame.points_player_1 = updatedGame.points_player_1 + 1;
-                            }
-                            else if(updatedGame.score_player_1 == updatedGame.score_player_2) {
-                                updatedGame.points_player_1 = updatedGame.points_player_1 + 1/2;
-                                updatedGame.points_player_2 = updatedGame.points_player_2 + 1/2;
-                            }
-                            else if(updatedGame.score_player_1 < updatedGame.score_player_2) {
-                                updatedGame.points_player_2 = +updatedGame.points_player_2 + 1;
-                            }
-                            updatedGame.openMatch = false;
-                                
-    
-                            console.log("after update of points")
-                            console.log(updatedGame)
-                                
-                        }
+            if(this.selectedGame.openMatch) {
+                if (this.games && (this.selectedGame.player_1 == this.authService.currentUser || this.selectedGame.player_2 == this.authService.currentUser )) {
+                    editModal.show(this.selectedGame).subscribe(dialogResult => {
+                        console.log(dialogResult);
+                        if(dialogResult.action == "update") {
+                            let test : number = 2;
+                            test = test - 1/2;
+                            console.log("test => " +test)
+                            let updatedGame = dialogResult.data as Game;
+        
+                            console.log("Updated Game => ");
+                            console.log(updatedGame);
+        
+                            // console.log("before points operation =>")
+                            // console.log(updatedGame.points_player_1)
+                            // console.log(updatedGame.points_player_2)   
+        
+                            if(updatedGame.points_player_1 == null)
+                                updatedGame.points_player_1 = 0;
+                            if(updatedGame.points_player_2 == null)
+                                updatedGame.points_player_2 = 0;
+        
                             
-    
-                        // if(this.authService.currentUser == this.selectedGame.player_1) {
-                        //     updatedGame.points_player_2 = this.selectedGame.points_player_2;
-                        // }
-                        // else if (this.authService.currentUser == this.selectedGame.player_2) {
-                        //     updatedGame.points_player_1 = this.selectedGame.points_player_1
-                        // }
-                        console.log("selected game => ")
-                        console.log(this.selectedGame)
-                        if(this.authService.isAdmin) {
-                            this.gameService.updateAdmin(updatedGame).subscribe(result => {
-                                console.log("updateAdmin result => " +result)
-                            })
+                            // console.log("after points operation =>")
+                            // console.log(updatedGame.points_player_1)
+                            // console.log(updatedGame.points_player_2)
+        
+        
+        
+                            if(updatedGame.score_player_1 !== -1 && updatedGame.score_player_2 !== -1) {
+        
+                                if(updatedGame.score_player_1 > updatedGame.score_player_2) {
+                                    // console.log("before points operation =>")
+        
+                                    // updatedGame.points_player_1 = 0;
+                                    // console.log(updatedGame.points_player_1)
+                                    // console.log("after points operation =>")
+                                    // console.log(updatedGame.points_player_1 + 1)
+                                    updatedGame.points_player_1 = updatedGame.points_player_1 + 1;
+                                }
+                                else if(updatedGame.score_player_1 == updatedGame.score_player_2) {
+                                    updatedGame.points_player_1 = updatedGame.points_player_1 + 1/2;
+                                    updatedGame.points_player_2 = updatedGame.points_player_2 + 1/2;
+                                }
+                                else if(updatedGame.score_player_1 < updatedGame.score_player_2) {
+                                    updatedGame.points_player_2 = +updatedGame.points_player_2 + 1;
+                                }
+                                updatedGame.openMatch = false;
+                                    
+        
+                                console.log("after update of points")
+                                console.log(updatedGame)
+                                    
+                            }
+                                
+        
+                            // if(this.authService.currentUser == this.selectedGame.player_1) {
+                            //     updatedGame.points_player_2 = this.selectedGame.points_player_2;
+                            // }
+                            // else if (this.authService.currentUser == this.selectedGame.player_2) {
+                            //     updatedGame.points_player_1 = this.selectedGame.points_player_1
+                            // }
+                            console.log("selected game => ")
+                            console.log(this.selectedGame)
+                            if(this.authService.isAdmin) {
+                                this.gameService.updateAdmin(updatedGame).subscribe(result => {
+                                    console.log("updateAdmin result => " +result)
+                                })
+                            }
+                            else {
+                                this.gameService.updateCurrent(updatedGame).subscribe(result => {
+                                    console.log("updateCurrent result => " +result)
+                                })
+                            }
+                            this.selectedTournament = null;
+                            this.games.refresh();
+                            this.tournaments.refresh();
                         }
-                        else {
-                            this.gameService.updateCurrent(updatedGame).subscribe(result => {
-                                console.log("updateCurrent result => " +result)
-                            })
-                        }
-                        this.selectedTournament = null;
-                        this.games.refresh();
-                        this.tournaments.refresh();
-                    }
-                })
+                    })
+                }
             }
+            else  {
+                this.snackbar.alert("The match is closed since both players have a score");
+            }
+            
         }
     }
 
