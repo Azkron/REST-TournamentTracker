@@ -34,8 +34,7 @@ import { IDialog, DialogResult } from "../configdata/dialog";
     templateUrl: './tournamentlist.component.html',
 })
 export class TournamentListComponent {
-    public listGame : Game[];
-    public listResults: Game[];
+    public listResults = new Array<Game>();
     public selectedTournament: Tournament;
     public selectedGame: Game;
     public subscribeActive : boolean = true;
@@ -76,10 +75,30 @@ export class TournamentListComponent {
  
     }
 
-    public getResultsTournament(id: String) {
-        this.gameService.getListResults(id).subscribe(res => {
-            this.listResults = res;
-        })
+    public getResultsTournament() {
+        this.listResults = [];
+
+        for(let i of this.selectedTournament.members) {
+            let z = 0;
+            let g : Game;
+            for (let j of this.selectedTournament.games) {
+                if(z == 0) {
+                    g = new Game({
+                        player_1 : i.pseudo,
+                        points_player_1 : 0
+                    })
+                    ++z;
+                }
+                if(i.pseudo == j.player_1) {
+                    g.points_player_1 +=  j.points_player_1;
+                }
+                else if(i.pseudo == j.player_2) {
+                    g.points_player_1 += j.points_player_2;
+                }
+
+            }
+            this.listResults.push(g);
+        }
     }
 
     get getDataService() {
@@ -106,7 +125,7 @@ export class TournamentListComponent {
                 if(this.authService.currentUser == member.pseudo)
                     this.subscribeActive = false;
             // console.log("selectedTournament => " +this.selectedTournament.name)
-            this.getResultsTournament(this.selectedTournament._id)
+            this.getResultsTournament();
             if (this.games)
                 this.games.refresh();
         }
