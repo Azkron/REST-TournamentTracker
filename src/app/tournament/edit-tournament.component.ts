@@ -93,15 +93,15 @@ export class EditTournamentComponent implements OnInit, IDialog {
     }
 
     crossValidations(group: FormGroup) {
-        if(this) {
-            console.log("dssdcsdcds")
-            if (group.pristine || !group.value) return;
-        console.log("sdfrfrg")
-        console.log(new Date(this.frm.value.start))
-        if(this.frm.value.start !== null) {
-            console.log("frm value => ")
-        console.log(this.frm.value.start)
-        }
+        // if(this) {
+        //     console.log("dssdcsdcds")
+        //     if (group.pristine || !group.value) return;
+        // console.log("sdfrfrg")
+        // console.log(new Date(this.frm.value.start))
+        // if(this.frm.value.start !== null) {
+        //     console.log("frm value => ")
+        // console.log(this.frm.value.start)
+        // }
         
         // let startD = new Date(this.frm.value.start); 
         // let finishD = new Date(this.frm.value.finish);
@@ -113,8 +113,7 @@ export class EditTournamentComponent implements OnInit, IDialog {
         //     valueFinish < valueStart,
         //     { finishDateInferior: true }
         // );
-
-        }
+        // }
         
     }
 
