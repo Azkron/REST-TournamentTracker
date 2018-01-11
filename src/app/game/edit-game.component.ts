@@ -30,10 +30,11 @@ export class EditGameComponent implements OnInit, IDialog {
     @ViewChild('game') game: MyInputComponent;
 
     constructor(private gameService: GameService, private fb: FormBuilder, private authService : AuthService) {
+        let numbersPattern = new RegExp("^[-]?[0-9]");
         this.ctlPlayer_1 = this.fb.control('', []);
-        this.ctlScore_Player_1 = this.fb.control('', [Validators.required]);
+        this.ctlScore_Player_1 = this.fb.control(0, [Validators.required, Validators.min(-1), Validators.pattern(numbersPattern)]);
         this.ctlPlayer_2 = this.fb.control('', []);
-        this.ctlScore_Player_2 = this.fb.control('', [Validators.required]);
+        this.ctlScore_Player_2 = this.fb.control(0, [Validators.required, Validators.min(-1), Validators.pattern(numbersPattern)]);
         this.frm = this.fb.group({
             _id: null,
             player_1: this.ctlPlayer_1,
@@ -95,19 +96,19 @@ export class EditGameComponent implements OnInit, IDialog {
     }
 
     crossValidations(group: FormGroup) {
-        // if (group.pristine || !group.value) return;
-        // EditGameComponent.assert(
-        //     group,
-        //     ['player_1', 'player_2'],
-        //     group.value.player_1 != group.value.player_2,
-        //     { playerNotConfirmed: true }
-        // );
-        // EditGameComponent.assert(
-        //     group,
-        //     ['score_player_1'],
-        //     this.frm.value.score_player_1 <= 0,
-        //     { scoreInvalid: true }
-        // );
+        if (group.pristine || !group.value) return;
+        EditGameComponent.assert(
+            group,
+            ['player_1', 'player_2'],
+            group.value.player_1 != group.value.player_2,
+            { playerNotConfirmed: true }
+        );
+        EditGameComponent.assert(
+            group,
+            ['score_player_1'],
+            this.frm.value.score_player_1 <= 0,
+            { scoreInvalid: true }
+        );
     }
 
     ngOnInit() {
