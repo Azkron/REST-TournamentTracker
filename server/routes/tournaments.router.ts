@@ -16,6 +16,7 @@ export class TournamentsRouter {
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         
         this.router.post('/', this.create);
+        this.router.delete('/', this.deleteAll);
         this.router.get('/:name', this.findByName);
         this.router.get('/byId/:id', this.findById);
         this.router.get('/byStartDate/:start', this.findByStartDate);
@@ -268,6 +269,16 @@ export class TournamentsRouter {
 		Tournament.findOneAndRemove({ name: req.params.name })
             .then(r => res.json(true))
             .catch(err => res.json(err));
+    }
+
+    public deleteAll(req: Request, res: Response, next: NextFunction) {
+        Tournament.remove({},
+            function (err) {
+                if (err)
+                    res.send(err);
+                res.json({ status: 'ok' });
+            })
+            .then(() => Game.remove({}).exec());
     }
 	
     public deleteRange(req: Request, res: Response, next: NextFunction) {
