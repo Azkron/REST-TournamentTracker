@@ -4,6 +4,8 @@ PRID_1718_G07 : Touré Tidiane & Hugo Barbachano
 
 We inplemented all the functionalities mentionned for PRID - Project 2017-2018.
 
+We used this Google Sheet to keep organize the tasks https://docs.google.com/spreadsheets/d/1LWsGijUgNdCAUjL9vUfUxWRPDIc24R9KU_fW6YO8dic/edit?usp=sharing
+
 ##Descriptions des fonctionnalités
 
 ###Rôle admin & Rôle membre ::
