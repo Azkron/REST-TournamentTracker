@@ -86,6 +86,17 @@ export class TournamentService {
             return new Tournament(result.json());
             // return result.json().map(json => new Tournament(json));
         });
+    } 
+    
+    public updateSubscriptions(t: Tournament):  Observable<Tournament> {
+        // console.log(t);
+        return this.http.put(URL+'subscriptions/' + t.name, Tools.removeCircularReferences(t)).map(result => {
+            
+            console.log(" updateSubscriptions RESULT = ");
+            console.log(result);
+            return new Tournament(result.json());
+            // return result.json().map(json => new Tournament(json));
+        });
     }
 
     public delete(t: Tournament): Observable<boolean> {

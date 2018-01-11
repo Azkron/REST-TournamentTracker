@@ -23,6 +23,7 @@ export class TournamentsRouter {
         this.router.get('/byMaxPlayers/:max', this.findByMaxPlayers);
         this.router.get('/byStartRange/:start/:finish', this.getRange);
         this.router.put('/:name', this.update);
+        this.router.put('/subscriptions/:name', this.updateSubscriptions);
         this.router.delete('/:name', this.deleteOne);
         this.router.delete('/:start/:finish', this.deleteRange);
     }
@@ -59,7 +60,8 @@ export class TournamentsRouter {
                         game.player_1 = currMember.pseudo;
                         game.player_2 = member.pseudo;
                         game.tournament = currTournament;
-                        console.log("subscribeCurrent game = " + game);
+                        console.log("subscribeCurrent game = ");
+                        console.log( game);
                         
                         game.save().then(g => {
                             if(err) res.send(err);
@@ -178,7 +180,6 @@ export class TournamentsRouter {
 
 
     public update(req: Request, res: Response, next: NextFunction) {
-        let t = new Tournament(req.body);
         //console.log(req.body)
         // console.log("insert game in tournament => " +t.games)
 		Tournament.findOneAndUpdate({ name: req.params.name },
@@ -189,6 +190,78 @@ export class TournamentsRouter {
                 res.json(r)
             } )
             .catch(err => res.json(err));
+    }
+    
+    public updateSubscriptions(req: Request, res: Response, next: NextFunction) {
+        console.log("updateSubscriptions req.body");
+        console.log(req.body);
+        let loop : boolean; 
+        let first : boolean;
+        let addListGame : boolean;
+
+        Tournament.findOneAndUpdate({ name: req.params.name }, req.body,{ new: true })
+            .populate('members')
+            .then(t => {
+                console.log;
+                console.log("updateSubscriptions t.games BEFORE");
+                console.log(t.games);
+                console.log("updateSubscriptions t.games AFTER");
+                while(t.games.length> 0)
+                    t.games.pop();
+                
+                console.log(t.games);
+                if(t.members.length == 1)
+                {
+                    t.save().then(t =>res.json(t));
+                }
+                else
+                {
+                    for(let i = 0; i < t.members.length-1; ++i)
+                        for(let z = i+1; z < t.members.length; ++z)
+                        {
+                            loop = true; addListGame = true;
+                            let m = t.members[i];
+                            let m1 = t.members[z];
+                            console.log("members "+m.pseudo+", "+m1.pseudo);
+                            if(m.pseudo !== m1.pseudo) 
+                            {
+                                for(let game of t.games) 
+                                {
+                                    if(loop) {
+                                        if (m.pseudo == game.player_2 && m1.pseudo == game.player_1) {
+                                            loop = false;
+                                            addListGame = false;
+                                        }
+                                    }
+                                    else    
+                                        break;
+                                }
+
+                                if(addListGame)
+                                {
+                                    let g = new Game();
+                                    g.player_1 = m.pseudo;
+                                    g.player_2 = m1.pseudo;
+                                    g.tournament = t;
+                                    g.save().then(g => {
+                                        // console.log("game to add = ");
+                                        // console.log(g);
+                                        t.games.push(g);
+                                        if(i == t.members.length-2 && z == t.members.length-1)
+                                        {
+                                            // console.log("tournament after games = ");
+                                            // console.log(t);
+                                            t.save().then(t =>res.json(t));
+                                            
+                                        }
+                                    });
+                                }
+                            }
+                        } 
+                }
+            } );
+
+        
     }
 
     public deleteOne(req: Request, res: Response, next: NextFunction) {

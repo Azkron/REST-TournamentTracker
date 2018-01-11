@@ -40,10 +40,15 @@
     <div *ngIf="!authService.isAdmin && subscribeActive" class="col-sm-12">    
         <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament)">Subscribe to: {{selectedTournament.name}}</button>
     </div>
-    <div class="col-sm-12">
+    <div  *ngIf="authService.isAdmin"class="col-sm-12">
         <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [updateService]="updateMemberService" 
             filterPlaceHolder="Filter Matches" [editComponent]="editGame"
             [pageSize]="10" [cancellable]="true" [confirmDelete]="false" ></mytable>
+    </div>
+    <div  *ngIf="!authService.isAdmin"class="col-sm-12">
+        <mytable #games [columnDefs]="gameColumnDefs" [getDataService]="getGameDataService" [updateService]="updateMemberService" 
+            filterPlaceHolder="Filter Matches" [editComponent]="editGame"
+            [pageSize]="10" ></mytable>
     </div>
 </div>
 <edit-tournament #editTournament></edit-tournament>
