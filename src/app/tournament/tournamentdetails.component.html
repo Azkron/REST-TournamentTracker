@@ -32,10 +32,18 @@
                     <br>
                     <br>
                     <br>
-                    <p><button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button></p>
-                    <p><button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button></p>
-                    <p><button class="btn dtn-default" type="button" (click)="sendAssigned()" > < </button></p>
-                    <p><button class="btn dtn-default" type="button" (click)="sendAllAssigned()" > << </button></p>
+                    <p *ngIf="memberUnassignedCount > 0">
+                        <button class="btn dtn-default" type="button" (click)="sendAllUnassigned()" > >> </button>
+                    </p>
+                    <p *ngIf="sendUnassignedActive">
+                        <button class="btn dtn-default" type="button" (click)="sendUnassigned()" > > </button>
+                    </p>
+                    <p *ngIf="sendAssignedActive">
+                        <button class="btn dtn-default" type="button" (click)="sendAssigned()" > < </button>
+                    </p>
+                    <p *ngIf="memberAssignedCount > 0">
+                        <button class="btn dtn-default" type="button" (click)="sendAllAssigned()" > << </button>
+                    </p>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-5">

@@ -22,12 +22,15 @@ export class TournamentDetailsComponent implements OnInit {
     public memberAssignedCount: number | '?' = '?';
     public listMembersUnassigned : Member[];
     public listGame : Game[];
+    public sendUnassignedActive :boolean;
+    public sendAssignedActive :boolean;
     // public listGame =  new Array<Game>();
 
     selectedMember: Member;
 
     @ViewChild('membersUnassigned') membersUnassigned: MyTableComponent;
     @ViewChild('membersAssigned') membersAssigned: MyTableComponent;
+    @ViewChild('snackbar') snackbar: SnackBarComponent;
     
         columnDefs: ColumnDef[] = [
             { name: 'pseudo', type: 'String', header: 'Pseudo', width: 1, key: true, filter: true, sort: 'asc' },
@@ -49,6 +52,8 @@ export class TournamentDetailsComponent implements OnInit {
         }
 
     ngOnInit() {
+        this.sendUnassignedActive = false;
+        this.sendAssignedActive = false;
         this.getInfoTournament();  
     }
 
@@ -74,6 +79,8 @@ export class TournamentDetailsComponent implements OnInit {
     }
 
     public selectedItemChangedUnassigned(item) {
+        this.sendUnassignedActive = true;
+        this.sendAssignedActive = false;
         this.selectedMember = this.membersUnassigned.selectedItem as Member;
         // console.log("selected Member Unassigned => " + this.selectedMember.pseudo)
         // if (this.membersUnassigned)
@@ -81,6 +88,8 @@ export class TournamentDetailsComponent implements OnInit {
     }
 
     public selectedItemChangedAssigned(item) {
+        this.sendUnassignedActive = false;
+        this.sendAssignedActive = true;
         this.selectedMember = this.membersAssigned.selectedItem as Member;
         // console.log("selected Member Assigned=> " +this.selectedMember.pseudo)
         // if (this.membersAssigned)
@@ -121,6 +130,9 @@ export class TournamentDetailsComponent implements OnInit {
     }
 
     sendAllUnassigned() {
+        
+        this.sendUnassignedActive = false;
+        this.sendAssignedActive = false;
         for(let i of this.listMembersUnassigned) {
             // console.log("i unassigned => " +i)
             let m = new Member(i);
@@ -182,6 +194,9 @@ export class TournamentDetailsComponent implements OnInit {
     }
 
     sendAllAssigned() {
+        
+        this.sendUnassignedActive = false;
+        this.sendAssignedActive = false;
         for(let i of this.tournamentDetails.members) {
             // console.log("i.pseudo=> " + i.pseudo);
             // console.log("i.tournaments=> " + i.tournaments);
