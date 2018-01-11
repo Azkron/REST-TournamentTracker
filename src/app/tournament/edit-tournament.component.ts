@@ -80,15 +80,35 @@ export class EditTournamentComponent implements OnInit, IDialog {
             }
         });
     }
+    forbiddenValueDate(val: Date): any {
+        let start : Date = new Date(this.frm.value.start);
+        let valueFinish =  val.getTime();
+        let valueStart = start.getTime();
+        return (ctl: FormControl) => {
+            if (valueFinish < valueStart)
+                return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } }
+            return null;
+        };
+    }
 
     crossValidations(group: FormGroup) {
-        // if (group.pristine || !group.value) return;
-        // EditTournamentComponent.assert(
-        //     group,
-        //     ['name', 'start'],
-        //     group.value.password != group.value.profile,
-        //     { passwordEqualProfile: true }
-        // );
+        if (group.pristine || !group.value) return;
+        if(this.frm.value.start !== null) {
+            console.log("frm value => ")
+        console.log(this.frm.value.start)
+        let startD = new Date(this.frm.value.start); 
+        let finishD = new Date(this.frm.value.finish);
+        let valueFinish =  startD.getTime();
+        let valueStart = finishD.getTime();
+        EditTournamentComponent.assert(
+            group,
+            ['start', 'finish'],
+            valueFinish < valueStart,
+            { finishDateInferior: true }
+        );
+
+        }
+        
     }
 
     ngOnInit() {

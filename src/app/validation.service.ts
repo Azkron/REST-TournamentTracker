@@ -11,7 +11,8 @@ export class ValidationService {
             pseudoUsed: 'This pseudo is not available',
             passwordEqualProfile: 'Your password cannot be equal to your profile string',
             passwordNotConfirmed: 'The two passwords must be the same',
-            playerNotConfirmed: 'The two players cannot have the same pseudo'
+            playerNotConfirmed: 'The two players cannot have the same pseudo',
+            finishDateInferior:  'Finish Date < Start Date'
         };
         return config.hasOwnProperty(validatorName) ? config[validatorName] : '[' + validatorName + ']';
     }

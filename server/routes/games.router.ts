@@ -12,7 +12,7 @@ export class GamesRouter {
         this.router.put('/updateCurrent', this.updateCurrent);
         this.router.get('/', this.getAll);
         this.router.post('/', this.create);
-        this.router.get('/listResults/:id', this.getListResults);
+        // this.router.get('/listResults/:id', this.getListResults);
         
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         
@@ -36,17 +36,17 @@ export class GamesRouter {
         });
     }
 
-    public getListResults(req: Request, res: Response, next: NextFunction) {
-        let tournamentId = req.params.id;
+    // public getListResults(req: Request, res: Response, next: NextFunction) {
+    //     let tournamentId = req.params.id;
 
-        Game.find({ tournament : { _id : mongoose.Types.ObjectId(tournamentId) }}).sort({ player_1: 'asc' })
-        .exec((err, game) => {   
-            console.log("game => ");
-            console.log(game);         
-            if (err) res.send(err);
-            res.json(game);
-        });
-    }
+    //     Game.find({ tournament : { _id : mongoose.Types.ObjectId(tournamentId) }}).sort({ player_1: 'asc' })
+    //     .exec((err, game) => {   
+    //         console.log("game => ");
+    //         console.log(game);         
+    //         if (err) res.send(err);
+    //         res.json(game);
+    //     });
+    // }
 
     public getAll(req: Request, res: Response, next: NextFunction) {
 		Game.find().populate('tournament').sort({ player_1: 'asc' }).exec((err, games) => {

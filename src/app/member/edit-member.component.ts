@@ -22,6 +22,7 @@ export class EditMemberComponent implements OnInit, IDialog {
     public ctlPseudo: FormControl;
     public ctlProfile: FormControl;
     public ctlPassword: FormControl;
+    public ctlPasswordConfirm : FormControl;
     public ctlBirthDate: FormControl;
     public ctlAdmin: FormControl;
     public closed: Subject<DialogResult>;
@@ -40,12 +41,14 @@ export class EditMemberComponent implements OnInit, IDialog {
         this.ctlPseudo = this.fb.control('', [Validators.required, Validators.minLength(3), this.forbiddenValue('abc')], [this.pseudoUsed()]);
         this.ctlPassword = this.fb.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlProfile = this.fb.control('', []);
+        this.ctlPasswordConfirm = this.fb.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlBirthDate = this.fb.control('', []);
         this.ctlAdmin = this.fb.control(false, []);
         this.frm = this.fb.group({
             _id: null,
             pseudo: this.ctlPseudo,
             password: this.ctlPassword,
+            passwordConfirm: this.ctlPasswordConfirm,
             profile: this.ctlProfile,
             birthdate: this.ctlBirthDate,
             admin: this.ctlAdmin
@@ -101,6 +104,12 @@ export class EditMemberComponent implements OnInit, IDialog {
             ['password', 'profile'],
             group.value.password != group.value.profile,
             { passwordEqualProfile: true }
+        );
+        EditMemberComponent.assert(
+            group,
+            ['password', 'passwordConfirm'],
+            group.value.password == group.value.passwordConfirm,
+            { passwordNotConfirmed: true }
         );
     }
 
