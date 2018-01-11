@@ -16,6 +16,7 @@ export class Tournament {
     maxPlayers: Number;
     members: Member[];
     games: Game[];
+    closed: boolean;
 
     constructor(data) {
         this._id = data._id;
@@ -25,6 +26,7 @@ export class Tournament {
         this.maxPlayers = data.maxPlayers;
         this.members = data.members;
         this.games = data.games;
+        this.closed = data.closed;
     }
 }
 

@@ -11,6 +11,7 @@ export interface ITournament extends mongoose.Document {
     maxPlayers: Number;
     members: mongoose.Types.Array<IMember>;
     games: mongoose.Types.Array<IGame>;
+    closed: boolean;
 }
 
 let tournamentSchema = new mongoose.Schema({
@@ -19,7 +20,8 @@ let tournamentSchema = new mongoose.Schema({
     finish: {type: Date},
     maxPlayers: {type: Number, default: 16},
     members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
-    games: [{ type: Schema.Types.ObjectId, ref: 'Game' }]
+    games: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+    closed: {type: Boolean, default:false}
 });
 
 export let Tournament = mongoose.model<ITournament>('Tournament', tournamentSchema);

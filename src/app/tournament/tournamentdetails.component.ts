@@ -230,6 +230,7 @@ export class TournamentDetailsComponent implements OnInit {
     } 
 
     CloseInscriptions() { 
+        this.tournamentDetails.closed = true;
         this.Save();
     }    
 }

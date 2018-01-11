@@ -34,10 +34,10 @@
 </div>
 
 <div class="row" *ngIf="selectedTournament">
-    <div *ngIf="authService.isAdmin" class="col-sm-12">
+    <div *ngIf="authService.isAdmin && !selectedTournament.closed" class="col-sm-12">
         <button class="btn dtn-default" type="button" [routerLink]="['/tournamentdetails', selectedTournament.name]">Manage Inscriptions for: {{selectedTournament.name}}</button>
     </div>
-    <div *ngIf="!authService.isAdmin && subscribeActive" class="col-sm-12">    
+    <div *ngIf="!authService.isAdmin && subscribeActive && !selectedTournament.closed" class="col-sm-12">    
         <button class="btn dtn-default" type="button" (click)="subscribe(selectedTournament)">Subscribe to: {{selectedTournament.name}}</button>
     </div>
     <div class="col-sm-12">
