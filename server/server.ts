@@ -98,7 +98,7 @@ export class Server {
                 // let test1 = new Member({ pseudo: "test1", password: "test1", profile: "Hi, I'm test1!", birthdate: "10/26/1988", tournaments: [tourn1, tourn2] });
                 // let test2 = new Member({ pseudo: "test2", password: "test2", profile: "Hi, I'm test2!", birthdate: "10/26/1989", tournaments: [tourn1, tourn2] });
                 
-                this.initDataGame();
+                // this.initDataGame();
                 // let game1 = new Game({ player_1: "test1", player_2: "test2", tournament: tourn2 });
                 // let game2 = new Game({ player_1: "test1", player_2: "testeur", tournament: tourn1 });
 

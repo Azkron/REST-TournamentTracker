@@ -17,6 +17,7 @@ export class GamesRouter {
         this.router.use(AuthentificationRouter.checkAdmin);   // à partir d'ici il faut être admin
         
         this.router.put('/updateAdmin', this.update);
+        this.router.put('/addPoint/:pseudo', this.updatePoints);
         // this.router.get('/:name', this.findByName);
         // this.router.get('/byId/:id', this.findById);
         // this.router.get('/byStartDate/:start', this.findByStartDate);
@@ -77,6 +78,19 @@ export class GamesRouter {
                 res.json(task);
             });
     } 
+
+    public updatePoints(req: Request, res: Response, next: NextFunction) {
+        let game = new Game(req.body);
+        console.log(game);
+        Game.findOneAndUpdate({ _id: game._id },
+            req.body,
+            { new: true },  // pour renvoyer le document modifié
+            function (err, task) {
+                if (err)
+                    res.send(err);
+                res.json(task);
+            });
+    }
 
     public updateCurrent(req: Request, res: Response, next: NextFunction) {
         let game = new Game(req.body);
