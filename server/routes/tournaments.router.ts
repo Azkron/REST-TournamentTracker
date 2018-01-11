@@ -210,7 +210,7 @@ export class TournamentsRouter {
                     t.games.pop();
                 
                 console.log(t.games);
-                if(t.members.length == 1)
+                if(t.members.length <= 1)
                 {
                     t.save().then(t =>res.json(t));
                 }

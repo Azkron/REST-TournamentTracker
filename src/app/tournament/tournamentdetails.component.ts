@@ -218,81 +218,18 @@ export class TournamentDetailsComponent implements OnInit {
         this.getCountMembers();
     }
 
-    CloseInscriptions() {  
-        // let loop : boolean; 
-        // let first : boolean;
-        // let addListGame : boolean;
-        // this.tournamentDetails.games = new Array<Game>();
-        // first = true; loop = true; addListGame = true;
-        // for(let i in this.tournamentDetails.members) {
-        //     for(let j in this.tournamentDetails.members) {
-        //         let m = this.tournamentDetails.members[i];
-        //         let m1 = this.tournamentDetails.members[j];
-                    
-        //         if(m.pseudo !== m1.pseudo) {
-        //             let g : Game = new Game({
-        //             _id : ""+this.tournamentDetails._id + m.pseudo + m1.pseudo,
-        //             player_1 : m.pseudo,
-        //             player_2 : m1.pseudo,
-        //             tournament: this.tournamentDetails
-        //             });
-
-        //             // if(first) {
-        //             //     this.listGame.push(g);
-        //             //     first = false;
-        //             // }
-        //             // else {
-        //                 for(let game of this.tournamentDetails.games) {
-        //                     if(loop) {
-        //                         if (g.player_1 == game.player_2 && g.player_2 == game.player_1) {
-        //                             loop = false;
-        //                             addListGame = false;
-        //                         }
-        //                     }
-        //                     else    
-        //                         break;
-        //                 }
-        //                 if(addListGame)
-        //                     this.tournamentDetails.games.push(g);
-        //             // } 
-        //         }
-        //         loop = true;
-        //         addListGame = true;
-        //     }            
-        // }
+    Save() { 
 
         this.TournamentService.updateSubscriptions(this.tournamentDetails).subscribe(t => {
             console.log("CloseInscriptions tournament = ");
             console.log(t);
         });
-
-        // let count = 0;
-        // for(let match of this.listGame) {
-        //     // console.log("listgame player_1 => " +i.player_1  +" player_2 => " +i.player_2);
-        //     this.GameService.add(match).subscribe(matchWithId =>  {
-        //         if(matchWithId) 
-        //         {
-        //             console.log("matchWithId = ");
-        //             console.log(matchWithId);
-        //             this.tournamentDetails.games.push(matchWithId);
-        //         }
-
-        //         if(this.tournamentDetails.games.length == this.listGame.length)
-        //         {
-        //             console.log("this.tournamentDetails.games = ");
-        //             console.log(this.tournamentDetails.games);
-        //             this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log(t));
-        //         }
-        //     });
-        //     // this.tournamentDetails.games.push(match);
-        //     // this.TournamentService.update(this.tournamentDetails).subscribe(t => console.log("inserted game in tournament => " +t ));
-        // }
-        
-        // TODO PRINT OF .games
-
-
         setTimeout(() => {
             this.router.navigate(['/tournaments']);
         }, 2000);
+    } 
+
+    CloseInscriptions() { 
+        this.Save();
     }    
 }
