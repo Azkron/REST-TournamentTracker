@@ -95,13 +95,19 @@ export class EditGameComponent implements OnInit, IDialog {
     }
 
     crossValidations(group: FormGroup) {
-        if (group.pristine || !group.value) return;
-        EditGameComponent.assert(
-            group,
-            ['player_1', 'player_2'],
-            group.value.player_1 != group.value.player_2,
-            { playerNotConfirmed: true }
-        );
+        // if (group.pristine || !group.value) return;
+        // EditGameComponent.assert(
+        //     group,
+        //     ['player_1', 'player_2'],
+        //     group.value.player_1 != group.value.player_2,
+        //     { playerNotConfirmed: true }
+        // );
+        // EditGameComponent.assert(
+        //     group,
+        //     ['score_player_1'],
+        //     this.frm.value.score_player_1 <= 0,
+        //     { scoreInvalid: true }
+        // );
     }
 
     ngOnInit() {
